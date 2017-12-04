@@ -60,7 +60,7 @@ export class Actor extends GameObject {
     this.setEyeDirectionOn(this.field.mousePos.x, this.field.mousePos.y);
 
     if (this.isShotModeOn) {
-      let bullet = new PointBullet(this.field, this.p.x, this.p.y, this.eyeDirectionVector);
+      let bullet = new PointBullet(this.field, this.p.x + 40 * this.eyeDirectionVector.x, this.p.y + 40 * this.eyeDirectionVector.y, this.eyeDirectionVector);
       this.field.add(bullet);
     }
 

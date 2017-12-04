@@ -20,7 +20,7 @@ export class PointBullet extends GameObject{
     let ctx = this.field.ctx;
     let path = new Path2D();
     path.moveTo(this.p.x, this.p.y);
-    path.lineTo(this.p.x + 3 * this.directionVector.x, this.p.y + 3 * this.directionVector.y);
+    path.lineTo(this.p.x + 7 * this.directionVector.x, this.p.y + 7 * this.directionVector.y);
     ctx.lineWidth = 3;
     ctx.strokeStyle ='#b97686';
     ctx.stroke(path);
