@@ -10,6 +10,7 @@ export abstract class GameObject {
   public speed: number = 2;                     // movement speed (in pixels)
   public speedVector: Pos = new Pos(1,0);       // movement vector speed (length = speed )
   public directionVector: Pos = new Pos(1,0);   // direction vector (length = 1)
+  public eyeDirectionVector: Pos = new Pos(1,0);   // direction vector (length = 1)
 
   abstract draw(): void;
 
@@ -23,7 +24,7 @@ export abstract class GameObject {
   }
 
   // movement helper methods
-  setDirection(x: number, y: number): void {
+  setDirectionOn(x: number, y: number): void {
     const vectorX = x - this.p.x;
     const vectorY = y - this.p.y;
 
@@ -34,7 +35,25 @@ export abstract class GameObject {
 
     this.speedVector.x = this.directionVector.x * this.speed;
     this.speedVector.y = this.directionVector.y * this.speed;
+  }
 
+  setDirection( d: Pos ): void {
+
+    this.directionVector.x = d.x;
+    this.directionVector.y = d.y;
+
+    this.speedVector.x = this.directionVector.x * this.speed;
+    this.speedVector.y = this.directionVector.y * this.speed;
+  }
+
+  setEyeDirectionOn(x: number, y: number): void {
+    const vectorX = x - this.p.x;
+    const vectorY = y - this.p.y;
+
+    const vectorLen = Math.sqrt( vectorX*vectorX + vectorY*vectorY );
+
+    this.eyeDirectionVector.x = ( vectorX / vectorLen );
+    this.eyeDirectionVector.y = ( vectorY / vectorLen );
   }
 
   public moveTo(x: number, y: number) {
@@ -66,6 +85,10 @@ export abstract class GameObject {
     if (this.p.x < 0) {this.p.x = 0; } else {if (this.p.x > this.field.worldSize.x) { this.p.x = this.field.worldSize.x; }}
     if (this.p.y < 0) {this.p.y = 0; } else {if (this.p.y > this.field.worldSize.y) { this.p.y = this.field.worldSize.y; }}
     // todo: add implementation for grid indexing objects
+  }
+
+  public isOutOfField() {
+    return this.p.x < 0 || this.p.x > this.field.worldSize.x || this.p.y < 0 || this.p.y > this.field.worldSize.y;
   }
 
   // draw helper methods

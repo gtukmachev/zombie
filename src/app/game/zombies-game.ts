@@ -30,12 +30,32 @@ export class ZombiesGame extends Game {
 
   public onMouseMove(event: MouseEvent): void {
     super.onMouseMove(event);
-    this.actor.setDirection(this.mousePos.x, this.mousePos.y);
+    this.actor.setEyeDirectionOn(this.mousePos.x, this.mousePos.y);
   }
 
   public onMouseDown(event: MouseEvent): void {
     super.onMouseDown(event);
-    this.actor.setDirection(this.mousePos.x, this.mousePos.y);
+    this.actor.setEyeDirectionOn(this.mousePos.x, this.mousePos.y);
+    this.actor.isShotModeOn = true;
+  }
+
+  public onMouseUp(event: MouseEvent): void {
+    this.actor.isShotModeOn = false;
+  }
+
+
+  public onKeyDown(event: KeyboardEvent) {
+    if      (event.code === 'KeyW') {this.actor.m_up    = true; }
+    else if (event.code === 'KeyS') {this.actor.m_down  = true; }
+    else if (event.code === 'KeyA') {this.actor.m_left  = true; }
+    else if (event.code === 'KeyD') {this.actor.m_right = true; }
+  }
+
+  public onKeyUp(event: KeyboardEvent) {
+    if      (event.code === 'KeyW') {this.actor.m_up    = false; }
+    else if (event.code === 'KeyS') {this.actor.m_down  = false; }
+    else if (event.code === 'KeyA') {this.actor.m_left  = false; }
+    else if (event.code === 'KeyD') {this.actor.m_right = false; }
   }
 
 }

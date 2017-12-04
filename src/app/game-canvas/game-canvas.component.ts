@@ -37,6 +37,18 @@ export class GameCanvasComponent implements OnInit, OnDestroy {
     this.game.onMouseDown(event);
   }
 
+  @HostListener('mouseup', ['$event']) onMouseUp(event: MouseEvent) {
+    this.game.onMouseUp(event);
+  }
+
+  @HostListener('document:keydown', ['$event']) onKeyDown(event: KeyboardEvent) {
+    this.game.onKeyDown(event);
+  }
+  @HostListener('document:keyup', ['$event']) onKeyUp(event: KeyboardEvent) {
+    this.game.onKeyUp(event);
+  }
+
+
   ngOnDestroy (): void {
     this.game.onDestroy();
   }
