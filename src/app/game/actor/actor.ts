@@ -24,6 +24,7 @@ export class Actor extends GameObject {
   static s2 = 1 / Math.sqrt(2);
 
   isDrawable = true;
+  r = 15;
 
   public gun: Gun;
 
@@ -41,19 +42,31 @@ export class Actor extends GameObject {
 
     this.gun = new MachineGun();
 
+    this.withHelth(100, 30);
+
   }
 
 
   draw(): void {
+    let k = this.getDeathStageK()
+    let r = k < 1 ? this.r * k : this.r;
+    let l = k < 1 ? (this.r*2.5) * k : (this.r*2.5);
+
     let ctx = this.game.ctx;
     let path = new Path2D();
     path.moveTo(this.p.x, this.p.y);
-    path.lineTo(this.p.x + 40 * this.eyeDirectionVector.x, this.p.y + 40 * this.eyeDirectionVector.y);
-    ctx.lineWidth = 3;
-    ctx.strokeStyle ='#65b9b3';
+    path.lineTo(this.p.x + l * this.eyeDirectionVector.x, this.p.y + l * this.eyeDirectionVector.y);
+    ctx.lineWidth = this.helth/10;
+
+    let strokeStyle = '#65b9b3';
+    let fillStyle = '#6a8dff';
+
+    ctx.strokeStyle = strokeStyle;
     ctx.stroke(path);
 
-    this.fcCircle(this.p.x, this.p.y, 15, '#65b9b3', '#6a8dff')
+    this.fcCircle(this.p.x, this.p.y, r, strokeStyle, fillStyle);
+
+
   }
 
   beforeTurn(): void {
@@ -70,6 +83,7 @@ export class Actor extends GameObject {
   }
 
   afterTurn(): void {
+    if (this.helth <= 0) { this.game.loose(); }
   }
 
   private way(xd, yd, xs, ys) {

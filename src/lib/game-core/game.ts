@@ -6,6 +6,7 @@ import {Observable} from 'rxjs';
 export class Game {
 
   running: boolean = false;
+  isLoose: boolean = false;
 
   secondsTimerCounter = new TimeCounter(1000); // every second
   framesCounter = 0;
@@ -19,8 +20,6 @@ export class Game {
   gameTimer: Subscription;
 
   public followingActor = false;
-
-
 
   public canvas: HTMLCanvasElement;
   public ctx: CanvasRenderingContext2D;
@@ -107,11 +106,15 @@ export class Game {
     }
   }
 
+  public loose(): void {
+    this.isLoose = true;
+  }
+
   public gameActionTurn(): void {
     if (this.followingActor && this.actor) { this.followActor() }
-    this.gameObjects.forEach( (gameObject: GameObject) => gameObject.beforeTurn() ); this.deleteMarkedElements();
-    this.gameObjects.forEach( (gameObject: GameObject) => gameObject.turn() );       this.deleteMarkedElements();
-    this.gameObjects.forEach( (gameObject: GameObject) => gameObject.afterTurn() );  this.deleteMarkedElements();
+    this.gameObjects.forEach( (go: GameObject) => { go.checkHealth(); go.beforeTurn(); } ); this.deleteMarkedElements();
+    this.gameObjects.forEach( (go: GameObject) => go.turn() );                             this.deleteMarkedElements();
+    this.gameObjects.forEach( (go: GameObject) => go.afterTurn() );                        this.deleteMarkedElements();
   }
 
   private followActor(): void {
@@ -147,6 +150,9 @@ export class Game {
 
   protected del(gameObject: GameObject): void {
     this.rmFromArr(this.gameObjects, gameObject);
+
+    if (gameObject === this.actor) { this.pauseGame(); }
+
   }
 
   protected rmFromArr(arr: any[], obj: any) {

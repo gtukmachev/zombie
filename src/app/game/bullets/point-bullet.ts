@@ -8,7 +8,7 @@ export class PointBullet extends GameObject{
 
   isDrawable = true;
 
-  damage = 1;
+  atack = 1;
 
   constructor(game: Game, x: number, y: number, direction: Pos) {
     super(game, x, y);
@@ -48,8 +48,8 @@ export class PointBullet extends GameObject{
       if (go instanceof Zombie) {
         let z: Zombie = go;
 
-        if (this.p.distanceTo(z.p) < (10 + z.helth)) {
-          z.damage(this.damage);
+        if (this.p.distanceTo(z.p) < (z.r + z.helth)) {
+          z.damage(this.atack);
           this.game.markForDelete(this);
         }
 

@@ -12,6 +12,13 @@ export abstract class GameObject {
   public directionVector: Pos = new Pos(1,0);   // direction vector (length = 1)
   public eyeDirectionVector: Pos = new Pos(1,0);   // direction vector (length = 1)
 
+  public isAlife = false;
+  public helth: number;
+  public deadStage: number;
+  public deadStages: number;
+
+  public r: number = 1; // default size of this object
+
   abstract draw(): void;
 
   abstract beforeTurn(): void;
@@ -21,6 +28,40 @@ export abstract class GameObject {
   constructor (game: Game, x: number, y: number) {
     this.game = game;
     this.p = new Pos(x, y);
+  }
+
+
+  public withHelth(helth: number, deadStages: number): GameObject {
+    this.isAlife = true;
+    this.helth = helth;
+    this.deadStage = deadStages;
+    this.deadStages = deadStages;
+    return this;
+  }
+
+  public damage(damageVal: number): void {
+    if (this.isAlife && this.helth > 0) {
+      this.helth -= damageVal;
+      this.helth = this.helth < 0 ? 0 : this.helth;
+    }
+  }
+
+  public checkHealth() {
+    if (!this.isAlife) { return; }
+
+    if (this.helth <= 0) {
+      this.deadStage -= 1;
+      this.deadStage = this.deadStage < 0 ? 0 : this.deadStage;
+    }
+
+    if (this.helth <= 0 && this.deadStage <= 0) {
+      this.game.markForDelete(this)
+    }
+
+  }
+
+  public getDeathStageK(): number {
+    return this.deadStage / this.deadStages;
   }
 
   // movement helper methods

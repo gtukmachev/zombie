@@ -5,6 +5,7 @@ import {WorldFrameObject} from '../../lib/game-core/world-frame-object';
 import {Actor} from './actor/actor';
 import {Zombie} from './zombies/zombie';
 import {TimeCounter} from '../../lib/game-core/time-counter';
+import {TextGameObject} from '../../lib/game-core/text-game-object';
 
 export class ZombiesGame extends Game {
 
@@ -31,7 +32,14 @@ export class ZombiesGame extends Game {
 
     this.add( new WorldFrameObject(this, '#f3ffa2') );
 
+
     this.gameTimeFrame = 20;
+  }
+
+
+  public loose(): void {
+    super.loose();
+    this.add( new TextGameObject(this, 'Game Over !', '80px Arial', '#ff7716', '#6b6e70' ) );
   }
 
   public gameActionTurn(): void {
@@ -43,8 +51,8 @@ export class ZombiesGame extends Game {
       let factor = this.rnd01();
       let zx, zy :number;
 
-      if (Math.random() > 0.5) { zx = factor        * this.worldSize.x; zy = Math.random() * this.worldSize.y }
-      else                     { zx = Math.random() * this.worldSize.x; zy = factor        * this.worldSize.y}
+      if (Math.random() > 0.5) { zx = factor        * this.worldSize.x; zy = Math.random() * this.worldSize.y; }
+      else                     { zx = Math.random() * this.worldSize.x; zy = factor        * this.worldSize.y;}
 
 
       this.add( new Zombie( this, zx, zy ) );
