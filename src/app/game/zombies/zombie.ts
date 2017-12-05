@@ -21,10 +21,10 @@ export class Zombie extends GameObject{
     path.moveTo(this.p.x, this.p.y);
     path.lineTo(this.p.x + l * this.directionVector.x, this.p.y + l * this.directionVector.y);
     ctx.lineWidth = 3;
-    ctx.strokeStyle ='#b99b2f';
+    ctx.strokeStyle ='#9cb9b7';
     ctx.stroke(path);
 
-    this.fcCircle(this.p.x, this.p.y, r, '#b99b2f', '#aa0600')
+    this.fcCircle(this.p.x, this.p.y, r, '#9cb9b7', '#aa0600')
   }
 
   beforeTurn(): void {
