@@ -36,6 +36,25 @@ export abstract class Gun {
   public abstract makeBullet(actor: GameObject): GameObject;
 
 
+  public drawBullets(ctx: CanvasRenderingContext2D) {
+
+    ctx.lineWidth = 3;
+    ctx.strokeStyle ='#b97686';
+
+    for (let i = 0; i < this.bullets; i++) {
+      this.drawBullet(ctx, i);
+    }
+  }
+
+  public drawBullet(ctx: CanvasRenderingContext2D, i: number) {
+    let path = new Path2D();
+
+    path.moveTo(10 + (i % 100)*5, 10 + (Math.floor(i / 100))* 10 );
+    path.lineTo(10 + (i % 100)*5, 10 + (Math.floor(i / 100))* 10 + 7);
+
+    ctx.stroke(path);
+  }
+
   public startReaload(): void {
     if (this.isRelodingInProcess) {
       return;

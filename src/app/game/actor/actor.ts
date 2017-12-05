@@ -66,23 +66,28 @@ export class Actor extends GameObject {
 
     this.fcCircle(this.p.x, this.p.y, r, strokeStyle, fillStyle);
 
+    let hx = 550;
+    let hy = 15;
+    let hk = 4;
+    let h_lineWidth = 7;
 
     let hl = new Path2D();
-    hl.moveTo(10,10);
-    hl.lineTo(10+this.maxHelth * 4, 10);
+    hl.moveTo(hx,hy);
+    hl.lineTo(hx+this.maxHelth * hk, hy);
     ctx.strokeStyle = '#a9a9a9';
-    ctx.lineWidth = 5;
+    ctx.lineWidth = h_lineWidth;
     ctx.lineCap = 'round';
     ctx.stroke(hl);
 
     if (this.helth > 0) {
       let dl = new Path2D();
-      dl.moveTo(10, 10);
-      dl.lineTo(10 + this.helth * 4, 10);
+      dl.moveTo(hx, hy);
+      dl.lineTo(hx + this.helth * hk, hy);
       ctx.strokeStyle = '#ff7716';
       ctx.stroke(dl);
     }
 
+    this.gun.drawBullets(ctx);
 
   }
 
