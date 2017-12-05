@@ -2,11 +2,13 @@
 import {GameObject} from '../../../lib/game-core/game-object';
 import {Game} from '../../../lib/game-core/game';
 import {Pos} from '../../../lib/game-core/position';
+import {Zombie} from '../zombies/zombie';
 
 export class PointBullet extends GameObject{
 
   isDrawable = true;
 
+  damage = 1;
 
   constructor(game: Game, x: number, y: number, direction: Pos) {
     super(game, x, y);
@@ -27,6 +29,7 @@ export class PointBullet extends GameObject{
   }
 
   beforeTurn(): void {
+    this.checkForZombie()
   }
 
   turn(): void {
@@ -36,5 +39,22 @@ export class PointBullet extends GameObject{
   }
 
   afterTurn(): void {
+  }
+
+  checkForZombie(): void {
+
+    for (let i = 0; i < this.game.gameObjects.length; i++) {
+      let go: GameObject = this.game.gameObjects[i];
+      if (go instanceof Zombie) {
+        let z: Zombie = go;
+
+        if (this.p.distanceTo(z.p) < 10) {
+          z.damage(this.damage);
+          this.game.markForDelete(this);
+        }
+
+      }
+    }
+
   }
 }
