@@ -1,6 +1,8 @@
 import {GameObject} from '../../../lib/game-core/game-object';
 import {Game} from '../../../lib/game-core/game';
 import {PointBullet} from '../bullets/point-bullet';
+import {Gun} from '../guns/gun';
+import {MachineGun} from '../guns/machine-gun';
 
 export class Actor extends GameObject {
   get m_up(): boolean {
@@ -23,6 +25,7 @@ export class Actor extends GameObject {
 
   isDrawable = true;
 
+  public gun: Gun;
 
   private _m_up = false;
   private _m_down = false;
@@ -37,6 +40,9 @@ export class Actor extends GameObject {
     super(game, x, y);
     this.speed = 4;
     this.speed_diagonal = this.speed * Actor.s2;
+
+    this.gun = new MachineGun();
+
   }
 
 
@@ -53,6 +59,7 @@ export class Actor extends GameObject {
   }
 
   beforeTurn(): void {
+    this.gun.finishReloading();
   }
 
   turn(): void {
@@ -60,8 +67,10 @@ export class Actor extends GameObject {
     this.setEyeDirectionOn_xy(this.game.mousePos.x, this.game.mousePos.y);
 
     if (this.isShotModeOn) {
-      let bullet = new PointBullet(this.game, this.p.x + 40 * this.eyeDirectionVector.x, this.p.y + 40 * this.eyeDirectionVector.y, this.eyeDirectionVector);
-      this.game.add(bullet);
+      let bullet = this.gun.shot(this);
+      if (bullet) {
+        this.game.add(bullet);
+      }
     }
 
   }

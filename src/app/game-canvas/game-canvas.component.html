@@ -4,6 +4,7 @@
 <div class="panel">
   <button (click)="game.toggleStartPause()">{{game.running ? '(running) Stop' : '(paused) Run'}}</button>
 </div>
+<p>{{game.actor.gun.bullets}}</p>
 <p>frames / sec: {{game.framesPerSecond }}</p>
 <p>turns / sec: {{game.turnsPerSecond}}</p>
 <p>frame duration: {{game.lastFrameDuration}}</p>
