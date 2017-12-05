@@ -48,7 +48,7 @@ export class PointBullet extends GameObject{
       if (go instanceof Zombie) {
         let z: Zombie = go;
 
-        if (this.p.distanceTo(z.p) < 10) {
+        if (this.p.distanceTo(z.p) < (10 + z.helth)) {
           z.damage(this.damage);
           this.game.markForDelete(this);
         }

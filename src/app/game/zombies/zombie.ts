@@ -12,7 +12,7 @@ export class Zombie extends GameObject{
 
   constructor(game: Game, x: number, y: number) {
     super(game, x, y);
-    this.speed = 1.5;
+    this.speed = 0.7;
   }
 
   draw(): void {
@@ -26,23 +26,8 @@ export class Zombie extends GameObject{
     path.lineTo(this.p.x + l * this.directionVector.x, this.p.y + l * this.directionVector.y);
     ctx.lineWidth = 1+this.helth;
 
-    let strokeStyle: string;
-    let fillStyle: string;
-
-    strokeStyle = 'rgb(#9c, #b9, #b7)';
-    fillStyle   = 'rgb(#aa, #06, #00)';
-
-
-/*
-    if (this.hideStage < 10) {
-      strokeStyle = 'rgba(#9c, #b9, #b7, ' + k + ')';
-      fillStyle   = 'rgba(#aa, #06, #00, ' + k + ')';
-      ctx.globalCompositeOperation = 'destination-atop';
-    } else {
-    }
-*/
-
-
+    let strokeStyle = '#9cb9b7';
+    let fillStyle = '#aa0600';
 
     ctx.strokeStyle = strokeStyle;
     ctx.stroke(path);
