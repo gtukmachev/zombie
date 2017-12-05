@@ -56,7 +56,7 @@ export class Actor extends GameObject {
     let path = new Path2D();
     path.moveTo(this.p.x, this.p.y);
     path.lineTo(this.p.x + l * this.eyeDirectionVector.x, this.p.y + l * this.eyeDirectionVector.y);
-    ctx.lineWidth = this.helth/10;
+    ctx.lineWidth = this.helth/20;
 
     let strokeStyle = '#65b9b3';
     let fillStyle = '#6a8dff';
@@ -65,6 +65,23 @@ export class Actor extends GameObject {
     ctx.stroke(path);
 
     this.fcCircle(this.p.x, this.p.y, r, strokeStyle, fillStyle);
+
+
+    let hl = new Path2D();
+    hl.moveTo(10,10);
+    hl.lineTo(10+this.maxHelth * 4, 10);
+    ctx.strokeStyle = '#a9a9a9';
+    ctx.lineWidth = 5;
+    ctx.lineCap = 'round';
+    ctx.stroke(hl);
+
+    if (this.helth > 0) {
+      let dl = new Path2D();
+      dl.moveTo(10, 10);
+      dl.lineTo(10 + this.helth * 4, 10);
+      ctx.strokeStyle = '#ff7716';
+      ctx.stroke(dl);
+    }
 
 
   }

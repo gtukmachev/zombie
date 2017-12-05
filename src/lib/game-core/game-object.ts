@@ -14,6 +14,7 @@ export abstract class GameObject {
 
   public isAlife = false;
   public helth: number;
+  public maxHelth: number;
   public deadStage: number;
   public deadStages: number;
 
@@ -34,6 +35,7 @@ export abstract class GameObject {
   public withHelth(helth: number, deadStages: number): GameObject {
     this.isAlife = true;
     this.helth = helth;
+    this.maxHelth = helth;
     this.deadStage = deadStages;
     this.deadStages = deadStages;
     return this;
