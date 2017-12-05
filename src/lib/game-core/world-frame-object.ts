@@ -13,10 +13,10 @@ export class WorldFrameObject extends GameObject {
 
 
   draw (): void {
-    const ctx = this.field.ctx;
+    const ctx = this.game.ctx;
     ctx.strokeStyle = this.color;
     ctx.lineWidth = 5;
-    ctx.strokeRect( 0,0, this.field.worldSize.x, this.field.worldSize.y);
+    ctx.strokeRect( 0,0, this.game.worldSize.x, this.game.worldSize.y);
 
   }
 

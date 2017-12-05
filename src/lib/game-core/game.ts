@@ -18,6 +18,8 @@ export class Game {
   gameTimeFrame = 1;
   gameTimer: Subscription;
 
+  public followingActor = false;
+
 
 
   public canvas: HTMLCanvasElement;
@@ -106,7 +108,7 @@ export class Game {
   }
 
   public gameActionTurn(): void {
-    if (this.actor) { this.followActor() }
+    if (this.followingActor && this.actor) { this.followActor() }
     this.gameObjects.forEach( (gameObject: GameObject) => gameObject.beforeTurn() ); this.deleteMarkedElements();
     this.gameObjects.forEach( (gameObject: GameObject) => gameObject.turn() );       this.deleteMarkedElements();
     this.gameObjects.forEach( (gameObject: GameObject) => gameObject.afterTurn() );  this.deleteMarkedElements();

@@ -13,11 +13,11 @@ export class CameraFrameObject extends GameObject {
 
 
   draw (): void {
-    const ctx = this.field.ctx;
+    const ctx = this.game.ctx;
     ctx.strokeStyle = this.color;
     ctx.lineWidth = 1;
-    ctx.strokeRect( this.field.cameraPos.x - this.field.cameraActorFrame.x, this.field.cameraPos.y - this.field.cameraActorFrame.y,
-      this.field.cameraActorFrame.x * 2, this.field.cameraActorFrame.y * 2,
+    ctx.strokeRect( this.game.cameraPos.x - this.game.cameraActorFrame.x, this.game.cameraPos.y - this.game.cameraActorFrame.y,
+      this.game.cameraActorFrame.x * 2, this.game.cameraActorFrame.y * 2,
     );
 
   }

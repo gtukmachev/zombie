@@ -4,7 +4,7 @@ export abstract class GameObject {
 
   abstract isDrawable = true;
 
-  public field: Game;
+  public game: Game;
 
   public p: Pos;
   public speed: number = 2;                     // movement speed (in pixels)
@@ -19,14 +19,14 @@ export abstract class GameObject {
   abstract afterTurn(): void;
 
   constructor (game: Game, x: number, y: number) {
-    this.field = game;
+    this.game = game;
     this.p = new Pos(x, y);
   }
 
   // movement helper methods
-  setDirectionOn(x: number, y: number): void {
-    const vectorX = x - this.p.x;
-    const vectorY = y - this.p.y;
+  setDirectionOn_xy(targetX: number, targetY: number): void {
+    const vectorX = targetX - this.p.x;
+    const vectorY = targetY - this.p.y;
 
     const vectorLen = Math.sqrt( vectorX*vectorX + vectorY*vectorY );
 
@@ -37,16 +37,24 @@ export abstract class GameObject {
     this.speedVector.y = this.directionVector.y * this.speed;
   }
 
-  setDirection( d: Pos ): void {
+  setDirectionOn(targetPosition: Pos): void {
+    this.setDirectionOn_xy(targetPosition.x, targetPosition.y)
+  }
 
-    this.directionVector.x = d.x;
-    this.directionVector.y = d.y;
+  setDirection( normalizedVector: Pos ): void { // the vector length should be = 1
+
+    this.directionVector.x = normalizedVector.x;
+    this.directionVector.y = normalizedVector.y;
 
     this.speedVector.x = this.directionVector.x * this.speed;
     this.speedVector.y = this.directionVector.y * this.speed;
   }
 
-  setEyeDirectionOn(x: number, y: number): void {
+  setEyeDirectionOn(p: Pos): void {
+    this.setEyeDirectionOn_xy(p.x, p.y)
+  }
+
+  setEyeDirectionOn_xy(x: number, y: number): void {
     const vectorX = x - this.p.x;
     const vectorY = y - this.p.y;
 
@@ -82,33 +90,33 @@ export abstract class GameObject {
   }
 
   public moveReturnOnField() {
-    if (this.p.x < 0) {this.p.x = 0; } else {if (this.p.x > this.field.worldSize.x) { this.p.x = this.field.worldSize.x; }}
-    if (this.p.y < 0) {this.p.y = 0; } else {if (this.p.y > this.field.worldSize.y) { this.p.y = this.field.worldSize.y; }}
+    if (this.p.x < 0) {this.p.x = 0; } else {if (this.p.x > this.game.worldSize.x) { this.p.x = this.game.worldSize.x; }}
+    if (this.p.y < 0) {this.p.y = 0; } else {if (this.p.y > this.game.worldSize.y) { this.p.y = this.game.worldSize.y; }}
     // todo: add implementation for grid indexing objects
   }
 
   public isOutOfField() {
-    return this.p.x < 0 || this.p.x > this.field.worldSize.x || this.p.y < 0 || this.p.y > this.field.worldSize.y;
+    return this.p.x < 0 || this.p.x > this.game.worldSize.x || this.p.y < 0 || this.p.y > this.game.worldSize.y;
   }
 
   // draw helper methods
   public fillCircle (x: number, y: number, radius: number, fillStyle: string | CanvasGradient | CanvasPattern) {
-    this.field.ctx.beginPath();
-    this.field.ctx.fillStyle = fillStyle;
-    this.field.ctx.arc(x, y, radius, 0, Math.PI * 2);
-    this.field.ctx.fill();
+    this.game.ctx.beginPath();
+    this.game.ctx.fillStyle = fillStyle;
+    this.game.ctx.arc(x, y, radius, 0, Math.PI * 2);
+    this.game.ctx.fill();
   }
 
   public strokeCircle (x: number, y: number, radius: number, strokeStyle: string | CanvasGradient | CanvasPattern) {
-    this.field.ctx.beginPath();
-    this.field.ctx.lineWidth = 1;
-    this.field.ctx.strokeStyle = strokeStyle;
-    this.field.ctx.arc(x, y, radius, 0, Math.PI * 2);
-    this.field.ctx.stroke();
+    this.game.ctx.beginPath();
+    this.game.ctx.lineWidth = 1;
+    this.game.ctx.strokeStyle = strokeStyle;
+    this.game.ctx.arc(x, y, radius, 0, Math.PI * 2);
+    this.game.ctx.stroke();
   }
 
   public fcCircle (x: number, y: number, radius: number, strokeStyle: string | CanvasGradient | CanvasPattern, fillStyle: string | CanvasGradient | CanvasPattern) {
-    const ctx = this.field.ctx;
+    const ctx = this.game.ctx;
     ctx.beginPath();
     ctx.fillStyle = fillStyle;
     ctx.strokeStyle = strokeStyle;
@@ -121,10 +129,10 @@ export abstract class GameObject {
   public fcCircle (x: number, y: number, radius: number, strokeStyle: string | CanvasGradient | CanvasPattern, fillStyle: string | CanvasGradient | CanvasPattern) {
     const circle = new Path2D();
     circle.arc(x, y, radius, 0, Math.PI * 2);
-    this.field.ctx.fillStyle = fillStyle;
-    this.field.ctx.strokeStyle = strokeStyle;
-    this.field.ctx.fill(circle);
-    this.field.ctx.stroke(circle);
+    this.game.ctx.fillStyle = fillStyle;
+    this.game.ctx.strokeStyle = strokeStyle;
+    this.game.ctx.fill(circle);
+    this.game.ctx.stroke(circle);
   }
 */
 

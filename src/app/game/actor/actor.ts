@@ -41,7 +41,7 @@ export class Actor extends GameObject {
 
 
   draw(): void {
-    let ctx = this.field.ctx;
+    let ctx = this.game.ctx;
     let path = new Path2D();
     path.moveTo(this.p.x, this.p.y);
     path.lineTo(this.p.x + 40 * this.eyeDirectionVector.x, this.p.y + 40 * this.eyeDirectionVector.y);
@@ -57,11 +57,11 @@ export class Actor extends GameObject {
 
   turn(): void {
     this.moveForwardSafe();
-    this.setEyeDirectionOn(this.field.mousePos.x, this.field.mousePos.y);
+    this.setEyeDirectionOn_xy(this.game.mousePos.x, this.game.mousePos.y);
 
     if (this.isShotModeOn) {
-      let bullet = new PointBullet(this.field, this.p.x + 40 * this.eyeDirectionVector.x, this.p.y + 40 * this.eyeDirectionVector.y, this.eyeDirectionVector);
-      this.field.add(bullet);
+      let bullet = new PointBullet(this.game, this.p.x + 40 * this.eyeDirectionVector.x, this.p.y + 40 * this.eyeDirectionVector.y, this.eyeDirectionVector);
+      this.game.add(bullet);
     }
 
   }

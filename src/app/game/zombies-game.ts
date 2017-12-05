@@ -1,9 +1,9 @@
 import {Game} from '../../lib/game-core/game';
 import {TransparentBackground} from '../../lib/game-core/transparent-background';
 import {GameObject} from '../../lib/game-core/game-object';
-import {CameraFrameObject} from '../../lib/game-core/camera-frame-object';
 import {WorldFrameObject} from '../../lib/game-core/world-frame-object';
 import {Actor} from './actor/actor';
+import {Zombie} from './zombies/zombie';
 
 export class ZombiesGame extends Game {
 
@@ -17,11 +17,18 @@ export class ZombiesGame extends Game {
 
     this.backGround  = new  TransparentBackground(this);
     this.actor       = new       Actor(this, Math.floor(xSize / 2), Math.floor(ySize / 2) );
+    this.followingActor = false;
 
     this.add( this.backGround  );
     this.add( this.actor       );
 
-    this.add( new CameraFrameObject(this, '#253c54') );
+    let zr = 30;
+    this.add( new Zombie(this, zr,       zr) );
+    this.add( new Zombie(this, xSize-zr, zr) );
+    this.add( new Zombie(this, xSize-zr, ySize-zr) );
+    this.add( new Zombie(this, zr,       ySize-zr) );
+
+    //this.add( new CameraFrameObject(this, '#253c54') );
     this.add( new WorldFrameObject(this, '#f3ffa2') );
 
     this.gameTimeFrame = 20;
@@ -30,12 +37,12 @@ export class ZombiesGame extends Game {
 
   public onMouseMove(event: MouseEvent): void {
     super.onMouseMove(event);
-    this.actor.setEyeDirectionOn(this.mousePos.x, this.mousePos.y);
+    this.actor.setEyeDirectionOn_xy(this.mousePos.x, this.mousePos.y);
   }
 
   public onMouseDown(event: MouseEvent): void {
     super.onMouseDown(event);
-    this.actor.setEyeDirectionOn(this.mousePos.x, this.mousePos.y);
+    this.actor.setEyeDirectionOn_xy(this.mousePos.x, this.mousePos.y);
     this.actor.isShotModeOn = true;
   }
 

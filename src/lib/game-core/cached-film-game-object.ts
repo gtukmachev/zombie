@@ -24,7 +24,7 @@ export abstract class CachedFilmGameObject<T> extends GameObject {
       CachedFilmGameObject.framesCache[currentFrameDescr.key] = actualFrame;
     }
 
-    this.field.ctx.drawImage( actualFrame.image,
+    this.game.ctx.drawImage( actualFrame.image,
       this.p.x - actualFrame.center.x,
       this.p.y - actualFrame.center.y,
     );
