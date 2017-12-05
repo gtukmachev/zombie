@@ -7,7 +7,7 @@ import {PointBullet} from '../bullets/point-bullet';
 export class MachineGun extends Gun {
 
   constructor() {
-    super(300, 1000);
+    super(300, 1200);
   }
 
   public makeBullet(actor: GameObject): GameObject {

@@ -47,6 +47,8 @@ export class ZombiesGame extends Game {
 
     if (this.ztc.isItTime()) {
       this.ztc.fixLastChecking();
+      if (this.ztc.actionPeriodMillis > 140) { this.ztc.actionPeriodMillis -= 20;}
+
 
       let factor = this.rnd01();
       let zx, zy :number;
