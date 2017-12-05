@@ -4,12 +4,15 @@ import {GameObject} from '../../lib/game-core/game-object';
 import {WorldFrameObject} from '../../lib/game-core/world-frame-object';
 import {Actor} from './actor/actor';
 import {Zombie} from './zombies/zombie';
+import {TimeCounter} from '../../lib/game-core/time-counter';
 
 export class ZombiesGame extends Game {
 
 
   backGround: GameObject;
   actor: Actor;
+
+  private ztc = new TimeCounter(1000);
 
   constructor (canvas: HTMLCanvasElement, xSize: number, ySize: number) {
     super(canvas, xSize, ySize);
@@ -65,4 +68,17 @@ export class ZombiesGame extends Game {
     else if (event.code === 'KeyD') {this.actor.m_right = false; }
   }
 
-}
+  public gameActionTurn(): void {
+    super.gameActionTurn();
+
+    if (this.ztc.isItTime()) {
+      this.ztc.fixLastChecking();
+
+      this.add( new Zombie( this, Math.random() * this.worldSize.x, Math.random() * this.worldSize.y ) );
+
+    }
+
+  }
+
+
+  }
