@@ -32,8 +32,6 @@ export class Actor extends GameObject {
   private _m_right = false;
   private _m_left = false;
 
-  public isShotModeOn = false;
-
   private speed_diagonal: number;
 
   constructor(game: Game, x: number, y: number) {
@@ -66,12 +64,8 @@ export class Actor extends GameObject {
     this.moveForwardSafe();
     this.setEyeDirectionOn_xy(this.game.mousePos.x, this.game.mousePos.y);
 
-    if (this.isShotModeOn) {
-      let bullet = this.gun.shot(this);
-      if (bullet) {
-        this.game.add(bullet);
-      }
-    }
+    let bullet = this.gun.shot(this);
+    if (bullet) { this.game.add(bullet); }
 
   }
 
@@ -104,20 +98,26 @@ export class Actor extends GameObject {
 
   }
 
-  set m_up(value: boolean) {
-    this._m_up = value; this.calcAngle();
+  set m_up(value: boolean)    { this._m_up = value; this.calcAngle();    }
+  set m_down(value: boolean)  { this._m_down = value; this.calcAngle();  }
+  set m_right(value: boolean) { this._m_right = value; this.calcAngle(); }
+  set m_left(value: boolean)  { this._m_left = value; this.calcAngle();  }
+
+  public onMouseDown(event: MouseEvent): void { this.gun.onMouseDown(event); }
+  public onMouseUp(event: MouseEvent): void { this.gun.onMouseUp(event); }
+
+  public onKeyDown(event: KeyboardEvent) {
+    if      (event.code === 'KeyW') {this.m_up    = true; }
+    else if (event.code === 'KeyS') {this.m_down  = true; }
+    else if (event.code === 'KeyA') {this.m_left  = true; }
+    else if (event.code === 'KeyD') {this.m_right = true; }
   }
 
-  set m_down(value: boolean) {
-    this._m_down = value; this.calcAngle();
-  }
-
-  set m_right(value: boolean) {
-    this._m_right = value; this.calcAngle();
-  }
-
-  set m_left(value: boolean) {
-    this._m_left = value; this.calcAngle();
+  public onKeyUp(event: KeyboardEvent) {
+    if      (event.code === 'KeyW') {this.m_up    = false; }
+    else if (event.code === 'KeyS') {this.m_down  = false; }
+    else if (event.code === 'KeyA') {this.m_left  = false; }
+    else if (event.code === 'KeyD') {this.m_right = false; }
   }
 
 }

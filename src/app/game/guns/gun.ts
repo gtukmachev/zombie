@@ -11,6 +11,8 @@ export abstract class Gun {
   public bullets: number;
   protected isRelodingInProcess = false;
 
+  public isShotModeOn = false;
+
 
   constructor(capacity: number, reloadingDuration: number) {
     this.capacity = capacity;
@@ -19,12 +21,13 @@ export abstract class Gun {
   }
 
   public shot(actor: GameObject): GameObject {
+    if (!this.isShotModeOn) { return; }
 
     if (this.bullets > 0) {
-      this.bullets -= 1;
-      return this.makeBullet(actor);
+        this.bullets -= 1;
+        return this.makeBullet(actor);
     } else {
-      this.startReaload();
+        this.startReaload();
     }
 
     return null;
@@ -49,5 +52,14 @@ export abstract class Gun {
       this.isRelodingInProcess = false;
     }
   }
+
+  public onMouseDown(event: MouseEvent): void {
+    this.isShotModeOn = true;
+  }
+
+  public onMouseUp(event: MouseEvent): void {
+    this.isShotModeOn = false;
+  }
+
 
 }

@@ -169,7 +169,7 @@ export class Game {
     this.mousePos.y = event.layerY - this.cameraShift.y;
   }
 
-  public onMouseDown(event: MouseEvent): void {
+  public onMouseDown(event: MouseEvent) {
     this.mousePos.x = event.layerX - this.cameraShift.x;
     this.mousePos.y = event.layerY - this.cameraShift.y;
   }
