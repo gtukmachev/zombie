@@ -1,5 +1,11 @@
 export class Pos {
 
+  static angle_0   =  0;
+  static angle_90  =  Math.PI / 2;
+  static angle_180 =  Math.PI / 2;
+  static angle_270 = -Math.PI / 2;
+  static angle_360 = Math.PI * 2;
+
   public x = 0;
   public y = 0;
 
@@ -18,5 +24,27 @@ export class Pos {
     return this.x === p.x && this.y === p.y;
 
   }
+
+  public move(directionVector: Pos, distance: number): Pos {
+    return new Pos(
+      this.x + directionVector.x * distance,
+      this.y + directionVector.y * distance
+    )
+  }
+
+  /**
+   * restore angle by vector v, only for len(v) = 1
+   */
+  public angle() {
+
+    if (this.x === 0) { return (this.y > 0) ? Pos.angle_90 : Pos.angle_270; }
+    if (this.y === 0) { return (this.x > 0) ? Pos.angle_0  : Pos.angle_180; }
+
+    if (this.x > 0 ) return  Math.asin(this.y);
+    if (this.x < 0 && this.y > 0) return  Math.acos(this.x);
+    if (this.x < 0 && this.y < 0) return  -Math.acos(this.x);
+
+  }
+
 
 }

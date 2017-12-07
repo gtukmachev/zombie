@@ -4,14 +4,19 @@
 <div class="panel">
   <button (click)="game.toggleStartPause()">{{game.running ? '(running) Stop' : '(paused) Run'}}</button>
 </div>
-<p>{{game.actor.gun.bullets}}</p>
+<div class="panel">
+  <!--<input type="text" *ngModel="aTxt">-->
+  <button (click)="setAngle()">PI * {{angle}} --></button>
+  <button (click)="changeAngle(+0.1)">+</button>
+  <button (click)="changeAngle(-0.1)">-</button>
+</div>
+<div class="panel">
+  <button (click)="toggleRotation()">rotation</button>
+</div>
+
+
 <p>frames / sec: {{game.framesPerSecond }}</p>
 <p>turns / sec: {{game.turnsPerSecond}}</p>
 <p>frame duration: {{game.lastFrameDuration}}</p>
 <p>CachedFilmGameObject: {{CachedFilmGameObjectFCL()}}</p>
-<p>m_up : {{game.actor.m_up}}</p>
-<p>m_down : {{game.actor.m_down}}</p>
-<p>m_left : {{game.actor.m_left}}</p>
-<p>m_right : {{game.actor.m_right}}</p>
-<p>isShotModeOn : {{game.actor.isShotModeOn}}</p>
 <p>gameObjects : {{game.gameObjects.length}}</p>

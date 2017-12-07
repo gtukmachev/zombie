@@ -107,6 +107,12 @@ export abstract class GameObject {
     this.eyeDirectionVector.y = ( vectorY / vectorLen );
   }
 
+  public moveOn(p: Pos) {
+    this.p.x = p.x;
+    this.p.y = p.y;
+    // todo: add implementation for grid indexing objects
+  }
+
   public moveTo(x: number, y: number) {
     this.p.x = x;
     this.p.y = y;
