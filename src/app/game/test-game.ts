@@ -26,7 +26,7 @@ export class TestGame extends Game {
     this.add( this.backGround  );
 
     this.line =  new TestLine( this, xSize / 3 * 2, ySize / 4 );
-    this.circle =  new TestCircle( this, xSize / 3, ySize / 4 * 2 );
+    this.circle =  new TestCircle( this, this.line, xSize / 3, ySize / 4 * 2 );
     this.add( this.line );
     this.add( this.circle );
 

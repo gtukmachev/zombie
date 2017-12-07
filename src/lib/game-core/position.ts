@@ -46,5 +46,20 @@ export class Pos {
 
   }
 
+  fLine(durationUnaryVector: Pos, x: number): number {
+    let y = this.y + (durationUnaryVector.y / durationUnaryVector.x)*(x-this.x);
+    return y;
+  }
+
+
+  setAngle(angle: number) {
+    this.x = Math.cos(angle);
+    this.y = Math.sin(angle);
+  }
+
+  rotateOn(angleDelta: number) {
+    this.setAngle(this.angle() + angleDelta)
+  }
+
 
 }

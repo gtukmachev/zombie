@@ -11,23 +11,17 @@ export class TestLine extends GameObject {
 
   constructor(game: Game, x: number, y: number) {
     super(game, x, y);
-    //this.setDirectionOn_xy(x + 20, y + 10);
-    this.setDirectionAngle(Math.PI / 6);
+    this.directionVector.setAngle(Math.PI / 6 * 5);
   }
 
   draw(): void {
 
-    let x1 = this.p.x;
-    let y1 = this.p.y;
-    let dx = this.directionVector.x;
-    let dy = this.directionVector.y;
-
 
     let xBegin = 0;
-    let yBegin = this.fLine(xBegin, x1, y1, dx, dy);
+    let yBegin = this.p.fLine(this.directionVector, xBegin);
 
     let xEnd = this.game.worldSize.x;
-    let yEnd = this.fLine(xEnd, x1, y1, dx, dy);
+    let yEnd = this.p.fLine(this.directionVector, xEnd);
 
 
     let ctx = this.game.ctx;
@@ -69,30 +63,12 @@ export class TestLine extends GameObject {
 
   }
 
-  fLine(x: number, x1: number, y1: number, dx: number, dy: number): number {
-    let y = y1 + (dy/dx)*(x-x1);
-    return y;
-  }
-
-  setDirectionAngle(angle: number) {
-    this.directionVector.x = Math.cos(angle);
-    this.directionVector.y = Math.sin(angle);
-  }
-
-  rotateOn(angleDelta: number) {
-    let current_angle = this.directionVector.angle();
-    let new_angle = current_angle + angleDelta;
-
-    this.directionVector.x = Math.cos(new_angle);
-    this.directionVector.y = Math.sin(new_angle);
-  }
-
   beforeTurn(): void {
   }
 
   turn(): void {
 
-    if (this.rotationOn) {this.rotateOn(Math.PI / 900);}
+    if (this.rotationOn) {this.directionVector.rotateOn(Math.PI / 900);}
 
 
   }

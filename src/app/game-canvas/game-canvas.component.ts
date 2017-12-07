@@ -34,18 +34,6 @@ export class GameCanvasComponent implements OnInit, OnDestroy {
 
   }
 
-  setAngle(a: number): void {
-    this.game.line.setDirectionAngle(Math.PI * this.angle);
-  }
-
-  changeAngle(ad: number) {
-    this.angle += ad; this.setAngle(this.angle)
-  }
-
-  toggleRotation(): void {
-    this.game.line.rotationOn = !this.game.line.rotationOn;
-  }
-
   @HostListener('mousemove', ['$event']) onMouseMove(event: MouseEvent) {
     this.game.onMouseMove(event);
   }
