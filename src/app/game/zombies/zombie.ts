@@ -25,7 +25,7 @@ export class Zombie extends GameObject{
 
 
   draw(): void {
-    let k = this.getDeathStageK()
+    let k = this.getDeathStageK();
     let r = k < 1 ? this.r * k : this.r;
     let l = k < 1 ? (this.r*2.5) * k : (this.r*2.5);
 
