@@ -3,7 +3,8 @@
 import {GameObject} from '../../../lib/game-core/game-object';
 import {Game} from '../../../lib/game-core/game';
 import {TestLine} from './test-line';
-import {Pos} from '../../../lib/game-core/position';
+import 'rxjs/add/operator/filter';
+import {MouseEventType} from '../../../lib/game-core/events/game-mouse-event';
 
 export class TestCircle extends GameObject {
 
@@ -14,6 +15,9 @@ export class TestCircle extends GameObject {
     super(game, x, y);
     this.r = 200;
     this.line = line;
+
+    game.mouse.filter(e => e.type === MouseEventType.DOWN).subscribe(e => this.onMouseDown(e.event));
+
   }
 
   draw(): void {

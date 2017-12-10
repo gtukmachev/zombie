@@ -11,15 +11,17 @@ import {TestCircle} from './tests/test-circle';
 export class TestGame extends Game {
 
   backGround: GameObject;
-  actor: Actor;
 
   line: TestLine;
   circle: TestCircle;
 
-  private ztc = new TimeCounter(1000);
+  constructor () { super(); }
 
-  constructor (canvas: HTMLCanvasElement, xSize: number, ySize: number) {
-    super(canvas, xSize, ySize);
+
+  public initLevel(levelNumber: number): void {
+
+    const xSize = this.worldSize.x;
+    const ySize = this.worldSize.y;
 
     this.backGround  = new  TransparentBackground(this);
 
@@ -30,27 +32,8 @@ export class TestGame extends Game {
     this.add( this.line );
     this.add( this.circle );
 
-
     this.add( new WorldFrameObject(this, '#f3ffa2') );
-
 
     this.gameTimeFrame = 20;
   }
-
-
-  public loose(): void {
-  }
-
-
-  public onMouseDown(event: MouseEvent   ) {
-    super.onMouseDown(event);
-    this.line.onMouseDown(event);
-    this.circle.onMouseDown(event);
-  }
-
-  public onMouseUp  (event: MouseEvent   ) {  }
-  public onKeyDown  (event: KeyboardEvent) {  }
-  public onKeyUp    (event: KeyboardEvent) {  }
-
-
 }

@@ -2,6 +2,8 @@
 
 import {GameObject} from '../../../lib/game-core/game-object';
 import {Game} from '../../../lib/game-core/game';
+import {MouseEventType} from '../../../lib/game-core/events/game-mouse-event';
+import 'rxjs/add/operator/filter';
 
 export class TestLine extends GameObject {
 
@@ -12,6 +14,9 @@ export class TestLine extends GameObject {
   constructor(game: Game, x: number, y: number) {
     super(game, x, y);
     this.directionVector.setAngle(Math.PI / 6 * 5);
+
+    game.mouse.filter(e => e.type === MouseEventType.DOWN).subscribe(e => this.onMouseDown(e.event));
+
   }
 
   draw(): void {
@@ -45,7 +50,7 @@ export class TestLine extends GameObject {
     ctx.strokeStyle = '#fff9f6';
     ctx.lineWidth = 5;
     ctx.beginPath();
-    let m = this.p.move(this.directionVector, 150);
+    let m = this.p.getOffsetVector(this.directionVector, 150);
     ctx.moveTo(m.x, m.y);
     ctx.lineTo(m.x, m.y);
     ctx.stroke();

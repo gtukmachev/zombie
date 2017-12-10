@@ -1,8 +1,10 @@
 import {GameObject} from '../../../lib/game-core/game-object';
 import {Game} from '../../../lib/game-core/game';
-import {PointBullet} from '../bullets/point-bullet';
+import 'rxjs/add/operator/filter';
 import {Gun} from '../guns/gun';
 import {MachineGun} from '../guns/machine-gun';
+import {MouseEventType} from '../../../lib/game-core/events/game-mouse-event';
+import {KeyboardEventType} from '../../../lib/game-core/events/game-keyboard-event';
 
 export class Actor extends GameObject {
   get m_up(): boolean {
@@ -43,6 +45,16 @@ export class Actor extends GameObject {
     this.gun = new MachineGun();
 
     this.withHelth(100, 30);
+
+    game.mouse.subscribe(e => {
+           if (e.type === MouseEventType.DOWN) { this.onMouseDown(e.event); }
+      else if (e.type === MouseEventType.UP)   { this.onMouseUp(e.event); }
+    });
+
+    game.keyboard.subscribe(e => {
+           if (e.type === KeyboardEventType.DOWN) { this.onKeyDown(e.event); }
+      else if (e.type === KeyboardEventType.UP)   { this.onKeyUp(e.event); }
+    });
 
   }
 

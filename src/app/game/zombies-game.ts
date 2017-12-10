@@ -14,8 +14,13 @@ export class ZombiesGame extends Game {
 
   private ztc = new TimeCounter(1000);
 
-  constructor (canvas: HTMLCanvasElement, xSize: number, ySize: number) {
-    super(canvas, xSize, ySize);
+  constructor () { super(); }
+
+
+  public initLevel(levelNumber: number): void {
+
+    const xSize = this.worldSize.x;
+    const ySize = this.worldSize.y;
 
     this.backGround  = new  TransparentBackground(this);
     this.actor       = new       Actor(this, Math.floor(xSize / 2), Math.floor(ySize / 2) );
@@ -32,10 +37,9 @@ export class ZombiesGame extends Game {
 
     this.add( new WorldFrameObject(this, '#f3ffa2') );
 
+    //this.gameTimeFrame = 20;
 
-    this.gameTimeFrame = 20;
   }
-
 
   public loose(): void {
     super.loose();
@@ -62,11 +66,5 @@ export class ZombiesGame extends Game {
   }
 
   public rnd01() { return Math.round(Math.random()); }
-
-  public onMouseDown(event: MouseEvent   ) { super.onMouseDown(event); this.actor.onMouseDown(event); }
-  public onMouseUp  (event: MouseEvent   ) {                           this.actor.onMouseUp(event);   }
-  public onKeyDown  (event: KeyboardEvent) {                           this.actor.onKeyDown(event);   }
-  public onKeyUp    (event: KeyboardEvent) {                           this.actor.onKeyUp(event);     }
-
 
 }

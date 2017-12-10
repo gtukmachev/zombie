@@ -3,6 +3,9 @@ import {Pos} from './position';
 import {TimeCounter} from './time-counter';
 import {Subscription} from 'rxjs/Subscription';
 import {Observable} from 'rxjs';
+import {Subject} from 'rxjs/Subject';
+import {GameMouseEvent, MouseEventType} from './events/game-mouse-event';
+import {GameKeyboardEvent, KeyboardEventType} from './events/game-keyboard-event';
 export class Game {
 
   running: boolean = false;
@@ -19,6 +22,9 @@ export class Game {
   gameTimeFrame = 1;
   gameTimer: Subscription;
 
+  public mouse = new Subject<GameMouseEvent>();
+  public keyboard = new  Subject<GameKeyboardEvent>();
+
   public followingActor = false;
 
   public canvas: HTMLCanvasElement;
@@ -32,21 +38,27 @@ export class Game {
   public cameraInitialPos: Pos; // center of rendered canvas
   public cameraPos: Pos; // in the beggining - this pos will be in center of rendered canvas
   public cameraShift = new Pos(0,0); //
-  public cameraActorFrame: Pos; // frame size around camera where actor can move without camera movement
-  public canersViewFrameSize: Pos; //
+  public cameraActorFrame: Pos; // frame size around camera where actor can getOffsetVector without camera movement
 
   public actor: GameObject; // main game object - camera will follow this object
 
-  constructor (canvas: HTMLCanvasElement, xSize: number, ySize: number) {
+  constructor () { }
+
+  public init(canvas: HTMLCanvasElement, xWorldSize: number, yWorldSize: number): void {
     this.canvas = canvas;
     this.ctx = canvas.getContext('2d');
-    this.worldSize.x = xSize;
-    this.worldSize.y = ySize;
+    this.worldSize.x = xWorldSize;
+    this.worldSize.y = yWorldSize;
+
+    this.gameTimeFrame = 20;
+
     this.cameraPos = new Pos( Math.floor(canvas.width / 2), Math.floor(canvas.height / 2) );
     this.cameraInitialPos = new Pos( this.cameraPos.x, this.cameraPos.y );
     this.cameraActorFrame = new Pos( Math.floor(canvas.width / 9), Math.floor(canvas.height / 8) );
 
   }
+
+  public initLevel(levelNumber: number): void {}
 
   private gameStep(): void {
     if (!this.running) { return; }
@@ -82,8 +94,6 @@ export class Game {
 
         this.turnsPerSecond = Math.floor(this.turnsCounter / this.lastFrameDuration * 1000);
         this.turnsCounter = 0;
-
-
       }
     });
 
@@ -170,14 +180,24 @@ export class Game {
     this.gameObjectsForDelete.forEach( it => this.del( it ) );
   }
 
-  public onMouseMove(event: MouseEvent): void {
-    this.mousePos.x = event.layerX - this.cameraShift.x;
-    this.mousePos.y = event.layerY - this.cameraShift.y;
-  }
+  public     onMouseMove(event: MouseEvent): void { this.processMouseEvent(event, MouseEventType.MOVE); }
+  public     onMouseDown(event: MouseEvent): void { this.processMouseEvent(event, MouseEventType.DOWN); }
+  public       onMouseUp(event: MouseEvent): void { this.processMouseEvent(event, MouseEventType.UP);   }
+  public    onMouseClick(event: MouseEvent): void { this.processMouseEvent(event, MouseEventType.CLICK);}
+  public    onMouseEnter(event: MouseEvent): void { this.processMouseEvent(event, MouseEventType.ENTER);}
+  public    onMouseLeave(event: MouseEvent): void { this.processMouseEvent(event, MouseEventType.LEAVE);}
+  public onMouseDblClick(event: MouseEvent): void { this.processMouseEvent(event, MouseEventType.DBL_CLICK);}
 
-  public onMouseDown(event: MouseEvent) {
-    this.mousePos.x = event.layerX - this.cameraShift.x;
-    this.mousePos.y = event.layerY - this.cameraShift.y;
+  public  onKeyboardDown(event: KeyboardEvent): void { this.processKeyboardEvent(event, KeyboardEventType.DOWN);}
+  public    onKeyboardUp(event: KeyboardEvent): void { this.processKeyboardEvent(event, KeyboardEventType.UP);}
+  public onKeyboardPress(event: KeyboardEvent): void { this.processKeyboardEvent(event, KeyboardEventType.PRESS);}
+
+  private processMouseEvent(event: MouseEvent, type: MouseEventType): void {
+    this.mousePos.setVector(event.layerX - this.cameraShift.x, event.layerY - this.cameraShift.y);
+    this.mouse.next( new GameMouseEvent(event, type, this.mousePos.copy()) );
+  }
+  private processKeyboardEvent(event: KeyboardEvent, type: KeyboardEventType): void {
+    this.keyboard.next( new GameKeyboardEvent(event, type) );
   }
 
   public onDestroy(): void {

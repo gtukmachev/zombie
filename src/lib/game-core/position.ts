@@ -14,6 +14,8 @@ export class Pos {
     this.y = y;
   }
 
+  public copy(): Pos { return new Pos(this.x, this.y); }
+
   public distanceTo(p: Pos): number {
     const dx = p.x - this.x;
     const dy = p.y - this.y;
@@ -25,12 +27,11 @@ export class Pos {
 
   }
 
-  public move(directionVector: Pos, distance: number): Pos {
-    return new Pos(
-      this.x + directionVector.x * distance,
-      this.y + directionVector.y * distance
-    )
+  public getOffsetVector(directionVector: Pos, distance: number): Pos {
+    return new Pos( this.x + directionVector.x * distance, this.y + directionVector.y * distance)
   }
+
+  public setVector(x: number, y: number) { this.x = x; this.y = y; }
 
   /**
    * restore angle by vector v, only for len(v) = 1
