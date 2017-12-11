@@ -27,34 +27,114 @@ export class LocationMatrix {
 
   public remove(o: GameObject): void {
     const id = `${o.id}`;
-    const prevPosition = this.positions[id];
-    if (prevPosition) this.removeFromSet(this.index[prevPosition.l][prevPosition.c], o);
+    const prevPositions = this.positions[id];
+    if (prevPositions) {
+      for (let l = prevPositions.lb; l <= prevPositions.le; l++){
+        let prevIndexLine = this.index[l];
+        if (prevIndexLine) {
+          for (let c = prevPositions.cb; c <= prevPositions.ce; c++) {
+
+            const prevIndex = prevIndexLine[c];
+            if (prevIndex) {
+              this.removeFromSet(prevIndex, o);
+            }
+
+          }
+        }
+      }
+    }
+
     this.positions[id] = undefined;
   }
 
   public update(o: GameObject): void {
     const id = `${o.id}`;
 
-    const prevPosition = this.positions[id];
-    const newPosition = {l: Math.floor(o.p.y / this.size), c: Math.floor(o.p.x / this.size)};
+    const pTopY  = o.p.y + o.outerFrame.y;
+    const pLeftX = o.p.x + o.outerFrame.x;
 
-    if (prevPosition && (newPosition.l === prevPosition.l && newPosition.c === prevPosition.c) ) {
+
+    const prevPositions: MatrixPos = this.positions[id];
+    const newPositions: MatrixPos = {
+      lb: Math.floor( pTopY                   / this.size), cb: Math.floor( pLeftX                   / this.size),
+      le: Math.floor((pTopY + o.outerFrame.h) / this.size), ce: Math.floor((pLeftX + o.outerFrame.w) / this.size)
+    };
+
+    if (prevPositions && newPositions.lb === prevPositions.lb && newPositions.cb === prevPositions.cb
+                      && newPositions.le === prevPositions.le && newPositions.ce === prevPositions.ce
+    ) {
       return;
     }
 
-    if (prevPosition) {
-      const prevIndex = this.index[prevPosition.l][prevPosition.c];
-      this.removeFromSet(prevIndex, o);
+    if (prevPositions) {
+
+
+      for (let l = prevPositions.lb; l <= prevPositions.le; l++){
+        let prevIndexLine = this.index[l];
+        if (prevIndexLine) {
+          for (let c = prevPositions.cb; c <= prevPositions.ce; c++) {
+
+            const prevIndex = prevIndexLine[c];
+            if (prevIndex) {
+              this.removeFromSet(prevIndex, o);
+            }
+
+          }
+        }
+      }
+
+
+      /*
+        // removing from previous matrix parts/indexes
+        for (let l = prevPositions.lb; l <= prevPositions.le; l++){
+          let prevIndexLine = this.index[l];
+          if (prevIndexLine) {
+
+            for (let c = prevPositions.cb; c <= prevPositions.ce; c++) {
+              if (
+                !( l >= newPositions.lb && l <= newPositions.le)
+                ||
+                !( c >= newPositions.cb && l <= newPositions.ce)
+              ) {
+                const prevIndex = prevIndexLine[c];
+                if (prevIndex) this.removeFromSet(prevIndex, o);
+              }
+            }
+          }
+        }
+*/
     }
 
-    const newIndexLine = this.index[newPosition.l];
-    if (newIndexLine){
-      const newIndex = newIndexLine[newPosition.c];
-      if (newIndex) {
-        this.addIntoSet(newIndex, o);
-        this.positions[id] = newPosition;
+
+    for (let l = newPositions.lb; l <= newPositions.le; l++){
+
+      let newIndexLine = this.index[l];
+
+      if (newIndexLine) {
+        for (let c = newPositions.cb; c <= newPositions.ce; c++) {
+          const newIndex = newIndexLine[c];
+          if (newIndex) {
+            this.addIntoSet(newIndex, o);
+          }
+          /*if (
+               !(prevPositions)
+            ||
+               !( l >= prevPositions.lb && l <= prevPositions.le)
+            ||
+              !( c >= prevPositions.cb && l <= prevPositions.ce)
+          ) {
+            const newIndex = newIndexLine[c];
+            if (newIndex) {
+              this.addIntoSet(newIndex, o);
+            }
+          }*/
+
+        }
       }
     }
+
+    this.positions[id] = newPositions;
+
 
 
   }
@@ -73,7 +153,7 @@ export class LocationMatrix {
 
 }
 
-interface MatrixPos {l: number, c: number}
+interface MatrixPos {lb: number, cb: number, le: number, ce: number}
 interface MatrixPosIndex {
   [key: string]: MatrixPos
 }
