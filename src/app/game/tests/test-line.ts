@@ -1,5 +1,3 @@
-
-
 import {GameObject} from '../../../lib/game-core/game-object';
 import {Game} from '../../../lib/game-core/game';
 import {MouseEventType} from '../../../lib/game-core/events/game-mouse-event';
@@ -12,11 +10,9 @@ export class TestLine extends GameObject {
 
 
   constructor(game: Game, x: number, y: number) {
-    super(game, x, y);
+    super(x, y);
     this.directionVector.setAngle(Math.PI / 6 * 5);
-
     game.mouse.filter(e => e.type === MouseEventType.DOWN).subscribe(e => this.onMouseDown(e.event));
-
   }
 
   draw(): void {

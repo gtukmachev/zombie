@@ -1,15 +1,12 @@
-
 import {GameObject} from '../../../lib/game-core/game-object';
 import {Game} from '../../../lib/game-core/game';
-import {Pos} from '../../../lib/game-core/position';
 
 export class Zombie extends GameObject{
 
-  isDrawable = true;
   r = 10;
 
   constructor(game: Game, x: number, y: number) {
-    super(game, x, y);
+    super(x, y);
     this.speed = 0.7;
 
     this.withHelth(3, 15);

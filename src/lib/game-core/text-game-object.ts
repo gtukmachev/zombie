@@ -1,16 +1,14 @@
 import {GameObject} from './game-object';
-import {Game} from './game';
 
 export class TextGameObject extends GameObject {
 
-  public isDrawable = true;
   public color: string | CanvasGradient | CanvasPattern;
   public fill: string | CanvasGradient | CanvasPattern;
   public text: string;
   public font: string;
 
-  constructor (field: Game, text: string, font:string, color: string | CanvasGradient | CanvasPattern, fill: string | CanvasGradient | CanvasPattern) {
-    super(field, 0, 0);
+  constructor (text: string, font:string, color: string | CanvasGradient | CanvasPattern, fill: string | CanvasGradient | CanvasPattern) {
+    super(0, 0);
     this.color = color;
     this.text = text;
     this.font = font;

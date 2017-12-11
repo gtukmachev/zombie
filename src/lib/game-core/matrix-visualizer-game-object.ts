@@ -1,15 +1,13 @@
 import {GameObject} from './game-object';
-import {Game} from './game';
 
 export class MatrixVisualizerGameObject extends GameObject {
 
-  public isDrawable = true;
   public colorPassive: string | CanvasGradient | CanvasPattern;
   public colorActive: string | CanvasGradient | CanvasPattern;
   public font: string;
 
-  constructor (field: Game, font:string, colorPassive: string | CanvasGradient | CanvasPattern, colorActive: string | CanvasGradient | CanvasPattern) {
-    super(field, 0, 0);
+  constructor (font:string, colorPassive: string | CanvasGradient | CanvasPattern, colorActive: string | CanvasGradient | CanvasPattern) {
+    super(0, 0);
     this.colorPassive = colorPassive;
     this.colorActive = colorActive;
     this.font = font;

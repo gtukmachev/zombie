@@ -1,5 +1,3 @@
-
-
 import {GameObject} from '../../../lib/game-core/game-object';
 import {Game} from '../../../lib/game-core/game';
 import {TestLine} from './test-line';
@@ -8,12 +6,11 @@ import {MouseEventType} from '../../../lib/game-core/events/game-mouse-event';
 
 export class TestCircle extends GameObject {
 
-  isDrawable = true;
   line: TestLine;
+  r = 200;
 
   constructor(game: Game, line: TestLine, x: number, y: number) {
-    super(game, x, y);
-    this.r = 200;
+    super(x, y);
     this.line = line;
 
     game.mouse.filter(e => e.type === MouseEventType.DOWN).subscribe(e => this.onMouseDown(e.event));

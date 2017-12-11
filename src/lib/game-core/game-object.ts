@@ -1,9 +1,8 @@
 import {Pos} from './position';
 import {Game} from './game';
-import {LocationMatrix} from './location-matrix';
-export abstract class GameObject {
+import {ObjectFrame} from './object-frame';
 
-  abstract isDrawable = true;
+export abstract class GameObject {
 
   public id: number;
 
@@ -11,6 +10,7 @@ export abstract class GameObject {
 
   public p: Pos;     // the current position of this object (at the turn begin)
   public pNext: Pos; // the next (planned) position of this object ( p + speedVector )
+  public outerFrame: ObjectFrame;
 
   public speed: number = 2;                     // movement speed (in pixels)
   public speedVector: Pos = new Pos(1,0);       // movement vector speed (length = speed )
@@ -23,7 +23,7 @@ export abstract class GameObject {
   public deadStage: number;
   public deadStages: number;
 
-  public r: number = 1; // default size of this object
+  public r: number = 2; // default size of this object
 
   abstract draw(): void;
 
@@ -31,13 +31,16 @@ export abstract class GameObject {
   abstract turn(): void;
   abstract afterTurn(): void;
 
-  constructor (game: Game, x: number, y: number) {
-    this.game = game;
-    this.id = game.getNextId();
+  constructor (x: number, y: number, outerFrame?: ObjectFrame) {
     this.p = new Pos(x, y);
-    this.initMatrixLocation();
+    this.outerFrame = outerFrame || new ObjectFrame(-this.r, -this.r, this.r*2, this.r*2);
   }
 
+  public onAddIntoGame(game: Game): void {
+    this.id = game.getNextId();
+    this.game = game;
+    this.initMatrixLocation();
+  }
 
   public withHelth(helth: number, deadStages: number): GameObject {
     this.isAlife = true;
@@ -145,13 +148,13 @@ export abstract class GameObject {
     this.updateMatrixLoaction();
   }
 
-  protected updateMatrixLoaction() {
+  protected updateMatrixLoaction(): void {
     this.pNext.setAsOffsetOf(this.p, this.speedVector);
     this.game.matrix.update(this);
 
   }
 
-  protected initMatrixLocation() {
+  protected initMatrixLocation(): void {
       this.pNext = this.p.copy();
       if (this.speedVector && (Math.abs(this.speedVector.x) + Math.abs(this.speedVector.y))> 0 ) {
         this.pNext.setAsOffsetOf(this.p, this.speedVector);

@@ -25,7 +25,6 @@ export class Actor extends GameObject {
 
   static s2 = 1 / Math.sqrt(2);
 
-  isDrawable = true;
   r = 15;
 
   public gun: Gun;
@@ -38,7 +37,7 @@ export class Actor extends GameObject {
   private speed_diagonal: number;
 
   constructor(game: Game, x: number, y: number) {
-    super(game, x, y);
+    super(x, y);
     this.speed = 4;
     this.speed_diagonal = this.speed * Actor.s2;
 

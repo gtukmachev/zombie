@@ -1,13 +1,11 @@
 import {GameObject} from './game-object';
-import {Game} from './game';
 
 export class CameraFrameObject extends GameObject {
 
-  public isDrawable = true;
   public color: string | CanvasGradient | CanvasPattern;
 
-  constructor (field: Game, color: string | CanvasGradient | CanvasPattern) {
-    super(field, 0, 0);
+  constructor (color: string | CanvasGradient | CanvasPattern) {
+    super(0, 0);
     this.color = color;
   }
 

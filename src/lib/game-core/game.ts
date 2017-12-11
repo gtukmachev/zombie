@@ -7,6 +7,7 @@ import {Subject} from 'rxjs/Subject';
 import {GameMouseEvent, MouseEventType} from './events/game-mouse-event';
 import {GameKeyboardEvent, KeyboardEventType} from './events/game-keyboard-event';
 import {LocationMatrix} from './location-matrix';
+
 export class Game {
 
   running: boolean = false;
@@ -160,6 +161,7 @@ export class Game {
 
   public add(gameObject: GameObject): void {
     this.gameObjects.push( gameObject );
+    gameObject.onAddIntoGame(this);
 
   }
 

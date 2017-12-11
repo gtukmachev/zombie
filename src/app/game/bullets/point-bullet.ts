@@ -1,4 +1,3 @@
-
 import {GameObject} from '../../../lib/game-core/game-object';
 import {Game} from '../../../lib/game-core/game';
 import {Pos} from '../../../lib/game-core/position';
@@ -6,12 +5,13 @@ import {Zombie} from '../zombies/zombie';
 
 export class PointBullet extends GameObject{
 
-  isDrawable = true;
-
   atack = 1;
 
+  r = 0.5;
+
+
   constructor(game: Game, x: number, y: number, direction: Pos) {
-    super(game, x, y);
+    super(x, y);
 
     this.speed = 20;
     this.setDirection( direction );
