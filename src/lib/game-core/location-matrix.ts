@@ -36,8 +36,7 @@ export class LocationMatrix {
     const id = `${o.id}`;
 
     const prevPosition = this.positions[id];
-    const newPosition = {l: Math.ceil(o.p.y / this.size), c: Math.ceil(o.p.x / this.size)};
-    this.positions[id] = newPosition;
+    const newPosition = {l: Math.floor(o.p.y / this.size), c: Math.floor(o.p.x / this.size)};
 
     if (prevPosition && (newPosition.l === prevPosition.l && newPosition.c === prevPosition.c) ) {
       return;
@@ -48,8 +47,15 @@ export class LocationMatrix {
       this.removeFromSet(prevIndex, o);
     }
 
-    const newIndex = this.index[newPosition.l][newPosition.c];
-    this.addIntoSet(newIndex, o);
+    const newIndexLine = this.index[newPosition.l];
+    if (newIndexLine){
+      const newIndex = newIndexLine[newPosition.c];
+      if (newIndex) {
+        this.addIntoSet(newIndex, o);
+        this.positions[id] = newPosition;
+      }
+    }
+
 
   }
 

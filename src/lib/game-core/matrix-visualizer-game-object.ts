@@ -34,7 +34,9 @@ export class MatrixVisualizerGameObject extends GameObject {
     for( let y = 0; y < my; y += s ) { ctx.moveTo(0, y); ctx.lineTo(mx, y); }
     ctx.stroke();
 
+
     ctx.strokeStyle = this.colorActive;
+    ctx.fillStyle = this.colorActive;
     const index = this.game.matrix.index;
 
     for (let l = 0; l < index.length; l++) {
@@ -42,13 +44,15 @@ export class MatrixVisualizerGameObject extends GameObject {
       for (let c = 0; c < line.length; c++) {
         let objectsList = line[c];
         if (objectsList.length > 0) {
-          ctx.rect(c*s, l*s, (c+1)*s, (l+1)*s);
+          ctx.beginPath();
+          ctx.rect(c*s, l*s, s, s);
+          ctx.stroke();
+
           this.game.ctx.fillText(`${objectsList.length}`,c*s, l*s );
         }
       }
     }
 
-    //this.game.ctx.strokeText(this.text,this.game.worldSize.x / 2, this.game.worldSize.y / 2 );
   }
 
   beforeTurn (): void {

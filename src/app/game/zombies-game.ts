@@ -28,7 +28,7 @@ export class ZombiesGame extends Game {
     this.followingActor = false;
 
     this.add( this.backGround  );
-    this.add( new MatrixVisualizerGameObject(this, '10px Arial', '#c6c6c6', '#6b6e70' ) );
+    this.add( new MatrixVisualizerGameObject(this, '15px Arial', '#6b6e70', '#f68200' ) );
 
     this.add( this.actor       );
 
