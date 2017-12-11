@@ -8,6 +8,9 @@ export abstract class GameObject {
 
   public game: Game;
 
+  public isDrawable = true;
+
+
   public p: Pos;     // the current position of this object (at the turn begin)
   public pNext: Pos; // the next (planned) position of this object ( p + speedVector )
   public outerFrame: ObjectFrame;

@@ -6,6 +6,7 @@ export class CameraFrameObject extends GameObject {
 
   constructor (color: string | CanvasGradient | CanvasPattern) {
     super(0, 0);
+
     this.color = color;
   }
 

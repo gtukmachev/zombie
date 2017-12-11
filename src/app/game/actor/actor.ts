@@ -1,10 +1,10 @@
 import {GameObject} from '../../../lib/game-core/game-object';
-import {Game} from '../../../lib/game-core/game';
 import 'rxjs/add/operator/filter';
 import {Gun} from '../guns/gun';
 import {MachineGun} from '../guns/machine-gun';
 import {MouseEventType} from '../../../lib/game-core/events/game-mouse-event';
 import {KeyboardEventType} from '../../../lib/game-core/events/game-keyboard-event';
+import {Game} from '../../../lib/game-core/game';
 
 export class Actor extends GameObject {
   get m_up(): boolean {
@@ -36,7 +36,7 @@ export class Actor extends GameObject {
 
   private speed_diagonal: number;
 
-  constructor(game: Game, x: number, y: number) {
+  constructor(x: number, y: number) {
     super(x, y);
     this.speed = 4;
     this.speed_diagonal = this.speed * Actor.s2;
@@ -44,19 +44,23 @@ export class Actor extends GameObject {
     this.gun = new MachineGun();
 
     this.withHelth(100, 30);
+  }
 
-    game.mouse.subscribe(e => {
-           if (e.type === MouseEventType.DOWN) { this.onMouseDown(e.event); }
+
+  public onAddIntoGame(game: Game): void {
+    super.onAddIntoGame(game);
+
+    this.game.mouse.subscribe(e => {
+      if (e.type === MouseEventType.DOWN) { this.onMouseDown(e.event); }
       else if (e.type === MouseEventType.UP)   { this.onMouseUp(e.event); }
     });
 
-    game.keyboard.subscribe(e => {
-           if (e.type === KeyboardEventType.DOWN) { this.onKeyDown(e.event); }
+    this.game.keyboard.subscribe(e => {
+      if (e.type === KeyboardEventType.DOWN) { this.onKeyDown(e.event); }
       else if (e.type === KeyboardEventType.UP)   { this.onKeyUp(e.event); }
     });
 
   }
-
 
   draw(): void {
     let k = this.getDeathStageK()

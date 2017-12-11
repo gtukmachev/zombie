@@ -23,12 +23,12 @@ export class ZombiesGame extends Game {
     const xSize = this.worldSize.x;
     const ySize = this.worldSize.y;
 
-    this.backGround  = new  TransparentBackground(this);
-    this.actor       = new       Actor(this, Math.floor(xSize / 2), Math.floor(ySize / 2) );
+    this.backGround  = new TransparentBackground();
+    this.actor       = new Actor(Math.floor(xSize / 2), Math.floor(ySize / 2) );
     this.followingActor = false;
 
     this.add( this.backGround  );
-    this.add( new MatrixVisualizerGameObject(this, '15px Arial', '#6b6e70', '#f68200' ) );
+    this.add( new MatrixVisualizerGameObject('15px Arial', '#6b6e70', '#f68200' ) );
 
     this.add( this.actor       );
 
@@ -38,7 +38,7 @@ export class ZombiesGame extends Game {
     this.add( new Zombie(this, xSize-zr, ySize-zr) );
     this.add( new Zombie(this, zr,       ySize-zr) );
 
-    this.add( new WorldFrameObject(this, '#f3ffa2') );
+    this.add( new WorldFrameObject('#f3ffa2') );
 
     //this.gameTimeFrame = 20;
 
@@ -46,7 +46,7 @@ export class ZombiesGame extends Game {
 
   public loose(): void {
     super.loose();
-    this.add( new TextGameObject(this, 'Game Over !', '80px Arial', '#ff7716', '#6b6e70' ) );
+    this.add( new TextGameObject('Game Over !', '80px Arial', '#ff7716', '#6b6e70' ) );
   }
 
   public gameActionTurn(): void {
@@ -57,7 +57,7 @@ export class ZombiesGame extends Game {
       if (this.ztc.actionPeriodMillis > 140) { this.ztc.actionPeriodMillis -= 20;}
 
 
-      let factor = this.rnd01();
+      let factor = ZombiesGame.rnd01();
       let zx, zy :number;
 
       if (Math.random() > 0.5) { zx = factor        * this.worldSize.x; zy = Math.random() * this.worldSize.y; }
@@ -68,6 +68,6 @@ export class ZombiesGame extends Game {
     }
   }
 
-  public rnd01() { return Math.round(Math.random()); }
+  static rnd01() { return Math.round(Math.random()); }
 
 }
