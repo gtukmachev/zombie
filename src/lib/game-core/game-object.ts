@@ -1,12 +1,17 @@
 import {Pos} from './position';
 import {Game} from './game';
+import {LocationMatrix} from './location-matrix';
 export abstract class GameObject {
 
   abstract isDrawable = true;
 
+  public id: number;
+
   public game: Game;
 
-  public p: Pos;
+  public p: Pos;     // the current position of this object (at the turn begin)
+  public pNext: Pos; // the next (planned) position of this object ( p + speedVector )
+
   public speed: number = 2;                     // movement speed (in pixels)
   public speedVector: Pos = new Pos(1,0);       // movement vector speed (length = speed )
   public directionVector: Pos = new Pos(1,0);   // direction vector (length = 1)
@@ -28,7 +33,9 @@ export abstract class GameObject {
 
   constructor (game: Game, x: number, y: number) {
     this.game = game;
+    this.id = game.getNextId();
     this.p = new Pos(x, y);
+    this.initMatrixLocation();
   }
 
 
@@ -110,38 +117,51 @@ export abstract class GameObject {
   public moveOn(p: Pos) {
     this.p.x = p.x;
     this.p.y = p.y;
-    // todo: add implementation for grid indexing objects
+    this.updateMatrixLoaction();
   }
 
   public moveTo(x: number, y: number) {
     this.p.x = x;
     this.p.y = y;
-    // todo: add implementation for grid indexing objects
+    this.updateMatrixLoaction();
   }
 
   public moveToSafe(x: number, y: number) {
     moveTo(x, y);
     this.moveReturnOnField();
-    // todo: add implementation for grid indexing objects
+    this.updateMatrixLoaction();
   }
 
   public moveForward() {
     this.p.x += this.speedVector.x;
     this.p.y += this.speedVector.y;
-    // todo: add implementation for grid indexing objects
+    this.updateMatrixLoaction();
   }
 
   public moveForwardSafe() {
     this.p.x += this.speedVector.x;
     this.p.y += this.speedVector.y;
     this.moveReturnOnField();
-    // todo: add implementation for grid indexing objects
+    this.updateMatrixLoaction();
+  }
+
+  protected updateMatrixLoaction() {
+    this.pNext.setAsOffsetOf(this.p, this.speedVector);
+    this.game.matrix.update(this);
+
+  }
+
+  protected initMatrixLocation() {
+      this.pNext = this.p.copy();
+      if (this.speedVector && (Math.abs(this.speedVector.x) + Math.abs(this.speedVector.y))> 0 ) {
+        this.pNext.setAsOffsetOf(this.p, this.speedVector);
+      }
+      this.game.matrix.update(this);
   }
 
   public moveReturnOnField() {
     if (this.p.x < 0) {this.p.x = 0; } else {if (this.p.x > this.game.worldSize.x) { this.p.x = this.game.worldSize.x; }}
     if (this.p.y < 0) {this.p.y = 0; } else {if (this.p.y > this.game.worldSize.y) { this.p.y = this.game.worldSize.y; }}
-    // todo: add implementation for grid indexing objects
   }
 
   public isOutOfField() {

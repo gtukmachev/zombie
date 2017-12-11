@@ -12,6 +12,7 @@ export class GameScreenFieldComponent implements OnInit {
   @Input() game: Game;
   @Input() xWorldSize?: number;
   @Input() yWorldSize?: number;
+  @Input() matrixStepSize?: number = 100;
 
   @ViewChild('gameCanvasField') canvasRef: ElementRef;
 
@@ -23,7 +24,7 @@ export class GameScreenFieldComponent implements OnInit {
     this.xWorldSize = (this.xWorldSize) || canvas.width;
     this.yWorldSize = (this.yWorldSize) || canvas.height;
 
-    this.game.init(canvas, this.xWorldSize, this.yWorldSize);
+    this.game.init(canvas, this.xWorldSize, this.yWorldSize, this.matrixStepSize);
 
     this.game.initLevel(1);
 

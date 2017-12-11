@@ -1,5 +1,3 @@
-import {Pos} from '../position';
-
 export enum KeyboardEventType {UP, DOWN, PRESS}
 
 export class GameKeyboardEvent {

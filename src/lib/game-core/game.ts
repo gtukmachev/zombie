@@ -6,6 +6,7 @@ import {Observable} from 'rxjs';
 import {Subject} from 'rxjs/Subject';
 import {GameMouseEvent, MouseEventType} from './events/game-mouse-event';
 import {GameKeyboardEvent, KeyboardEventType} from './events/game-keyboard-event';
+import {LocationMatrix} from './location-matrix';
 export class Game {
 
   running: boolean = false;
@@ -34,6 +35,7 @@ export class Game {
   public mousePos: Pos = new Pos(0, 0);
 
   public worldSize: Pos = new Pos(0, 0);
+  public matrix: LocationMatrix;
 
   public cameraInitialPos: Pos; // center of rendered canvas
   public cameraPos: Pos; // in the beggining - this pos will be in center of rendered canvas
@@ -44,11 +46,13 @@ export class Game {
 
   constructor () { }
 
-  public init(canvas: HTMLCanvasElement, xWorldSize: number, yWorldSize: number): void {
+  public init(canvas: HTMLCanvasElement, xWorldSize: number, yWorldSize: number, matrixStepSize): void {
     this.canvas = canvas;
     this.ctx = canvas.getContext('2d');
     this.worldSize.x = xWorldSize;
     this.worldSize.y = yWorldSize;
+
+    this.matrix = new LocationMatrix(matrixStepSize, this.worldSize);
 
     this.gameTimeFrame = 20;
 
@@ -156,13 +160,13 @@ export class Game {
 
   public add(gameObject: GameObject): void {
     this.gameObjects.push( gameObject );
+
   }
 
   protected del(gameObject: GameObject): void {
     this.rmFromArr(this.gameObjects, gameObject);
-
     if (gameObject === this.actor) { this.pauseGame(); }
-
+    this.matrix.remove(gameObject);
   }
 
   protected rmFromArr(arr: any[], obj: any) {
@@ -204,5 +208,10 @@ export class Game {
     this.gameTimer.unsubscribe();
     this.framesCounterSubscription.unsubscribe();
   }
+
+
+  private _idCounter = 0;
+  public getNextId(): number { return ++this._idCounter; }
+
 
 }

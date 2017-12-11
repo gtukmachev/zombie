@@ -33,6 +33,11 @@ export class Pos {
 
   public setVector(x: number, y: number) { this.x = x; this.y = y; }
 
+  public setAsOffsetOf(originalPosition: Pos, offsetVector: Pos) {
+    this.x = originalPosition.x + offsetVector.x;
+    this.y = originalPosition.y + offsetVector.y;
+  }
+
   /**
    * restore angle by vector v, only for len(v) = 1
    */
