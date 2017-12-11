@@ -13,6 +13,9 @@ export class Game {
   running: boolean = false;
   isLoose: boolean = false;
 
+  showOuterFrames = false;
+  outerFramesColor = '#596193';
+
   secondsTimerCounter = new TimeCounter(1000); // every second
   framesCounter = 0;
   turnsCounter = 0;
@@ -154,9 +157,15 @@ export class Game {
   }
 
   public gameFrameDraw(): void {
-    this.gameObjects.forEach( (gameObject: GameObject) => {
-      if (gameObject.isDrawable) { gameObject.draw(); }
-    });
+    this.gameObjects.forEach( (it: GameObject) => { if (it.isDrawable) {
+        it.draw();
+        if (this.showOuterFrames) {
+          this.ctx.beginPath();
+          this.ctx.rect(it.p.x + it.outerFrame.x, it.p.y + it.outerFrame.y, it.outerFrame.w, it.outerFrame.h );
+          this.ctx.strokeStyle = this.outerFramesColor;
+          this.ctx.stroke();
+        }
+    }});
   }
 
   public add(gameObject: GameObject): void {

@@ -36,12 +36,13 @@ export abstract class GameObject {
 
   constructor (x: number, y: number, outerFrame?: ObjectFrame) {
     this.p = new Pos(x, y);
-    this.outerFrame = outerFrame || new ObjectFrame(-this.r, -this.r, this.r*2, this.r*2);
+    this.outerFrame = outerFrame;
   }
 
   public onAddIntoGame(game: Game): void {
     this.id = game.getNextId();
     this.game = game;
+    this.outerFrame = this.outerFrame || new ObjectFrame(-this.r, -this.r, this.r*2, this.r*2);
     this.initMatrixLocation();
   }
 

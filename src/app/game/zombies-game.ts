@@ -10,6 +10,8 @@ import {MatrixVisualizerGameObject} from '../../lib/game-core/matrix-visualizer-
 
 export class ZombiesGame extends Game {
 
+  showOuterFrames = true;
+
   backGround: GameObject;
   actor: Actor;
 
@@ -33,10 +35,10 @@ export class ZombiesGame extends Game {
     this.add( this.actor       );
 
     let zr = 30;
-    this.add( new Zombie(this, zr,       zr) );
-    this.add( new Zombie(this, xSize-zr, zr) );
-    this.add( new Zombie(this, xSize-zr, ySize-zr) );
-    this.add( new Zombie(this, zr,       ySize-zr) );
+    this.add( new Zombie(zr,       zr) );
+    this.add( new Zombie(xSize-zr, zr) );
+    this.add( new Zombie(xSize-zr, ySize-zr) );
+    this.add( new Zombie(zr,       ySize-zr) );
 
     this.add( new WorldFrameObject('#f3ffa2') );
 
@@ -64,7 +66,7 @@ export class ZombiesGame extends Game {
       else                     { zx = Math.random() * this.worldSize.x; zy = factor        * this.worldSize.y;}
 
 
-      this.add( new Zombie( this, zx, zy ) );
+      this.add( new Zombie( zx, zy ) );
     }
   }
 

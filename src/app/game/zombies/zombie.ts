@@ -1,11 +1,10 @@
 import {GameObject} from '../../../lib/game-core/game-object';
-import {Game} from '../../../lib/game-core/game';
 
 export class Zombie extends GameObject{
 
-  r = 10;
+  public r = 10;
 
-  constructor(game: Game, x: number, y: number) {
+  constructor(x: number, y: number) {
     super(x, y);
     this.speed = 0.7;
 
