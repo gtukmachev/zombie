@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import {GameScreenFieldComponent} from './game-screen-field/game-screen-field.component';
+import { GameScreenFieldComponent } from './game-screen-field/game-screen-field.component';
 
 @NgModule({
   imports: [
@@ -13,6 +13,6 @@ import {GameScreenFieldComponent} from './game-screen-field/game-screen-field.co
     GameScreenFieldComponent
   ]
 })
-export class GameModuleModule {
+export class GameModule {
 
 }

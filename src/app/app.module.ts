@@ -1,7 +1,7 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { AppComponent } from './app.component';
-import {GameModuleModule} from '../lib/game-core/angular/game-module.module';
+import {GameModule} from '../lib/game-core/angular/game.module';
 
 @NgModule({
   declarations: [
@@ -9,7 +9,7 @@ import {GameModuleModule} from '../lib/game-core/angular/game-module.module';
   ],
   imports: [
     BrowserModule,
-    GameModuleModule
+    GameModule
   ],
   providers: [],
   bootstrap: [AppComponent]
