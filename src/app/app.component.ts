@@ -22,6 +22,7 @@ export class AppComponent {
     this.game.clearGameState();
     this.game.initLevel(0);
     this.game.gameFrameDraw();
+    this.game.startGame();
   }
 
 }

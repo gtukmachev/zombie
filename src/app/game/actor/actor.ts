@@ -26,7 +26,7 @@ export class Actor extends GameObject {
 
   static s2 = 1 / Math.sqrt(2);
 
-  r = 15;
+  r = 16;
 
   public gun: Gun;
 
@@ -76,9 +76,10 @@ export class Actor extends GameObject {
   }
 
   draw(): void {
-    let k = this.getDeathStageK()
-    let r = k < 1 ? this.r * k : this.r;
-    let l = k < 1 ? (this.r*2.5) * k : (this.r*2.5);
+    let subr = this.r - 3;
+    let k = this.getDeathStageK();
+    let r = k < 1 ? (subr * k)     :  subr;
+    let l = k < 1 ? (subr*2.5 * k) : (subr*2.5);
 
     let ctx = this.game.ctx;
     let path = new Path2D();
