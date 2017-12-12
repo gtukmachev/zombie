@@ -42,19 +42,13 @@ export class PointBullet extends GameObject{
   }
 
   checkForZombie(): void {
-
-    for (let i = 0; i < this.game.gameObjects.length; i++) {
-      let go: GameObject = this.game.gameObjects[i];
-      if (go instanceof Zombie) {
-        let z: Zombie = go;
-
-        if (this.p.distanceTo(z.p) < (z.r + z.helth)) {
-          z.damage(this.atack);
-          this.game.markForDelete(this);
-        }
-
+    this.game.matrix.applyForNearestObjects(this, (z) => { if (z instanceof Zombie) {
+      if (this.p.distanceTo( z.p ) <= (this.r + z.r + z.helth ) ) {
+        z.damage(this.atack);
+        this.game.markForDelete(this);
       }
-    }
-
+    }});
   }
+
+
 }

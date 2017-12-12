@@ -54,7 +54,6 @@ export class ZombiesGame extends Game {
   public gameActionTurn(): void {
     super.gameActionTurn();
 
-/*
     if (this.ztc.isItTime()) {
       this.ztc.fixLastChecking();
       if (this.ztc.actionPeriodMillis > 140) { this.ztc.actionPeriodMillis -= 20;}
@@ -69,7 +68,6 @@ export class ZombiesGame extends Game {
 
       this.add( new Zombie( zx, zy ) );
     }
-*/
   }
 
   static rnd01() { return Math.round(Math.random()); }

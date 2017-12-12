@@ -13,9 +13,6 @@ export class LocationMatrix {
 
   private worldSize: Pos;
 
-
-
-
   constructor(size, worldSize: Pos) {
     this.size = size;
     this.worldSize = worldSize.copy();
@@ -151,6 +148,23 @@ export class LocationMatrix {
 
   }
 
+  public applyForNearestObjects(o: GameObject, callback: (GameObject) => void): void {
+    const id = `${o.id}`;
+    const pos: MatrixPos = this.positions[id];
+    if (pos) {
+      for (let l = pos.lb; l <= pos.le; l++){
+        let line = this.index[l]; if (line) {
+          for (let c = pos.cb; c <= pos.ce; c++) {
+            const col = line[c];
+            if (col) {
+              col.forEach(callback);
+            }
+          }
+        }
+      }
+    }
+  }
+
   private addIntoSet(set: Array<GameObject>, o: GameObject): void {
     let i = 0;
     while (i < set.length && set[i] !== o) { i++; }
@@ -162,6 +176,8 @@ export class LocationMatrix {
     while (i < set.length && set[i] !== o) { i++; }
     if (i < set.length)  set.splice(i);
   }
+
+
 
 }
 

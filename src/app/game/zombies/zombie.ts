@@ -1,8 +1,9 @@
 import {GameObject} from '../../../lib/game-core/game-object';
+import {Actor} from '../actor/actor';
 
 export class Zombie extends GameObject{
 
-  public r = 10;
+  public r = 12;
 
   constructor(x: number, y: number) {
     super(x, y);
@@ -12,18 +13,21 @@ export class Zombie extends GameObject{
   }
 
   private checkActorDamage() {
+    if (this.helth <= 0) return;
 
-    if ( this.helth > 0 && this.game.actor.p.distanceTo( this.p ) <= (this.r + this.game.actor.r ) ) {
-      this.game.actor.damage( 1 );
-    }
-
+    this.game.matrix.applyForNearestObjects(this, (actor) => { if (actor instanceof Actor) {
+        if (this.p.distanceTo( actor.p ) <= (this.r + actor.r ) ) {
+          actor.damage( 1 );
+        }
+    }});
   }
 
 
   draw(): void {
+    let subr = this.r - 3;
     let k = this.getDeathStageK();
-    let r = k < 1 ? this.r * k : this.r;
-    let l = k < 1 ? (this.r*2.5) * k : (this.r*2.5);
+    let r = k < 1 ? (subr * k)     :  subr;
+    let l = k < 1 ? (subr*2.5 * k) : (subr*2.5);
 
     let ctx = this.game.ctx;
     let path = new Path2D();
