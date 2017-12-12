@@ -66,6 +66,13 @@ export class Game {
 
   }
 
+  public clearGameState() {
+    this.pauseGame();
+    this.matrix.forceClear()
+    this.gameObjects.forEach(o => o.onRemovingFromGame());
+    this.gameObjects = [];
+  }
+
   public initLevel(levelNumber: number): void {}
 
   private gameStep(): void {

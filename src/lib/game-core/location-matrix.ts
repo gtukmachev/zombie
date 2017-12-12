@@ -4,25 +4,37 @@ import {Pos} from './position';
 export class LocationMatrix {
 
   public size;
-  public index: Array<Array<Array<GameObject>>>; //[line][column] - list of elements in each line-column crossing
 
-  // public positions: MatrixPositionsIndex = {};
-  public positions: MatrixPosIndex= {};
+  public index: Array<Array<Array<GameObject>>>; // map matrix cel (l,c) -> set of objects inside this ceil
+  public positions: MatrixPosIndex= {}; // map object -> ceils of the matrix where this project present
+
+  public lines: number;
+  public columns: number;
+
+  private worldSize: Pos;
+
+
+
 
   constructor(size, worldSize: Pos) {
     this.size = size;
+    this.worldSize = worldSize.copy();
+    this.forceClear();
+  }
 
-    let lines = Math.ceil(worldSize.y / size) + 1;
-    let columns = Math.ceil(worldSize.x / size) + 1;
+  public forceClear(): void {
+    this.lines = Math.ceil(this.worldSize.y / this.size) + 1;
+    this.columns = Math.ceil(this.worldSize.x / this.size) + 1;
 
     this.index = [];
-    for (let l = 0; l < lines; l++) {
+    for (let l = 0; l < this.lines; l++) {
       this.index[l] = [];
-      for (let c=0; c < columns; c++) {
+      for (let c=0; c < this.columns; c++) {
         this.index[l][c] = [];
       }
     }
 
+    this.positions = {};
   }
 
   public remove(o: GameObject): void {

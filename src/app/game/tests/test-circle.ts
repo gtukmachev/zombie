@@ -3,18 +3,31 @@ import {Game} from '../../../lib/game-core/game';
 import {TestLine} from './test-line';
 import 'rxjs/add/operator/filter';
 import {MouseEventType} from '../../../lib/game-core/events/game-mouse-event';
+import {Subscription} from 'rxjs/Subscription';
 
 export class TestCircle extends GameObject {
 
   line: TestLine;
   r = 200;
 
+  private mouseSubscription: Subscription;
+
   constructor(game: Game, line: TestLine, x: number, y: number) {
     super(x, y);
     this.line = line;
 
-    game.mouse.filter(e => e.type === MouseEventType.DOWN).subscribe(e => this.onMouseDown(e.event));
+  }
 
+
+  public onAddIntoGame(game: Game): void {
+    super.onAddIntoGame(game);
+    this.mouseSubscription = game.mouse.filter(e => e.type === MouseEventType.DOWN).subscribe(e => this.onMouseDown(e.event));
+  }
+
+
+  public onRemovingFromGame(): void {
+    super.onRemovingFromGame();
+    this.mouseSubscription.unsubscribe();
   }
 
   draw(): void {

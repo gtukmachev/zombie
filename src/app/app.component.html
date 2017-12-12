@@ -1,4 +1,5 @@
 <button (click)="go()">go | pause</button>
+<button (click)="restart()">restart</button>
 <p>fps: {{game.framesPerSecond | number}}</p>
 <p>tps: {{game.turnsPerSecond | number}}</p>
 <app-game-screen-field [game]="game" [matrixStepSize]="60"></app-game-screen-field>

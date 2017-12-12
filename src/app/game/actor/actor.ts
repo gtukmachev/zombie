@@ -5,6 +5,7 @@ import {MachineGun} from '../guns/machine-gun';
 import {MouseEventType} from '../../../lib/game-core/events/game-mouse-event';
 import {KeyboardEventType} from '../../../lib/game-core/events/game-keyboard-event';
 import {Game} from '../../../lib/game-core/game';
+import {Subscription} from 'rxjs/Subscription';
 
 export class Actor extends GameObject {
   get m_up(): boolean {
@@ -36,6 +37,10 @@ export class Actor extends GameObject {
 
   private speed_diagonal: number;
 
+  private mouseSubscription: Subscription;
+  private keyboardSubscription: Subscription;
+
+
   constructor(x: number, y: number) {
     super(x, y);
     this.speed = 4;
@@ -50,16 +55,24 @@ export class Actor extends GameObject {
   public onAddIntoGame(game: Game): void {
     super.onAddIntoGame(game);
 
-    this.game.mouse.subscribe(e => {
+    this.mouseSubscription = this.game.mouse.subscribe(e => {
       if (e.type === MouseEventType.DOWN) { this.onMouseDown(e.event); }
       else if (e.type === MouseEventType.UP)   { this.onMouseUp(e.event); }
     });
 
-    this.game.keyboard.subscribe(e => {
+    this.keyboardSubscription = this.game.keyboard.subscribe(e => {
       if (e.type === KeyboardEventType.DOWN) { this.onKeyDown(e.event); }
       else if (e.type === KeyboardEventType.UP)   { this.onKeyUp(e.event); }
     });
 
+  }
+
+
+  public onRemovingFromGame(): void {
+    super.onRemovingFromGame();
+
+    this.mouseSubscription.unsubscribe();
+    this.keyboardSubscription.unsubscribe();
   }
 
   draw(): void {

@@ -1,7 +1,6 @@
-import { Component } from '@angular/core';
+import {Component} from '@angular/core';
 import {Game} from '../lib/game-core/game';
 import {ZombiesGame} from './game/zombies-game';
-import {TestGame} from './game/test-game';
 
 @Component({
   selector: 'app-root',
@@ -18,8 +17,11 @@ export class AppComponent {
   }
 
 
-  public go(): void {
-    this.game.toggleStartPause();
+  public go(): void { this.game.toggleStartPause(); }
+  public restart(): void {
+    this.game.clearGameState();
+    this.game.initLevel(0);
+    this.game.gameFrameDraw();
   }
 
 }

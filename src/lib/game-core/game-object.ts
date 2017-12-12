@@ -39,6 +39,7 @@ export abstract class GameObject {
     this.outerFrame = outerFrame;
   }
 
+  // life cycle hooks
   public onAddIntoGame(game: Game): void {
     this.id = game.getNextId();
     this.game = game;
@@ -46,6 +47,12 @@ export abstract class GameObject {
     this.initMatrixLocation();
   }
 
+  public onRemovingFromGame(): void {
+    // remove event subscriptions here
+  }
+
+
+  //////////////////
   public withHelth(helth: number, deadStages: number): GameObject {
     this.isAlife = true;
     this.helth = helth;
