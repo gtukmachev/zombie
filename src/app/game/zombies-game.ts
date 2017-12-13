@@ -42,6 +42,7 @@ export class ZombiesGame extends Game {
 
     this.add( new WorldFrameObject('#f3ffa2') );
 
+    this.ztc.actionPeriodMillis = 1000;
     //this.gameTimeFrame = 20;
 
   }

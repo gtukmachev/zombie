@@ -114,6 +114,7 @@ export class LocationMatrix {
 */
     }
 
+//    this.applyForRegion(newPositions, cellObjectsSet => this.addIntoSet(cellObjectsSet, o));
 
     for (let l = newPositions.lb; l <= newPositions.le; l++){
 
@@ -149,20 +150,27 @@ export class LocationMatrix {
   }
 
   public applyForNearestObjects(o: GameObject, callback: (GameObject) => void): void {
-    const id = `${o.id}`;
-    const pos: MatrixPos = this.positions[id];
-    if (pos) {
-      for (let l = pos.lb; l <= pos.le; l++){
-        let line = this.index[l]; if (line) {
-          for (let c = pos.cb; c <= pos.ce; c++) {
-            const col = line[c];
-            if (col) {
-              col.forEach(callback);
-            }
+    this.applyForRegionObjects(this.positions[`${o.id}`], callback);
+  }
+
+  public applyForRegion(pos: MatrixPos, callback: (Array) => void) {
+      if (pos) {
+          for (let l = pos.lb; l <= pos.le; l++) {
+              let line = this.index[l];
+              if (line) {
+                  for (let c = pos.cb; c <= pos.ce; c++) {
+                      const col = line[c];
+                      if (col) {
+                        callback(col);
+                      }
+                  }
+              }
           }
-        }
       }
-    }
+  }
+
+  public applyForRegionObjects(pos: MatrixPos, callback: (GameObject) => void) {
+    this.applyForRegion(pos, index => index.forEach(callback));
   }
 
   private addIntoSet(set: Array<GameObject>, o: GameObject): void {
