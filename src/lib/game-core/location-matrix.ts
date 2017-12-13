@@ -62,7 +62,6 @@ export class LocationMatrix {
     const pTopY  = o.p.y + o.outerFrame.y;
     const pLeftX = o.p.x + o.outerFrame.x;
 
-
     const prevPositions: MatrixPos = this.positions[id];
     const newPositions: MatrixPos = {
       lb: Math.floor( pTopY                   / this.size), cb: Math.floor( pLeftX                   / this.size),
@@ -75,78 +74,10 @@ export class LocationMatrix {
       return;
     }
 
-    if (prevPositions) {
-
-
-      for (let l = prevPositions.lb; l <= prevPositions.le; l++){
-        let prevIndexLine = this.index[l];
-        if (prevIndexLine) {
-          for (let c = prevPositions.cb; c <= prevPositions.ce; c++) {
-
-            const prevIndex = prevIndexLine[c];
-            if (prevIndex) {
-              this.removeFromSet(prevIndex, o);
-            }
-
-          }
-        }
-      }
-
-
-      /*
-        // removing from previous matrix parts/indexes
-        for (let l = prevPositions.lb; l <= prevPositions.le; l++){
-          let prevIndexLine = this.index[l];
-          if (prevIndexLine) {
-
-            for (let c = prevPositions.cb; c <= prevPositions.ce; c++) {
-              if (
-                !( l >= newPositions.lb && l <= newPositions.le)
-                ||
-                !( c >= newPositions.cb && l <= newPositions.ce)
-              ) {
-                const prevIndex = prevIndexLine[c];
-                if (prevIndex) this.removeFromSet(prevIndex, o);
-              }
-            }
-          }
-        }
-*/
-    }
-
-//    this.applyForRegion(newPositions, cellObjectsSet => this.addIntoSet(cellObjectsSet, o));
-
-    for (let l = newPositions.lb; l <= newPositions.le; l++){
-
-      let newIndexLine = this.index[l];
-
-      if (newIndexLine) {
-        for (let c = newPositions.cb; c <= newPositions.ce; c++) {
-          const newIndex = newIndexLine[c];
-          if (newIndex) {
-            this.addIntoSet(newIndex, o);
-          }
-          /*if (
-               !(prevPositions)
-            ||
-               !( l >= prevPositions.lb && l <= prevPositions.le)
-            ||
-              !( c >= prevPositions.cb && l <= prevPositions.ce)
-          ) {
-            const newIndex = newIndexLine[c];
-            if (newIndex) {
-              this.addIntoSet(newIndex, o);
-            }
-          }*/
-
-        }
-      }
-    }
+    this.applyForRegion(prevPositions, cellObjectsSet => this.removeFromSet(cellObjectsSet, o));
+    this.applyForRegion(newPositions , cellObjectsSet => this.addIntoSet(cellObjectsSet, o));
 
     this.positions[id] = newPositions;
-
-
-
   }
 
   public applyForNearestObjects(o: GameObject, callback: (GameObject) => void): void {
