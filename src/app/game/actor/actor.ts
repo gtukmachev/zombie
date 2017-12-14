@@ -102,6 +102,12 @@ export class Actor extends CachedFilmGameObject<ActorFrameDetails> {
   drawFrame(frameCtx: CanvasRenderingContext2D, frameDescr: FilmFrameDescription<ActorFrameDetails>) {
     let ctx = frameCtx;
     let image: HTMLImageElement = document.getElementById("ai"+frameDescr.details.suit) as HTMLImageElement;
+
+    if ( frameDescr.details.suit === 2 || frameDescr.details.suit === 5 ) {
+      // inversion: left <--> right
+      ctx.setTransform(-1, 0, 0, 1, frameDescr.size.x, 0);
+    }
+
     ctx.drawImage(image, 0,0, frameDescr.size.x,frameDescr.size.y);
 /*
     let strokeStyle = '#65b9b3';
