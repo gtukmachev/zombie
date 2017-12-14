@@ -6,11 +6,10 @@ import {Actor} from './actor/actor';
 import {Zombie} from './zombies/zombie';
 import {TimeCounter} from '../../lib/game-core/time-counter';
 import {TextGameObject} from '../../lib/game-core/text-game-object';
-import {MatrixVisualizerGameObject} from '../../lib/game-core/matrix-visualizer-game-object';
 
 export class ZombiesGame extends Game {
 
-  showOuterFrames = true;
+  //showOuterFrames = true;
 
   backGround: GameObject;
   actor: Actor;
@@ -30,7 +29,7 @@ export class ZombiesGame extends Game {
     this.followingActor = false;
 
     this.add( this.backGround  );
-    this.add( new MatrixVisualizerGameObject('15px Arial', '#6b6e70', '#f68200' ) );
+    //this.add( new MatrixVisualizerGameObject('15px Arial', '#6b6e70', '#f68200' ) );
 
     this.add( this.actor       );
 

@@ -1,7 +1,10 @@
-import {GameObject} from '../../../lib/game-core/game-object';
 import {Actor} from '../actor/actor';
+import {CachedFilmGameObject, FilmFrameDescription} from '../../../lib/game-core/cached-film-game-object';
+import {Pos} from '../../../lib/game-core/position';
 
-export class Zombie extends GameObject{
+export class Zombie extends CachedFilmGameObject<ZombieFrameDetails>{
+
+  static PIx2 = Math.PI * 2;
 
   public r = 12;
 
@@ -23,26 +26,46 @@ export class Zombie extends GameObject{
   }
 
 
-  draw(): void {
-    let subr = this.r - 3;
-    let k = this.getDeathStageK();
-    let r = k < 1 ? (subr * k)     :  subr;
-    let l = k < 1 ? (subr*2.5 * k) : (subr*2.5);
+  getCurrentFilmFrameDescription(): FilmFrameDescription<ZombieFrameDetails> {
 
-    let ctx = this.game.ctx;
+    const state = new ZombieFrameDetails(
+      this.helth
+    );
+
+    const center = Math.floor(this.r * 2.5 );
+    const sz = center * 2;
+
+    return new FilmFrameDescription<ZombieFrameDetails>(state.getKey(),
+      new Pos(sz, sz),
+      new Pos(center, center),
+      state
+    );
+  }
+
+  drawFrame(frameCtx: CanvasRenderingContext2D, frameDescr: FilmFrameDescription<ZombieFrameDetails>) {
+    const strokeStyle = '#9cb9b7';
+    const fillStyle = '#aa0600';
+
+    const subr = this.r - 3;
+    let l = frameDescr.center.x;
+
+    let ctx = frameCtx;
     let path = new Path2D();
-    path.moveTo(this.p.x, this.p.y);
-    path.lineTo(this.p.x + l * this.directionVector.x, this.p.y + l * this.directionVector.y);
-    ctx.lineWidth = 1+this.helth;
-
-    let strokeStyle = '#9cb9b7';
-    let fillStyle = '#aa0600';
+    path.moveTo(frameDescr.center.x, frameDescr.center.y);
+    path.lineTo(frameDescr.center.x + l, frameDescr.center.y );
+    ctx.lineWidth = 1 + frameDescr.details.helth;
 
     ctx.strokeStyle = strokeStyle;
     ctx.stroke(path);
 
-    this.fcCircle(this.p.x, this.p.y, r, strokeStyle, fillStyle);
+    ctx.beginPath();
+    ctx.fillStyle = fillStyle;
+    ctx.arc(frameDescr.center.x, frameDescr.center.y, subr, 0, Zombie.PIx2);
+    ctx.fill();
+    ctx.stroke();
   }
+
+
 
   beforeTurn(): void {
     this.checkActorDamage();
@@ -57,4 +80,16 @@ export class Zombie extends GameObject{
   afterTurn(): void {
   }
 
+}
+
+export class ZombieFrameDetails {
+  helth: number;
+
+  constructor(helth: number) {
+    this.helth = helth;
+  }
+
+  public getKey(): string {
+    return `z-${this.helth}`;
+  }
 }

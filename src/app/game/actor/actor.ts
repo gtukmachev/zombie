@@ -6,6 +6,7 @@ import {MouseEventType} from '../../../lib/game-core/events/game-mouse-event';
 import {KeyboardEventType} from '../../../lib/game-core/events/game-keyboard-event';
 import {Game} from '../../../lib/game-core/game';
 import {Subscription} from 'rxjs/Subscription';
+import {Pos} from '../../../lib/game-core/position';
 
 export class Actor extends GameObject {
   get m_up(): boolean {
@@ -45,6 +46,7 @@ export class Actor extends GameObject {
     super(x, y);
     this.speed = 4;
     this.speed_diagonal = this.speed * Actor.s2;
+    this.speedVector = new Pos(0,0);
 
     this.gun = new MachineGun();
 
