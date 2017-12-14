@@ -34,6 +34,10 @@ export class ZombiesGame extends Game {
 
   private init_standard_objects(): void {
     //this.add( new MatrixVisualizerGameObject('15px Arial', '#6b6e70', '#f68200' ) );
+    //this.actor.suit
+    this.isLoose = false;
+    this.actor.withHelth(500, 30);
+
     this.add( this.backGround  );
     this.add( this.actor       );
     this.add( new WorldFrameObject('#f3ffa2') );

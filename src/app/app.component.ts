@@ -21,7 +21,7 @@ export class AppComponent {
   public go(): void { this.game.toggleStartPause(); }
   public restart(): void {
     this.game.clearGameState();
-    this.game.initLevel(0);
+    this.game.initLevel(1);
     this.game.gameFrameDraw();
     this.game.startGame();
   }

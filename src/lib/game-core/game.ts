@@ -225,8 +225,8 @@ export class Game {
 
   private deleteMarkedElements(): void {
     if (this.gameObjectsForDelete.length === 0) { return; }
-
     this.gameObjectsForDelete.forEach( it => this.del( it ) );
+    this.gameObjectsForDelete.length = 0;
   }
 
   public     onMouseMove(event: MouseEvent): void { this.processMouseEvent(event, MouseEventType.MOVE); }
