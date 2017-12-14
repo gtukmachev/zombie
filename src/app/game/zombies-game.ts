@@ -72,4 +72,18 @@ export class ZombiesGame extends Game {
 
   static rnd01() { return Math.round(Math.random()); }
 
+
+  public gameFrameDraw(): void {
+    super.gameFrameDraw();
+
+    this.ctx.setTransform(
+      1, 0,
+      0, 1,
+      0, 0
+    );
+    this.actor.gun.drawBullets(this.ctx);
+    this.actor.drawHelth(this.ctx);
+
+
+  }
 }

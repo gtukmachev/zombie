@@ -53,7 +53,7 @@ export class Actor extends CachedFilmGameObject<ActorFrameDetails> {
 
     this.gun = new MachineGun();
 
-    this.withHelth(100, 30);
+    this.withHelth(500, 30);
   }
 
 
@@ -119,6 +119,40 @@ export class Actor extends CachedFilmGameObject<ActorFrameDetails> {
     ctx.stroke();
 
     //ctx.strokeRect(0,0, frameDescr.size.x, frameDescr.size.y)
+  }
+
+  public drawHelth(ctx: CanvasRenderingContext2D): void {
+    const hx = 550;
+    const hy = 15;
+    const h_lineWidth = 7;
+    const h_length = 700;
+
+    ctx.lineCap = 'round';
+    ctx.lineWidth = h_lineWidth;
+    let hl = new Path2D();
+    hl.moveTo(hx,hy);
+    hl.lineTo(hx+h_length, hy);
+
+    if (this.helth === this.maxHelth) {
+      ctx.strokeStyle = '#ff7716';
+      ctx.stroke(hl);
+    } else {
+      ctx.strokeStyle = '#a9a9a9';
+      ctx.stroke(hl);
+
+      if (this.helth > 0) {
+        if (this.helth > 0) {
+          let dl = new Path2D();
+          dl.moveTo(hx, hy);
+          dl.lineTo(hx + h_length * (this.helth / this.maxHelth) , hy);
+          ctx.strokeStyle = '#ff7716';
+          ctx.stroke(dl);
+        }
+
+      }
+    }
+
+
   }
 
   beforeTurn(): void {
