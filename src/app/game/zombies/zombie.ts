@@ -63,9 +63,9 @@ export class Zombie extends CachedFilmGameObject<ZombieFrameDetails>{
     ctx.arc(frameDescr.center.x, frameDescr.center.y, subr, 0, Zombie.PIx2);
     ctx.fill();
     ctx.stroke();
+
+    ctx.strokeRect(0,0, frameDescr.size.x, frameDescr.size.y)
   }
-
-
 
   beforeTurn(): void {
     this.checkActorDamage();

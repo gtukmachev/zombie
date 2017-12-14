@@ -165,6 +165,29 @@ export class Game {
 
   public gameFrameDraw(): void {
     this.gameObjects.forEach( (it: GameObject) => { if (it.isDrawable) {
+        // affine matrix (rotate and movement)
+        // [ cos(phi)  sin(phi)  0 ]
+        // [-sin(phi)  cos(phi)  0 ]
+        // [ tx        ty        1 ]
+
+        // affine matrix (scaling)
+        // [ Kx        0         0 ]
+        // [ 0         Ky        0 ]
+        // [ 0         0         1 ]
+
+        // (dx,dy) - the offset to follow the camera
+        let dx = 0; let dy = 0;
+        if (!this.cameraPos.equals( this.cameraInitialPos )){
+           dx = this.cameraInitialPos.x - this.cameraPos.x;
+           dy = this.cameraInitialPos.y - this.cameraPos.y
+        }
+
+        this.ctx.setTransform(
+          1, 0,
+          0, 1,
+          dx, dy
+        );
+
         it.draw();
         if (this.showOuterFrames) {
           this.ctx.beginPath();

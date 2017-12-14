@@ -24,10 +24,27 @@ export abstract class CachedFilmGameObject<T> extends GameObject {
       CachedFilmGameObject.framesCache[currentFrameDescr.key] = actualFrame;
     }
 
+    // affine matrix (rotate and movement)
+    // [   cos(phi)    sin(phi)   0  ]
+    // [  -sin(phi)    cos(phi)   0  ]
+    // [   tx          ty         1  ]
+
+    this.game.ctx.transform(
+       this.directionVector.x, this.directionVector.y,
+      -this.directionVector.y, this.directionVector.x,
+       this.p.x,               this.p.y
+    );
+
+    this.game.ctx.drawImage( actualFrame.image,
+      -actualFrame.center.x,
+      -actualFrame.center.y,
+    );
+/*
     this.game.ctx.drawImage( actualFrame.image,
       this.p.x - actualFrame.center.x,
       this.p.y - actualFrame.center.y,
     );
+*/
 
   }
 
