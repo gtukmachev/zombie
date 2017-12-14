@@ -39,10 +39,12 @@ export abstract class CachedFilmGameObject<T> extends GameObject {
     }
 
     if (this.feetInBottom && cosa < 0) {
+      this.game.ctx.transform(-1,0,0, 1,this.p.x, this.p.y);
       this.game.ctx.transform(
-        -cosa*this.scale,     -sina*this.scale,
-        sina*this.scale,     -cosa*this.scale,
-        this.p.x, this.p.y);
+        -cosa*this.scale,     sina*this.scale,
+        -sina*this.scale,     -cosa*this.scale,
+        0,0
+      );
     } else {
       this.game.ctx.transform(
         cosa*this.scale,     sina*this.scale,
