@@ -64,7 +64,7 @@ export class Zombie extends CachedFilmGameObject<ZombieFrameDetails>{
     ctx.fill();
     ctx.stroke();
 
-    ctx.strokeRect(0,0, frameDescr.size.x, frameDescr.size.y)
+    //ctx.strokeRect(0,0, frameDescr.size.x, frameDescr.size.y)
   }
 
   beforeTurn(): void {
@@ -78,6 +78,7 @@ export class Zombie extends CachedFilmGameObject<ZombieFrameDetails>{
   }
 
   afterTurn(): void {
+    this.scale = this.getDeathStageK();
   }
 
 }

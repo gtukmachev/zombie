@@ -1,4 +1,4 @@
-import {GameObject} from '../../../lib/game-core/game-object';
+import {AngleType, GameObject} from '../../../lib/game-core/game-object';
 import 'rxjs/add/operator/filter';
 import {Gun} from '../guns/gun';
 import {MachineGun} from '../guns/machine-gun';
@@ -7,8 +7,9 @@ import {KeyboardEventType} from '../../../lib/game-core/events/game-keyboard-eve
 import {Game} from '../../../lib/game-core/game';
 import {Subscription} from 'rxjs/Subscription';
 import {Pos} from '../../../lib/game-core/position';
+import {CachedFilmGameObject, FilmFrameDescription} from '../../../lib/game-core/cached-film-game-object';
 
-export class Actor extends GameObject {
+export class Actor extends CachedFilmGameObject<ActorFrameDetails> {
   get m_up(): boolean {
     return this._m_up;
   }
@@ -28,6 +29,8 @@ export class Actor extends GameObject {
   static s2 = 1 / Math.sqrt(2);
 
   r = 16;
+
+  public angleType: AngleType = AngleType.ON_EYE;
 
   public gun: Gun;
 
@@ -77,49 +80,45 @@ export class Actor extends GameObject {
     this.keyboardSubscription.unsubscribe();
   }
 
-  draw(): void {
-    let subr = this.r - 3;
-    let k = this.getDeathStageK();
-    let r = k < 1 ? (subr * k)     :  subr;
-    let l = k < 1 ? (subr*2.5 * k) : (subr*2.5);
 
-    let ctx = this.game.ctx;
-    let path = new Path2D();
-    path.moveTo(this.p.x, this.p.y);
-    path.lineTo(this.p.x + l * this.eyeDirectionVector.x, this.p.y + l * this.eyeDirectionVector.y);
-    ctx.lineWidth = this.helth/20;
+  getCurrentFilmFrameDescription(): FilmFrameDescription<ActorFrameDetails> {
+    const state = new ActorFrameDetails(
+      this.helth, this.maxHelth
+    );
 
+    const center = Math.floor(this.r * 2.5 );
+    const sz = center * 2;
+
+    return new FilmFrameDescription<ActorFrameDetails>(state.getKey(),
+      new Pos(sz, sz),
+      new Pos(center, center),
+      state
+    );
+  }
+
+  drawFrame(frameCtx: CanvasRenderingContext2D, frameDescr: FilmFrameDescription<ActorFrameDetails>) {
     let strokeStyle = '#65b9b3';
     let fillStyle = '#6a8dff';
+
+    const subr = this.r - 3;
+    let l = frameDescr.center.x;
+
+    let ctx = frameCtx;
+    let path = new Path2D();
+    path.moveTo(frameDescr.center.x, frameDescr.center.y);
+    path.lineTo(frameDescr.center.x + l, frameDescr.center.y );
+    ctx.lineWidth = frameDescr.details.healthWidth > 0 ? frameDescr.details.healthWidth : 0.5;
 
     ctx.strokeStyle = strokeStyle;
     ctx.stroke(path);
 
-    this.fcCircle(this.p.x, this.p.y, r, strokeStyle, fillStyle);
+    ctx.beginPath();
+    ctx.fillStyle = fillStyle;
+    ctx.arc(frameDescr.center.x, frameDescr.center.y, subr, 0, GameObject.PIx2);
+    ctx.fill();
+    ctx.stroke();
 
-    let hx = 550;
-    let hy = 15;
-    let hk = 4;
-    let h_lineWidth = 7;
-
-    let hl = new Path2D();
-    hl.moveTo(hx,hy);
-    hl.lineTo(hx+this.maxHelth * hk, hy);
-    ctx.strokeStyle = '#a9a9a9';
-    ctx.lineWidth = h_lineWidth;
-    ctx.lineCap = 'round';
-    ctx.stroke(hl);
-
-    if (this.helth > 0) {
-      let dl = new Path2D();
-      dl.moveTo(hx, hy);
-      dl.lineTo(hx + this.helth * hk, hy);
-      ctx.strokeStyle = '#ff7716';
-      ctx.stroke(dl);
-    }
-
-    this.gun.drawBullets(ctx);
-
+    //ctx.strokeRect(0,0, frameDescr.size.x, frameDescr.size.y)
   }
 
   beforeTurn(): void {
@@ -137,6 +136,7 @@ export class Actor extends GameObject {
 
   afterTurn(): void {
     if (this.helth <= 0) { this.game.loose(); }
+    this.scale = this.getDeathStageK();
   }
 
   private way(xd, yd, xs, ys) {
@@ -187,4 +187,16 @@ export class Actor extends GameObject {
     else if (event.code === 'KeyD') {this.m_right = false; }
   }
 
+}
+
+export class ActorFrameDetails {
+  healthWidth: number;
+
+  constructor(helth: number, maxHealth: number) {
+    this.healthWidth = Math.floor( 7*(helth / maxHealth) );
+  }
+
+  public getKey(): string {
+    return `a-${this.healthWidth}`;
+  }
 }

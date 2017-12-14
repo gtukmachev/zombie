@@ -1,4 +1,4 @@
-import {GameObject} from './game-object';
+import {AngleType, GameObject} from './game-object';
 import {Pos} from './position';
 
 export abstract class CachedFilmGameObject<T> extends GameObject {
@@ -25,26 +25,27 @@ export abstract class CachedFilmGameObject<T> extends GameObject {
     }
 
     // affine matrix (rotate and movement)
-    // [   cos(phi)    sin(phi)   0  ]
-    // [  -sin(phi)    cos(phi)   0  ]
-    // [   tx          ty         1  ]
+    // [   cos(a)    sin(a)   0  ]
+    // [  -sin(a)    cos(a)   0  ]
+    // [   tx        ty       1  ]
+    let cosa = 1;
+    let sina = 0;
+    if (this.angleType === AngleType.ON_MOVEMET) {
+      cosa = this.directionVector.x; sina = this.directionVector.y;
+    } else if (this.angleType === AngleType.ON_EYE) {
+      cosa = this.eyeDirectionVector.x; sina = this.eyeDirectionVector.y;
+    }
 
     this.game.ctx.transform(
-       this.directionVector.x, this.directionVector.y,
-      -this.directionVector.y, this.directionVector.x,
-       this.p.x,               this.p.y
+       cosa*this.scale,     sina*this.scale,
+      -sina*this.scale,     cosa*this.scale,
+       this.p.x, this.p.y
     );
 
     this.game.ctx.drawImage( actualFrame.image,
       -actualFrame.center.x,
       -actualFrame.center.y,
     );
-/*
-    this.game.ctx.drawImage( actualFrame.image,
-      this.p.x - actualFrame.center.x,
-      this.p.y - actualFrame.center.y,
-    );
-*/
 
   }
 

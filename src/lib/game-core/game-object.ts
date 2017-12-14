@@ -4,12 +4,13 @@ import {ObjectFrame} from './object-frame';
 
 export abstract class GameObject {
 
+  static PIx2 = Math.PI * 2;
+
   public id: number;
 
   public game: Game;
 
   public isDrawable = true;
-
 
   public p: Pos;     // the current position of this object (at the turn begin)
   public pNext: Pos; // the next (planned) position of this object ( p + speedVector )
@@ -19,6 +20,9 @@ export abstract class GameObject {
   public speedVector: Pos = new Pos(1,0);       // movement vector speed (length = speed )
   public directionVector: Pos = new Pos(1,0);   // direction vector (length = 1)
   public eyeDirectionVector: Pos = new Pos(1,0);   // direction vector (length = 1)
+
+  public angleType: AngleType = AngleType.ON_MOVEMET;
+  public scale: number = 1;
 
   public isAlife = false;
   public helth: number;
@@ -220,3 +224,5 @@ export abstract class GameObject {
 */
 
 }
+
+export enum AngleType {ON_MOVEMET, ON_EYE}
