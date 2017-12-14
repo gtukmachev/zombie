@@ -3,9 +3,8 @@ import {TransparentBackground} from '../../lib/game-core/transparent-background'
 import {GameObject} from '../../lib/game-core/game-object';
 import {WorldFrameObject} from '../../lib/game-core/world-frame-object';
 import {Actor} from './actor/actor';
-import {Zombie} from './zombies/zombie';
-import {TimeCounter} from '../../lib/game-core/time-counter';
 import {TextGameObject} from '../../lib/game-core/text-game-object';
+import {Level1} from './levels/level-1';
 
 export class ZombiesGame extends Game {
 
@@ -14,65 +13,48 @@ export class ZombiesGame extends Game {
   backGround: GameObject;
   actor: Actor;
 
-  private ztc = new TimeCounter(1000);
 
-  constructor () { super(); }
+  level: number = 1;
+
+  constructor () {
+    super();
+    //this.gameTimeFrame = 20;
+    this.followingActor = false;
+    this.backGround  = new TransparentBackground();
+    this.actor       = new Actor(Math.floor(this.worldSize.x / 2), Math.floor(this.worldSize.y / 2) );
+  }
 
 
   public initLevel(levelNumber: number): void {
+    this.init_standard_objects();
 
-    const xSize = this.worldSize.x;
-    const ySize = this.worldSize.y;
+    this.add(new Level1());
 
-    this.backGround  = new TransparentBackground();
-    this.actor       = new Actor(Math.floor(xSize / 2), Math.floor(ySize / 2) );
-    this.followingActor = false;
+  }
 
-    this.add( this.backGround  );
+  private init_standard_objects(): void {
     //this.add( new MatrixVisualizerGameObject('15px Arial', '#6b6e70', '#f68200' ) );
-
+    this.add( this.backGround  );
     this.add( this.actor       );
-
-    let zr = 30;
-    this.add( new Zombie(zr,       zr) );
-    this.add( new Zombie(xSize-zr, zr) );
-    this.add( new Zombie(xSize-zr, ySize-zr) );
-    this.add( new Zombie(zr,       ySize-zr) );
-
     this.add( new WorldFrameObject('#f3ffa2') );
 
-    this.ztc.actionPeriodMillis = 1000;
-    //this.gameTimeFrame = 20;
-
+    this.actor.moveTo(this.worldSize.x/2, this.worldSize.y/2);
+    this.actor.setDirectionOn_xy(1,0);
     this.actor.suit = Math.floor(Math.random()*11) + 1;
+    this.actor.speedVector.x = 0;
+    this.actor.speedVector.y = 0;
 
   }
 
   public loose(): void {
     super.loose();
-    this.add( new TextGameObject('Game Over !', '80px Arial', '#ff7716', '#6b6e70' ) );
+    this.add( new TextGameObject('Game Over !', 80, 'Arial', '#ff7716', '#6b6e70' ) );
   }
 
   public gameActionTurn(): void {
     super.gameActionTurn();
 
-    if (this.ztc.isItTime()) {
-      this.ztc.fixLastChecking();
-      if (this.ztc.actionPeriodMillis > 140) { this.ztc.actionPeriodMillis -= 20;}
-
-
-      let factor = ZombiesGame.rnd01();
-      let zx, zy :number;
-
-      if (Math.random() > 0.5) { zx = factor        * this.worldSize.x; zy = Math.random() * this.worldSize.y; }
-      else                     { zx = Math.random() * this.worldSize.x; zy = factor        * this.worldSize.y;}
-
-
-      this.add( new Zombie( zx, zy ) );
-    }
   }
-
-  static rnd01() { return Math.round(Math.random()); }
 
 
   public gameFrameDraw(): void {

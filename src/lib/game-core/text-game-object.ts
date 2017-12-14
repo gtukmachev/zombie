@@ -7,12 +7,14 @@ export class TextGameObject extends GameObject {
   public text: string;
   public font: string;
 
-  constructor (text: string, font:string, color: string | CanvasGradient | CanvasPattern, fill: string | CanvasGradient | CanvasPattern) {
+
+  constructor (text: string, size: number, font:string, color: string | CanvasGradient | CanvasPattern, fill: string | CanvasGradient | CanvasPattern) {
     super(0, 0);
     this.color = color;
     this.text = text;
     this.font = font;
     this.fill = fill;
+    this.r = size;
   }
 
 
@@ -23,7 +25,7 @@ export class TextGameObject extends GameObject {
     ctx.strokeStyle = this.color;
     ctx.textAlign = 'center';
     ctx.textBaseline = 'middle';
-    ctx.font = this.font;
+    ctx.font = `${this.r}px ${this.font}`;
     ctx.fillStyle = this.fill;
 
     this.game.ctx.fillText(this.text,this.game.worldSize.x / 2, this.game.worldSize.y / 2 );
