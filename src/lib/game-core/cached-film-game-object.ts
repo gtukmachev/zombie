@@ -28,19 +28,29 @@ export abstract class CachedFilmGameObject<T> extends GameObject {
     // [   cos(a)    sin(a)   0  ]
     // [  -sin(a)    cos(a)   0  ]
     // [   tx        ty       1  ]
-    let cosa = 1;
-    let sina = 0;
+    let cosa = 1; let sina = 0;
+
     if (this.angleType === AngleType.ON_MOVEMET) {
-      cosa = this.directionVector.x; sina = this.directionVector.y;
+      cosa = this.directionVector.x;
+      sina = this.directionVector.y;
     } else if (this.angleType === AngleType.ON_EYE) {
-      cosa = this.eyeDirectionVector.x; sina = this.eyeDirectionVector.y;
+      cosa = this.eyeDirectionVector.x;
+      sina = this.eyeDirectionVector.y;
     }
 
-    this.game.ctx.transform(
-       cosa*this.scale,     sina*this.scale,
-      -sina*this.scale,     cosa*this.scale,
-       this.p.x, this.p.y
-    );
+    if (this.feetInBottom && cosa < 0) {
+      this.game.ctx.transform(
+        -cosa*this.scale,     -sina*this.scale,
+        sina*this.scale,     -cosa*this.scale,
+        this.p.x, this.p.y);
+    } else {
+      this.game.ctx.transform(
+        cosa*this.scale,     sina*this.scale,
+        -sina*this.scale,     cosa*this.scale,
+        this.p.x, this.p.y
+      );
+    }
+
 
     this.game.ctx.drawImage( actualFrame.image,
       -actualFrame.center.x,

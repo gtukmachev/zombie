@@ -22,6 +22,7 @@ export abstract class GameObject {
   public eyeDirectionVector: Pos = new Pos(1,0);   // direction vector (length = 1)
 
   public angleType: AngleType = AngleType.ON_MOVEMET;
+  public feetInBottom = true;
   public scale: number = 1;
 
   public isAlife = false;

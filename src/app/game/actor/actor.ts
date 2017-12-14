@@ -238,15 +238,16 @@ export class Actor extends CachedFilmGameObject<ActorFrameDetails> {
 }
 
 export class ActorFrameDetails {
-  healthWidth: number;
+  //healthWidth: number;
   suit: number;
 
   constructor(helth: number, maxHealth: number, suit: number) {
-    this.healthWidth = Math.floor( 7*(helth / maxHealth) );
+    //this.healthWidth = Math.floor( 7*(helth / maxHealth) );
     this.suit = suit;
   }
 
   public getKey(): string {
-    return `a-${this.suit}-${this.healthWidth}`;
+    //return `a-${this.suit}-${this.healthWidth}`;
+    return `a-${this.suit}`;
   }
 }
