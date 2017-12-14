@@ -43,13 +43,17 @@ export class Zombie extends CachedFilmGameObject<ZombieFrameDetails>{
   }
 
   drawFrame(frameCtx: CanvasRenderingContext2D, frameDescr: FilmFrameDescription<ZombieFrameDetails>) {
+
+    let ctx = frameCtx;
+    let image: HTMLImageElement = document.getElementById("zi1") as HTMLImageElement;
+    ctx.drawImage(image, 0,0, frameDescr.size.x,frameDescr.size.y);
+/*
     const strokeStyle = '#9cb9b7';
     const fillStyle = '#aa0600';
 
     const subr = this.r - 3;
     let l = frameDescr.center.x;
 
-    let ctx = frameCtx;
     let path = new Path2D();
     path.moveTo(frameDescr.center.x, frameDescr.center.y);
     path.lineTo(frameDescr.center.x + l, frameDescr.center.y );
@@ -64,7 +68,8 @@ export class Zombie extends CachedFilmGameObject<ZombieFrameDetails>{
     ctx.fill();
     ctx.stroke();
 
-    //ctx.strokeRect(0,0, frameDescr.size.x, frameDescr.size.y)
+    ctx.strokeRect(0,0, frameDescr.size.x, frameDescr.size.y)
+*/
   }
 
   beforeTurn(): void {

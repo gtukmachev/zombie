@@ -1,4 +1,4 @@
-import {AngleType, GameObject} from '../../../lib/game-core/game-object';
+import {AngleType} from '../../../lib/game-core/game-object';
 import 'rxjs/add/operator/filter';
 import {Gun} from '../guns/gun';
 import {MachineGun} from '../guns/machine-gun';
@@ -34,6 +34,8 @@ export class Actor extends CachedFilmGameObject<ActorFrameDetails> {
 
   public gun: Gun;
 
+  public suit = 1;
+
   private _m_up = false;
   private _m_down = false;
   private _m_right = false;
@@ -43,6 +45,7 @@ export class Actor extends CachedFilmGameObject<ActorFrameDetails> {
 
   private mouseSubscription: Subscription;
   private keyboardSubscription: Subscription;
+
 
 
   constructor(x: number, y: number) {
@@ -83,7 +86,7 @@ export class Actor extends CachedFilmGameObject<ActorFrameDetails> {
 
   getCurrentFilmFrameDescription(): FilmFrameDescription<ActorFrameDetails> {
     const state = new ActorFrameDetails(
-      this.helth, this.maxHelth
+      this.helth, this.maxHelth, this.suit
     );
 
     const center = Math.floor(this.r * 2.5 );
@@ -97,6 +100,10 @@ export class Actor extends CachedFilmGameObject<ActorFrameDetails> {
   }
 
   drawFrame(frameCtx: CanvasRenderingContext2D, frameDescr: FilmFrameDescription<ActorFrameDetails>) {
+    let ctx = frameCtx;
+    let image: HTMLImageElement = document.getElementById("ai"+frameDescr.details.suit) as HTMLImageElement;
+    ctx.drawImage(image, 0,0, frameDescr.size.x,frameDescr.size.y);
+/*
     let strokeStyle = '#65b9b3';
     let fillStyle = '#6a8dff';
 
@@ -119,6 +126,7 @@ export class Actor extends CachedFilmGameObject<ActorFrameDetails> {
     ctx.stroke();
 
     //ctx.strokeRect(0,0, frameDescr.size.x, frameDescr.size.y)
+*/
   }
 
   public drawHelth(ctx: CanvasRenderingContext2D): void {
@@ -225,12 +233,14 @@ export class Actor extends CachedFilmGameObject<ActorFrameDetails> {
 
 export class ActorFrameDetails {
   healthWidth: number;
+  suit: number;
 
-  constructor(helth: number, maxHealth: number) {
+  constructor(helth: number, maxHealth: number, suit: number) {
     this.healthWidth = Math.floor( 7*(helth / maxHealth) );
+    this.suit = suit;
   }
 
   public getKey(): string {
-    return `a-${this.healthWidth}`;
+    return `a-${this.suit}-${this.healthWidth}`;
   }
 }

@@ -44,6 +44,8 @@ export class ZombiesGame extends Game {
     this.ztc.actionPeriodMillis = 1000;
     //this.gameTimeFrame = 20;
 
+    this.actor.suit = Math.floor(Math.random()*11) + 1;
+
   }
 
   public loose(): void {
