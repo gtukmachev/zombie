@@ -7,6 +7,7 @@ import {TextGameObject} from '../../lib/game-core/text-game-object';
 import {Level1} from './levels/level-1';
 import {Level} from '../../lib/game-core/level';
 import {Level2} from './levels/level-2';
+import {Level3} from './levels/level-3';
 
 export class ZombiesGame extends Game {
 
@@ -29,6 +30,7 @@ export class ZombiesGame extends Game {
     this.init_standard_objects();
          if (levelNumber === 1) { return new Level1(); }
     else if (levelNumber === 2) { return new Level2(); }
+    else if (levelNumber === 3) { return new Level3(); }
     return null;
   }
 
