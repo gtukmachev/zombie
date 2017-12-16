@@ -8,8 +8,8 @@ export class TextGameObject extends GameObject {
   public font: string;
 
 
-  constructor (text: string, size: number, font:string, color: string | CanvasGradient | CanvasPattern, fill: string | CanvasGradient | CanvasPattern) {
-    super(0, 0);
+  constructor (x: number, y: number, text: string, size: number, font:string, color: string | CanvasGradient | CanvasPattern, fill: string | CanvasGradient | CanvasPattern) {
+    super(x, y);
     this.color = color;
     this.text = text;
     this.font = font;
@@ -28,8 +28,8 @@ export class TextGameObject extends GameObject {
     ctx.font = `${this.r}px ${this.font}`;
     ctx.fillStyle = this.fill;
 
-    this.game.ctx.fillText(this.text,this.game.worldSize.x / 2, this.game.worldSize.y / 2 );
-    this.game.ctx.strokeText(this.text,this.game.worldSize.x / 2, this.game.worldSize.y / 2 );
+    this.game.ctx.fillText(this.text,this.p.x, this.p.y);
+    this.game.ctx.strokeText(this.text,this.p.x, this.p.y);
   }
 
   beforeTurn (): void {

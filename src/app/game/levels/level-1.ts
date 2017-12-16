@@ -1,42 +1,20 @@
-import {Level} from './level';
-import {TimeCounter} from '../../../lib/game-core/time-counter';
 import {Zombie} from '../zombies/zombie';
+import {ZombieGameAbstractLevel} from './zombie-game-level';
 
-export class Level1 extends Level {
+export class Level1 extends ZombieGameAbstractLevel {
 
-  constructor() { super(1); }
+  constructor() {
+    super(1, 4, 1500, '#3c3f41', '#f7ffb4');
+  }
 
-  private ztc: TimeCounter;
 
-  initLevelScenario(): void {
-    this.ztc = new TimeCounter(1000);
-
-    const xSize = this.game.worldSize.x;
-    const ySize = this.game.worldSize.y;
+  nextWave(): void {
     let zr = 30;
-    this.game.add( new Zombie(zr,       zr) );
-    this.game.add( new Zombie(xSize-zr, zr) );
-    this.game.add( new Zombie(xSize-zr, ySize-zr) );
-    this.game.add( new Zombie(zr,       ySize-zr) );
-
+         if (this.waveCounter === 1 ) { this.game.add( new Zombie(zr, zr) ); }
+    else if (this.waveCounter === 2 ) { this.game.add( new Zombie(this.game.worldSize.x-zr, zr) ); }
+    else if (this.waveCounter === 3 ) { this.game.add( new Zombie(this.game.worldSize.x-zr, this.game.worldSize.y-zr) ); }
+    else if (this.waveCounter === 4 ) { this.game.add( new Zombie(zr,this.game.worldSize.y-zr) ); }
   }
 
 
-  beforeTurn(): void {
-
-    if (this.ztc.isItTime()) {
-      this.ztc.fixLastChecking();
-      if (this.ztc.actionPeriodMillis > 140) { this.ztc.actionPeriodMillis -= 20;}
-
-
-      let factor = Math.round(Math.random());
-      let zx, zy :number;
-
-      if (Math.random() > 0.5) { zx = factor        * this.game.worldSize.x; zy = Math.random() * this.game.worldSize.y; }
-      else                     { zx = Math.random() * this.game.worldSize.x; zy = factor        * this.game.worldSize.y;}
-      this.game.add( new Zombie( zx, zy ) );
-    }
-
-
-  }
 }

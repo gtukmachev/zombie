@@ -4,6 +4,7 @@ import {GameObject} from '../../lib/game-core/game-object';
 import {WorldFrameObject} from '../../lib/game-core/world-frame-object';
 import {TestLine} from './tests/test-line';
 import {TestCircle} from './tests/test-circle';
+import {Level} from '../../lib/game-core/level';
 
 export class TestGame extends Game {
 
@@ -15,7 +16,7 @@ export class TestGame extends Game {
   constructor () { super(); }
 
 
-  public initLevel(levelNumber: number): void {
+  public initLevel(levelNumber: number): Level {
 
     const xSize = this.worldSize.x;
     const ySize = this.worldSize.y;
@@ -32,5 +33,7 @@ export class TestGame extends Game {
     this.add( new WorldFrameObject('#f3ffa2') );
 
     this.gameTimeFrame = 20;
+
+    return null;
   }
 }

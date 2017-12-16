@@ -7,8 +7,9 @@ import {Subject} from 'rxjs/Subject';
 import {GameMouseEvent, MouseEventType} from './events/game-mouse-event';
 import {GameKeyboardEvent, KeyboardEventType} from './events/game-keyboard-event';
 import {LocationMatrix} from './location-matrix';
+import {Level} from './level';
 
-export class Game {
+export abstract class Game {
 
   running: boolean = false;
   isLoose: boolean = false;
@@ -48,6 +49,9 @@ export class Game {
 
   public actor: GameObject; // main game object - camera will follow this object
 
+  public level_n: number = 0;
+  public level: Level;
+
   constructor () { }
 
   public init(canvas: HTMLCanvasElement, xWorldSize: number, yWorldSize: number, matrixStepSize): void {
@@ -64,16 +68,34 @@ export class Game {
     this.cameraInitialPos = new Pos( this.cameraPos.x, this.cameraPos.y );
     this.cameraActorFrame = new Pos( Math.floor(canvas.width / 9), Math.floor(canvas.height / 8) );
 
+    this.runLevel(1);
+
   }
 
   public clearGameState() {
     this.pauseGame();
-    this.matrix.forceClear()
+    this.matrix.forceClear();
     this.gameObjects.forEach(o => o.onRemovingFromGame());
     this.gameObjects = [];
+    this.level = null;
   }
 
-  public initLevel(levelNumber: number): void {}
+  public runLevel(levelNumber: number): void {
+    this.clearGameState();
+    this.level = this.initLevel(levelNumber);
+    this.level_n = levelNumber;
+
+    if (this.level) { this.add(this.level); }
+
+    this.startGame();
+
+  }
+
+  abstract initLevel(levelNumber: number): Level;
+
+  public goToNextLevel(): void {
+    this.runLevel(this.level_n + 1);
+  }
 
   private gameStep(): void {
     if (!this.running) { return; }
@@ -119,8 +141,8 @@ export class Game {
 
   public pauseGame(): void {
     this.running = false;
-    this.gameTimer.unsubscribe();
-    this.framesCounterSubscription.unsubscribe();
+    if (this.gameTimer) { this.gameTimer.unsubscribe(); }
+    if (this.framesCounterSubscription) { this.framesCounterSubscription.unsubscribe(); }
   }
 
   public toggleStartPause () {
@@ -140,6 +162,15 @@ export class Game {
     this.gameObjects.forEach( (go: GameObject) => { go.checkHealth(); go.beforeTurn(); } ); this.deleteMarkedElements();
     this.gameObjects.forEach( (go: GameObject) => go.turn() );                             this.deleteMarkedElements();
     this.gameObjects.forEach( (go: GameObject) => go.afterTurn() );                        this.deleteMarkedElements();
+
+    if (this.level) {
+
+      if (this.level.isCompleted && !this.level.isFinishingAnimation) {
+        this.goToNextLevel();
+      }
+
+    }
+
   }
 
   private followActor(): void {

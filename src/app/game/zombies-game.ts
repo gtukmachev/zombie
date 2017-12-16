@@ -5,6 +5,8 @@ import {WorldFrameObject} from '../../lib/game-core/world-frame-object';
 import {Actor} from './actor/actor';
 import {TextGameObject} from '../../lib/game-core/text-game-object';
 import {Level1} from './levels/level-1';
+import {Level} from '../../lib/game-core/level';
+import {Level2} from './levels/level-2';
 
 export class ZombiesGame extends Game {
 
@@ -13,8 +15,6 @@ export class ZombiesGame extends Game {
   backGround: GameObject;
   actor: Actor;
 
-
-  level: number = 1;
 
   constructor () {
     super();
@@ -25,11 +25,11 @@ export class ZombiesGame extends Game {
   }
 
 
-  public initLevel(levelNumber: number): void {
+  public initLevel(levelNumber: number): Level {
     this.init_standard_objects();
-
-    this.add(new Level1());
-
+         if (levelNumber === 1) { return new Level1(); }
+    else if (levelNumber === 2) { return new Level2(); }
+    return null;
   }
 
   private init_standard_objects(): void {
@@ -52,7 +52,7 @@ export class ZombiesGame extends Game {
 
   public loose(): void {
     super.loose();
-    this.add( new TextGameObject('Game Over !', 80, 'Arial', '#ff7716', '#6b6e70' ) );
+    this.add( new TextGameObject(this.worldSize.x/2, this.worldSize.y/2, 'Game Over !', 80, 'Arial', '#ff7716', '#6b6e70' ) );
   }
 
   public gameActionTurn(): void {
