@@ -18,10 +18,12 @@ export class AppComponent {
 
 
   public go(): void { this.game.toggleStartPause(); }
+
   public restartGame(): void {
     this.game.runLevel(1);
     this.game.startGame();
   }
+
   public restartLevel(): void {
     this.game.runLevel(this.game.level_n);
     this.game.startGame();

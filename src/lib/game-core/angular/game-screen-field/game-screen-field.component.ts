@@ -26,8 +26,6 @@ export class GameScreenFieldComponent implements OnInit {
 
     this.game.init(canvas, this.xWorldSize, this.yWorldSize, this.matrixStepSize);
 
-    this.game.initLevel(1);
-
   }
 
   @HostListener('mousemove', ['$event'])     onMouseMove(event: MouseEvent) { this.game.onMouseMove(event); }
