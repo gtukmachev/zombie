@@ -1,5 +1,4 @@
 import {Component} from '@angular/core';
-import {Game} from '../lib/game-core/game';
 import {ZombiesGame} from './game/zombies-game';
 import {CachedFilmGameObject} from '../lib/game-core/cached-film-game-object';
 
@@ -9,7 +8,7 @@ import {CachedFilmGameObject} from '../lib/game-core/cached-film-game-object';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent {
-  game: Game;
+  game: ZombiesGame;
 
 
   constructor() {
