@@ -9,11 +9,21 @@ import {CachedFilmGameObject} from '../lib/game-core/cached-film-game-object';
 })
 export class AppComponent {
   game: ZombiesGame;
-
+  isContentLoading = true;
+  imgCounter = 0;
 
   constructor() {
     //this.game = new TestGame();
     this.game = new ZombiesGame();
+
+  }
+
+  imgLoad(): void {
+    this.imgCounter++;
+    console.log(this.imgCounter);
+    if (this.imgCounter >= 12) {
+      this.isContentLoading = false;
+    }
   }
 
 

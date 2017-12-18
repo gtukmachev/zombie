@@ -1,3 +1,7 @@
+<div *ngIf="isContentLoading; else gameContent">
+  <h1>Loading...</h1>
+</div>
+<ng-template #gameContent>
 <button (click)="go()">go | pause</button>
 <button (click)="restartLevel()">restart level</button>
 <button (click)="restartGame()">restart game</button>
@@ -6,15 +10,16 @@
 <p>cache: {{CachedFilmGameObjectFCL() | number}}</p>
 <p>suit: {{game.actor.suit}}</p>
 <app-game-screen-field [game]="game" [matrixStepSize]="60"></app-game-screen-field>
-<img id="zi1"  [src]="'assets/accountant-zombie.png'" alt="" hidden="true">
-<img id="ai1"  [src]="'assets/actor1.png'" alt="" hidden="true'">
-<img id="ai2"  [src]="'assets/actor2.png'" alt="" hidden="true'">
-<img id="ai3"  [src]="'assets/actor3.png'" alt="" hidden="true'">
-<img id="ai4"  [src]="'assets/actor4.png'" alt="" hidden="true'">
-<img id="ai5"  [src]="'assets/actor5.png'" alt="" hidden="true'">
-<img id="ai6"  [src]="'assets/actor6.png'" alt="" hidden="true'">
-<img id="ai7"  [src]="'assets/actor7.png'" alt="" hidden="true'">
-<img id="ai8"  [src]="'assets/actor8.png'" alt="" hidden="true'">
-<img id="ai9"  [src]="'assets/actor9.png'" alt="" hidden="true'">
-<img id="ai10" [src]="'assets/actor10.png'" alt="" hidden="true'">
-<img id="ai11" [src]="'assets/actor11.png'" alt="" hidden="true'">
+</ng-template>
+<img id="zi1"  [src]="'assets/accountant-zombie.png'" alt="" hidden="true"  (load)="imgLoad()">
+<img id="ai1"  [src]="'assets/actor1.png'"  alt="" hidden="true'" (load)="imgLoad()">
+<img id="ai2"  [src]="'assets/actor2.png'"  alt="" hidden="true'" (load)="imgLoad()">
+<img id="ai3"  [src]="'assets/actor3.png'"  alt="" hidden="true'" (load)="imgLoad()">
+<img id="ai4"  [src]="'assets/actor4.png'"  alt="" hidden="true'" (load)="imgLoad()">
+<img id="ai5"  [src]="'assets/actor5.png'"  alt="" hidden="true'" (load)="imgLoad()">
+<img id="ai6"  [src]="'assets/actor6.png'"  alt="" hidden="true'" (load)="imgLoad()">
+<img id="ai7"  [src]="'assets/actor7.png'"  alt="" hidden="true'" (load)="imgLoad()">
+<img id="ai8"  [src]="'assets/actor8.png'"  alt="" hidden="true'" (load)="imgLoad()">
+<img id="ai9"  [src]="'assets/actor9.png'"  alt="" hidden="true'" (load)="imgLoad()">
+<img id="ai10" [src]="'assets/actor10.png'" alt="" hidden="true'" (load)="imgLoad()">
+<img id="ai11" [src]="'assets/actor11.png'" alt="" hidden="true'" (load)="imgLoad()">
