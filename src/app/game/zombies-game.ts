@@ -18,7 +18,7 @@ export class ZombiesGame extends Game {
 
 
   constructor () {
-    super();
+    super(1280, 720, 60);
     //this.gameTimeFrame = 20;
     this.followingActor = false;
     this.backGround  = new TransparentBackground();

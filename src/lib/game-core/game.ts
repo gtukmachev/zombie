@@ -52,23 +52,22 @@ export abstract class Game {
   public level_n: number = 0;
   public level: Level;
 
-  constructor () { }
-
-  public init(canvas: HTMLCanvasElement, xWorldSize: number, yWorldSize: number, matrixStepSize): void {
-    this.canvas = canvas;
-    this.ctx = canvas.getContext('2d');
+  constructor (xWorldSize: number, yWorldSize: number, matrixStepSize) {
     this.worldSize.x = xWorldSize;
     this.worldSize.y = yWorldSize;
 
     this.matrix = new LocationMatrix(matrixStepSize, this.worldSize);
-
     this.gameTimeFrame = 20;
+
+  }
+
+  public initCanvas(canvas: HTMLCanvasElement): void {
+    this.canvas = canvas;
+    this.ctx = canvas.getContext('2d');
 
     this.cameraPos = new Pos( Math.floor(canvas.width / 2), Math.floor(canvas.height / 2) );
     this.cameraInitialPos = new Pos( this.cameraPos.x, this.cameraPos.y );
     this.cameraActorFrame = new Pos( Math.floor(canvas.width / 9), Math.floor(canvas.height / 8) );
-
-    this.runLevel(1);
 
   }
 

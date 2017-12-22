@@ -13,7 +13,7 @@ export class TestGame extends Game {
   line: TestLine;
   circle: TestCircle;
 
-  constructor () { super(); }
+  constructor () { super(1280, 720, 60); }
 
 
   public initLevel(levelNumber: number): Level {

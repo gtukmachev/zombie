@@ -10,9 +10,6 @@ import {CachedFilmGameObject} from '../../cached-film-game-object';
 export class GameScreenFieldComponent implements OnInit {
 
   @Input() game: Game;
-  @Input() xWorldSize?: number;
-  @Input() yWorldSize?: number;
-  @Input() matrixStepSize?: number = 100;
 
   @ViewChild('gameCanvasField') canvasRef: ElementRef;
 
@@ -20,21 +17,20 @@ export class GameScreenFieldComponent implements OnInit {
 
   ngOnInit () {
     const canvas: HTMLCanvasElement = this.canvasRef.nativeElement;
+    canvas.width = 1280;
+    canvas.height = 720;
 
-    this.xWorldSize = (this.xWorldSize) || canvas.width;
-    this.yWorldSize = (this.yWorldSize) || canvas.height;
-
-    this.game.init(canvas, this.xWorldSize, this.yWorldSize, this.matrixStepSize);
+    this.game.initCanvas(canvas);
 
   }
 
-  @HostListener('mousemove', ['$event'])     onMouseMove(event: MouseEvent) { this.game.onMouseMove(event); }
-  @HostListener('mousedown', ['$event'])     onMouseDown(event: MouseEvent) { this.game.onMouseDown(event); }
-  @HostListener('mouseup',   ['$event'])       onMouseUp(event: MouseEvent) { this.game.onMouseUp(event);   }
-  @HostListener('click',     ['$event'])    onMouseClick(event: MouseEvent) { this.game.onMouseClick(event);}
-  @HostListener('dblclick',  ['$event']) onMouseDblClick(event: MouseEvent) { this.game.onMouseDblClick(event);}
-  @HostListener('mouseenter',['$event'])    onMouseEnter(event: MouseEvent) { this.game.onMouseEnter(event);}
-  @HostListener('mouseleave',['$event'])    onMouseLeave(event: MouseEvent) { this.game.onMouseLeave(event);}
+  @HostListener('document:mousemove', ['$event'])     onMouseMove(event: MouseEvent) { this.game.onMouseMove(event); }
+  @HostListener('document:mousedown', ['$event'])     onMouseDown(event: MouseEvent) { this.game.onMouseDown(event); }
+  @HostListener('document:mouseup',   ['$event'])       onMouseUp(event: MouseEvent) { this.game.onMouseUp(event);   }
+  @HostListener('document:click',     ['$event'])    onMouseClick(event: MouseEvent) { this.game.onMouseClick(event);}
+  @HostListener('document:dblclick',  ['$event']) onMouseDblClick(event: MouseEvent) { this.game.onMouseDblClick(event);}
+  @HostListener('document:mouseenter',['$event'])    onMouseEnter(event: MouseEvent) { this.game.onMouseEnter(event);}
+  @HostListener('document:mouseleave',['$event'])    onMouseLeave(event: MouseEvent) { this.game.onMouseLeave(event);}
 
   @HostListener('document:keypress',['$event']) onKeyPress(event: KeyboardEvent) { this.game.onKeyboardPress(event);}
   @HostListener('document:keydown', ['$event'])  onKeyDown(event: KeyboardEvent) { this.game.onKeyboardDown(event);}

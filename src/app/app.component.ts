@@ -23,6 +23,8 @@ export class AppComponent {
     console.log(this.imgCounter);
     if (this.imgCounter >= 12) {
       this.isContentLoading = false;
+      this.game.add(this.game.initLevel(1));
+      //this.game.startGame();
     }
   }
 

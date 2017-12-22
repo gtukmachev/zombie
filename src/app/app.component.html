@@ -9,7 +9,7 @@
 <p>tps: {{game.turnsPerSecond | number}}</p>
 <p>cache: {{CachedFilmGameObjectFCL() | number}}</p>
 <p>suit: {{game.actor.suit}}</p>
-<app-game-screen-field [game]="game" [matrixStepSize]="60"></app-game-screen-field>
+<app-game-screen-field [game]="game"></app-game-screen-field>
 </ng-template>
 <img id="zi1"  [src]="'assets/accountant-zombie.png'" alt="" hidden="true"  (load)="imgLoad()">
 <img id="ai1"  [src]="'assets/actor1.png'"  alt="" hidden="true'" (load)="imgLoad()">
