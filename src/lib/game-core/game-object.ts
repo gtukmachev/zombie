@@ -14,15 +14,18 @@ export abstract class GameObject {
 
   public p: Pos;     // the current position of this object (at the turn begin)
   public pNext: Pos; // the next (planned) position of this object ( p + speedVector )
-  public outerFrame: ObjectFrame;
 
-  public speed: number = 2;                     // movement speed (in pixels)
-  public speedVector: Pos = new Pos(1,0);       // movement vector speed (length = speed )
-  public directionVector: Pos = new Pos(1,0);   // direction vector (length = 1)
+  public outerFrame: ObjectFrame; // outer frame - is a square frame where image of thr current object is placed
+  public r: number = 2; // default size of this object in pixels
+
+  public speed: number = 2;                             // movement speed (in pixels per game turn)
+  public speedVector: Pos = new Pos(1,0);          // movement vector speed (length = speed )
+  public directionVector: Pos = new Pos(1,0);      // direction vector (length = 1)
   public eyeDirectionVector: Pos = new Pos(1,0);   // direction vector (length = 1)
 
   public angleType: AngleType = AngleType.ON_MOVEMET;
   public feetInBottom = true;
+
   public scale: number = 1;
 
   public isAlife = false;
@@ -31,7 +34,6 @@ export abstract class GameObject {
   public deadStage: number;
   public deadStages: number;
 
-  public r: number = 2; // default size of this object
 
   abstract draw(): void;
 

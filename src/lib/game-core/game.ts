@@ -102,6 +102,23 @@ export abstract class Game {
     this.turnsCounter++;
   }
 
+  public gameActionTurn(): void {
+    if (this.followingActor && this.actor) { this.followActor() }
+    this.gameObjects.forEach( (go: GameObject) => { go.checkHealth(); go.beforeTurn(); } ); this.deleteMarkedElements();
+    this.gameObjects.forEach( (go: GameObject) => go.turn() );                             this.deleteMarkedElements();
+    this.gameObjects.forEach( (go: GameObject) => go.afterTurn() );                        this.deleteMarkedElements();
+
+    if (this.level) {
+
+      if (this.level.isCompleted && !this.level.isFinishingAnimation) {
+        this.goToNextLevel();
+      }
+
+    }
+
+  }
+
+
   private paint(): void {
     if (!this.running) { return; }
     this.gameFrameDraw();
@@ -154,22 +171,6 @@ export abstract class Game {
 
   public loose(): void {
     this.isLoose = true;
-  }
-
-  public gameActionTurn(): void {
-    if (this.followingActor && this.actor) { this.followActor() }
-    this.gameObjects.forEach( (go: GameObject) => { go.checkHealth(); go.beforeTurn(); } ); this.deleteMarkedElements();
-    this.gameObjects.forEach( (go: GameObject) => go.turn() );                             this.deleteMarkedElements();
-    this.gameObjects.forEach( (go: GameObject) => go.afterTurn() );                        this.deleteMarkedElements();
-
-    if (this.level) {
-
-      if (this.level.isCompleted && !this.level.isFinishingAnimation) {
-        this.goToNextLevel();
-      }
-
-    }
-
   }
 
   private followActor(): void {
