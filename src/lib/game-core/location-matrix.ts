@@ -1,5 +1,5 @@
 import {GameObject} from './game-object';
-import {Pos} from './position';
+import {Vector} from './vector';
 
 export class LocationMatrix {
 
@@ -11,9 +11,9 @@ export class LocationMatrix {
   public lines: number;
   public columns: number;
 
-  private worldSize: Pos;
+  private worldSize: Vector;
 
-  constructor(size, worldSize: Pos) {
+  constructor(size, worldSize: Vector) {
     this.size = size;
     this.worldSize = worldSize.copy();
     this.forceClear();

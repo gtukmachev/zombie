@@ -1,5 +1,4 @@
 import {GameObject} from './game-object';
-import {Pos} from './position';
 import {TimeCounter} from './time-counter';
 import {Subscription} from 'rxjs/Subscription';
 import {Observable} from 'rxjs';
@@ -8,6 +7,7 @@ import {GameMouseEvent, MouseEventType} from './events/game-mouse-event';
 import {GameKeyboardEvent, KeyboardEventType} from './events/game-keyboard-event';
 import {LocationMatrix} from './location-matrix';
 import {Level} from './level';
+import {Vector} from './vector';
 
 export abstract class Game {
 
@@ -37,15 +37,15 @@ export abstract class Game {
   public ctx: CanvasRenderingContext2D;
   public gameObjects: GameObject[] = [];
   public gameObjectsForDelete: GameObject[] = [];
-  public mousePos: Pos = new Pos(0, 0);
+  public mousePos: Vector = new Vector(0, 0);
 
-  public worldSize: Pos = new Pos(0, 0);
+  public worldSize: Vector = new Vector(0, 0);
   public matrix: LocationMatrix;
 
-  public cameraInitialPos: Pos; // center of rendered canvas
-  public cameraPos: Pos; // in the beggining - this pos will be in center of rendered canvas
-  public cameraShift = new Pos(0,0); //
-  public cameraActorFrame: Pos; // frame size around camera where actor can getOffsetVector without camera movement
+  public cameraInitialPos: Vector; // center of rendered canvas
+  public cameraPos: Vector; // in the beggining - this pos will be in center of rendered canvas
+  public cameraShift = new Vector(0,0); //
+  public cameraActorFrame: Vector; // frame size around camera where actor can getOffsetVector without camera movement
 
   public actor: GameObject; // main game object - camera will follow this object
 
@@ -65,9 +65,9 @@ export abstract class Game {
     this.canvas = canvas;
     this.ctx = canvas.getContext('2d');
 
-    this.cameraPos = new Pos( Math.floor(canvas.width / 2), Math.floor(canvas.height / 2) );
-    this.cameraInitialPos = new Pos( this.cameraPos.x, this.cameraPos.y );
-    this.cameraActorFrame = new Pos( Math.floor(canvas.width / 9), Math.floor(canvas.height / 8) );
+    this.cameraPos = new Vector( Math.floor(canvas.width / 2), Math.floor(canvas.height / 2) );
+    this.cameraInitialPos = new Vector( this.cameraPos.x, this.cameraPos.y );
+    this.cameraActorFrame = new Vector( Math.floor(canvas.width / 9), Math.floor(canvas.height / 8) );
 
   }
 

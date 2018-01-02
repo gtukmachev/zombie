@@ -1,5 +1,5 @@
 import {AbstractPhisicMover} from './abstract-phisic-mover';
-import {Pos} from '../../position';
+import {Vector} from '../../vector';
 import {Subscription} from 'rxjs/Subscription';
 import {Game} from '../../game';
 import {KeyboardEventType} from '../../events/game-keyboard-event';
@@ -14,13 +14,13 @@ export class ManagebleMoverAWSD extends AbstractPhisicMover {
 
   private keyboardSubscription: Subscription;
 
-  private _targetPoint: Pos = new Pos(0,0);
+  private _targetPoint: Vector = new Vector(0,0);
 
-  targetPoint(): Pos {
+  targetPoint(): Vector {
 
-    if (this.gObj.speedMax === 0) { return this.gObj.p; }
+    if (this.gObj.sValMax === 0) { return this.gObj.p; }
 
-    const l = this.gObj.speedMax;
+    const l = this.gObj.sValMax;
     const o = 0;
 
     if      (  this._m_up && !this._m_down && !this._m_right && !this._m_left) { this._targetPoint.setAsOffsetOf_xy(this.gObj.p,  o, -l )}

@@ -6,7 +6,7 @@ import {MouseEventType} from '../../../lib/game-core/events/game-mouse-event';
 import {KeyboardEventType} from '../../../lib/game-core/events/game-keyboard-event';
 import {Game} from '../../../lib/game-core/game';
 import {Subscription} from 'rxjs/Subscription';
-import {Pos} from '../../../lib/game-core/position';
+import {Vector} from '../../../lib/game-core/vector';
 import {CachedFilmGameObject, FilmFrameDescription} from '../../../lib/game-core/cached-film-game-object';
 
 export class Actor extends CachedFilmGameObject<ActorFrameDetails> {
@@ -52,7 +52,7 @@ export class Actor extends CachedFilmGameObject<ActorFrameDetails> {
     super(x, y);
     this.speed = 4;
     this.speed_diagonal = this.speed * Actor.s2;
-    this.speedVector = new Pos(0,0);
+    this.speedVector = new Vector(0,0);
 
     this.gun = new MachineGun();
 
@@ -93,8 +93,8 @@ export class Actor extends CachedFilmGameObject<ActorFrameDetails> {
     const sz = center * 2;
 
     return new FilmFrameDescription<ActorFrameDetails>(state.getKey(),
-      new Pos(sz, sz),
-      new Pos(center, center),
+      new Vector(sz, sz),
+      new Vector(center, center),
       state
     );
   }

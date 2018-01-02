@@ -1,4 +1,4 @@
-import {Pos} from './position';
+import {Vector} from './vector';
 import {Game} from './game';
 import {ObjectFrame} from './object-frame';
 
@@ -12,16 +12,16 @@ export abstract class GameObject {
 
   public isDrawable = true;
 
-  public p: Pos;     // the current position of this object (at the turn begin)
-  public pNext: Pos; // the next (planned) position of this object ( p + speedVector )
+  public p: Vector;     // the current position of this object (at the turn begin)
+  public pNext: Vector; // the next (planned) position of this object ( p + speedVector )
 
   public outerFrame: ObjectFrame; // outer frame - is a square frame where image of thr current object is placed
   public r: number = 2; // default size of this object in pixels
 
   public speed: number = 2;                             // movement speed (in pixels per game turn)
-  public speedVector: Pos = new Pos(1,0);          // movement vector speed (length = speed )
-  public directionVector: Pos = new Pos(1,0);      // direction vector (length = 1)
-  public eyeDirectionVector: Pos = new Pos(1,0);   // direction vector (length = 1)
+  public speedVector: Vector = new Vector(1,0);          // movement vector speed (length = speed )
+  public directionVector: Vector = new Vector(1,0);      // direction vector (length = 1)
+  public eyeDirectionVector: Vector = new Vector(1,0);   // direction vector (length = 1)
 
   public angleType: AngleType = AngleType.ON_MOVEMET;
   public feetInBottom = true;
@@ -42,7 +42,7 @@ export abstract class GameObject {
   abstract afterTurn(): void;
 
   constructor (x: number, y: number, outerFrame?: ObjectFrame) {
-    this.p = new Pos(x, y);
+    this.p = new Vector(x, y);
     this.outerFrame = outerFrame;
   }
 
@@ -108,11 +108,11 @@ export abstract class GameObject {
     this.speedVector.y = this.directionVector.y * this.speed;
   }
 
-  setDirectionOn(targetPosition: Pos): void {
+  setDirectionOn(targetPosition: Vector): void {
     this.setDirectionOn_xy(targetPosition.x, targetPosition.y)
   }
 
-  setDirection( normalizedVector: Pos ): void { // the vector length should be = 1
+  setDirection( normalizedVector: Vector ): void { // the vector length should be = 1
 
     this.directionVector.x = normalizedVector.x;
     this.directionVector.y = normalizedVector.y;
@@ -121,7 +121,7 @@ export abstract class GameObject {
     this.speedVector.y = this.directionVector.y * this.speed;
   }
 
-  setEyeDirectionOn(p: Pos): void {
+  setEyeDirectionOn(p: Vector): void {
     this.setEyeDirectionOn_xy(p.x, p.y)
   }
 
@@ -135,7 +135,7 @@ export abstract class GameObject {
     this.eyeDirectionVector.y = ( vectorY / vectorLen );
   }
 
-  public moveOn(p: Pos) {
+  public moveOn(p: Vector) {
     this.p.x = p.x;
     this.p.y = p.y;
     this.updateMatrixLoaction();

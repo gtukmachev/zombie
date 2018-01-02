@@ -1,4 +1,4 @@
-export class Pos {
+export class Vector {
 
   static angle_0   =  0;
   static angle_90  =  Math.PI / 2;
@@ -14,31 +14,31 @@ export class Pos {
     this.y = y;
   }
 
-  public copy(): Pos { return new Pos(this.x, this.y); }
+  public copy(): Vector { return new Vector(this.x, this.y); }
 
-  public distanceTo(p: Pos): number {
+  public distanceTo(p: Vector): number {
     const dx = p.x - this.x;
     const dy = p.y - this.y;
     return Math.sqrt(dx * dx + dy * dy);
   }
 
-  public equals(p: Pos): boolean {
+  public equals(p: Vector): boolean {
     return this.x === p.x && this.y === p.y;
 
   }
 
-  public getOffsetVector(directionVector: Pos, distance: number): Pos {
-    return new Pos( this.x + directionVector.x * distance, this.y + directionVector.y * distance)
+  public getOffsetVector(directionVector: Vector, distance: number): Vector {
+    return new Vector( this.x + directionVector.x * distance, this.y + directionVector.y * distance)
   }
 
   public setVector(x: number, y: number) { this.x = x; this.y = y; }
 
-  public setAsOffsetOf(originalPosition: Pos, offsetVector: Pos) {
+  public setAsOffsetOf(originalPosition: Vector, offsetVector: Vector) {
     this.x = originalPosition.x + offsetVector.x;
     this.y = originalPosition.y + offsetVector.y;
   }
 
-  public setAsOffsetOf_xy(originalPosition: Pos, offsetX: number, offsetY: number) {
+  public setAsOffsetOf_xy(originalPosition: Vector, offsetX: number, offsetY: number) {
     this.x = originalPosition.x + offsetX;
     this.y = originalPosition.y + offsetY;
   }
@@ -49,8 +49,8 @@ export class Pos {
    */
   public angle() {
 
-    if (this.x === 0) { return (this.y > 0) ? Pos.angle_90 : Pos.angle_270; }
-    if (this.y === 0) { return (this.x > 0) ? Pos.angle_0  : Pos.angle_180; }
+    if (this.x === 0) { return (this.y > 0) ? Vector.angle_90 : Vector.angle_270; }
+    if (this.y === 0) { return (this.x > 0) ? Vector.angle_0  : Vector.angle_180; }
 
     if (this.x > 0 ) return  Math.asin(this.y);
     if (this.x < 0 && this.y > 0) return  Math.acos(this.x);
@@ -58,7 +58,7 @@ export class Pos {
 
   }
 
-  fLine(directionVector: Pos, x: number): number {
+  fLine(directionVector: Vector, x: number): number {
     return this.y + (directionVector.y / directionVector.x)*(x-this.x);
 
     // line L : y = kx + t
@@ -74,7 +74,7 @@ export class Pos {
     // return y;
   }
 
-  thisCircleWirhLineCrossing(line_p:Pos, line_directionVector: Pos, circle_radius: number): Array<Pos> {
+  thisCircleWirhLineCrossing(line_p:Vector, line_directionVector: Vector, circle_radius: number): Array<Vector> {
     // line L : y = kx + t
     //const x1 = line_p.x; // point on the line
     //const y1 = line_p.y;
@@ -90,7 +90,7 @@ export class Pos {
     return this.circleAndLineCrossingMath(k,t, this.x, this.y, circle_radius);
   }
 
-  circleAndLineCrossingMath(k: number, t: number, Xc: number, Yc: number, R: number): Array<Pos> {
+  circleAndLineCrossingMath(k: number, t: number, Xc: number, Yc: number, R: number): Array<Vector> {
     // 1
     //  /--
     //  |   line L:  y = kx + t
@@ -107,8 +107,8 @@ export class Pos {
     let c = t*t - 2*Yc*t - R*R + Yc*Yc + Xc*Xc;
 
     // solution of the square equation
-    let res1: Pos = null;
-    let res2: Pos = null;
+    let res1: Vector = null;
+    let res2: Vector = null;
 
     let D = b*b - 4*a*c;
 
@@ -116,17 +116,17 @@ export class Pos {
       return [];
 
     } else if (D == 0) {
-      res1 = new Pos(0,0);
+      res1 = new Vector(0,0);
       res1.x = (-b)/(2*a);
       res1.y = k*res1.x + t;
       return [res1];
 
     } else {
-      res1 = new Pos(0,0);
+      res1 = new Vector(0,0);
       res1.x = (-b + Math.sqrt(D)) / (2*a);
       res1.y = k*res1.x + t;
 
-      res2 = new Pos(0,0);
+      res2 = new Vector(0,0);
       res2.x = (-b - Math.sqrt(D)) / (2*a);
       res2.y = k*res2.x + t;
     }

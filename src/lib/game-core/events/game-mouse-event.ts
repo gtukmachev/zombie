@@ -1,9 +1,9 @@
-import {Pos} from '../position';
+import {Vector} from '../vector';
 
 export enum MouseEventType {UP, DOWN, CLICK, MOVE, DBL_CLICK, ENTER, LEAVE}
 
 export class GameMouseEvent {
-  constructor(mouseEvent: MouseEvent, type: MouseEventType, gamePoint: Pos) {
+  constructor(mouseEvent: MouseEvent, type: MouseEventType, gamePoint: Vector) {
     this._event = mouseEvent;
     this._type = type;
     this._gamePoint = gamePoint;
@@ -15,7 +15,7 @@ export class GameMouseEvent {
   private _type: MouseEventType;
       get type(): MouseEventType {return this._type; }
 
-  private _gamePoint: Pos;
-      get gamePoint(): Pos { return this._gamePoint; }
+  private _gamePoint: Vector;
+      get gamePoint(): Vector { return this._gamePoint; }
 
 }

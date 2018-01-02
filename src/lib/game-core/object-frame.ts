@@ -1,6 +1,6 @@
-import {Pos} from './position';
+import {Vector} from './vector';
 
-export class ObjectFrame extends Pos{
+export class ObjectFrame extends Vector{
 
   public w: number;
   public h: number;

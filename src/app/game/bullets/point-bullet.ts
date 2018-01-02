@@ -1,6 +1,6 @@
 import {GameObject} from '../../../lib/game-core/game-object';
 import {Game} from '../../../lib/game-core/game';
-import {Pos} from '../../../lib/game-core/position';
+import {Vector} from '../../../lib/game-core/vector';
 import {Zombie} from '../zombies/zombie';
 
 export class PointBullet extends GameObject{
@@ -10,7 +10,7 @@ export class PointBullet extends GameObject{
   r = 0.5;
 
 
-  constructor(game: Game, x: number, y: number, direction: Pos) {
+  constructor(game: Game, x: number, y: number, direction: Vector) {
     super(x, y);
 
     this.speed = 20;

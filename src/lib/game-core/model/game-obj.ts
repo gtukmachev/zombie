@@ -1,6 +1,6 @@
 import {Drawer} from './drawer';
 import {Mover} from './movers/mover';
-import {Pos} from '../position';
+import {Vector} from '../vector';
 import {AngleType} from '../game-object';
 import {Game} from '../game';
 
@@ -10,14 +10,18 @@ export class GameObj {
   private _drawer: Drawer; get drawer(): Drawer { return this._drawer; }
   private _mover: Mover;   get mover(): Mover { return this._mover; }
 
-  public p:       Pos;     // the current position of this object
-  public pBefore: Pos;     // a position of this object which was in the beginning of a current game turn
+  public p:       Vector;     // the current position of this object
+  public pBefore: Vector;     // a position of this object which was in the beginning of a current game turn
 
-  public speedMax: number = 0;                          // maximum possible speed (length of speedVector) for this object
-  public speed: number = 0;                             // movement speed (in pixels per game turn)
-  public speedVector: Pos = new Pos(1,0);          // movement vector speed (length = speed )
-  public directionVector: Pos = new Pos(1,0);      // direction vector (length = 1)
-  public eyeDirectionVector: Pos = new Pos(1,0);   // direction vector (length = 1)
+  // Speed definitions
+  public sValMax: number = 0;        // maximum possible speed (length of speedVector) for this object
+  public sVal:    number = 0;        // the current speed (length of speedVector) for this object
+  public s: Vector = new Vector(0,0); // speed vector (length = sVal)
+  public direction: Vector = new Vector(1,0);  // direction vector - normalized speed vector: s/sVal (length = 1)
+
+  public aVal: number = 0; //acceleration
+
+  public eye:       Vector = new Vector(1,0);  // direction vector (length = 1)
 
   public angleType: AngleType = AngleType.ON_MOVEMET;
   public feetInBottom = true;

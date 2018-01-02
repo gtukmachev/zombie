@@ -1,6 +1,6 @@
 import {AbstractPhisicMover} from './abstract-phisic-mover';
 import {GameObj} from '../game-obj';
-import {Pos} from '../../position';
+import {Vector} from '../../vector';
 
 
 export class FollowerMover extends AbstractPhisicMover {
@@ -14,7 +14,7 @@ export class FollowerMover extends AbstractPhisicMover {
   }
 
 
-  targetPoint(): Pos {
+  targetPoint(): Vector {
     return this.targetObject.p;
   }
 

@@ -1,5 +1,5 @@
 import {AngleType, GameObject} from './game-object';
-import {Pos} from './position';
+import {Vector} from './vector';
 
 export abstract class CachedFilmGameObject<T> extends GameObject {
 
@@ -71,11 +71,11 @@ export class FilmFrameDescription<T> {
     return this._key;
   }
 
-  get size(): Pos {
+  get size(): Vector {
     return this._size;
   }
 
-  get center(): Pos {
+  get center(): Vector {
     return this._center;
   }
 
@@ -88,13 +88,13 @@ export class FilmFrameDescription<T> {
   }
 
   private _key: string;
-  private _size: Pos;
-  private _center: Pos;
+  private _size: Vector;
+  private _center: Vector;
   private _details: T;
   private _image: HTMLCanvasElement;
 
 
-  constructor(key: string, size: Pos, center: Pos, details: T) {
+  constructor(key: string, size: Vector, center: Vector, details: T) {
     this._key = key;
     this._size = size;
     this._center = center;

@@ -1,6 +1,6 @@
 import {Actor} from '../actor/actor';
 import {CachedFilmGameObject, FilmFrameDescription} from '../../../lib/game-core/cached-film-game-object';
-import {Pos} from '../../../lib/game-core/position';
+import {Vector} from '../../../lib/game-core/vector';
 
 export class Zombie extends CachedFilmGameObject<ZombieFrameDetails>{
 
@@ -36,8 +36,8 @@ export class Zombie extends CachedFilmGameObject<ZombieFrameDetails>{
     const sz = center * 2;
 
     return new FilmFrameDescription<ZombieFrameDetails>(state.getKey(),
-      new Pos(sz, sz),
-      new Pos(center, center),
+      new Vector(sz, sz),
+      new Vector(center, center),
       state
     );
   }
