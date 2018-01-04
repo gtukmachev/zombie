@@ -10,7 +10,7 @@ export abstract class SuitsDrawer extends FrameDrawer<SuitsFrameDescription> {
   }
 
   drawFrame(frameDescr: SuitsFrameDescription): HTMLImageElement | HTMLCanvasElement | ImageBitmap | SuitsFrameDescription {
-    return this.drawSuit(1);
+    return this.drawSuit(frameDescr.suitNumber);
   }
 
   abstract drawSuit(suitNumber: number): HTMLImageElement | HTMLCanvasElement | ImageBitmap | SuitsFrameDescription
