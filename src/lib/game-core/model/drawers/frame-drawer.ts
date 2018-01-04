@@ -14,23 +14,33 @@ import {AngleType} from '../../game-object';
  *  <li>opacity - doesn't implemented yet</li>
  * </ul>
  */
-export abstract class FrameDrawer extends Drawer {
+export abstract class FrameDrawer<T extends FrameDescription> extends Drawer {
 
-  static framesCache: FramesCache = { };
+  static framesCache: ClassesFramesCache = { };
 
   draw(): void {
-    const currentFrameDescr: FrameDescription = this.getCurrentFrameDescription();
+    const currentFrameDescr: T = this.getCurrentFrameDescription();
     let actualFrame:  FrameDescription;
 
+    const currentClassName = this.constructor.name;
+    if (!(FrameDrawer.framesCache[currentClassName])) {
+      FrameDrawer.framesCache[currentClassName] = {};
+    }
+
     if (currentFrameDescr.key in FrameDrawer.framesCache ) {
-      actualFrame = FrameDrawer.framesCache[currentFrameDescr.key];
+      actualFrame = FrameDrawer.framesCache[currentClassName][currentFrameDescr.key];
     } else {
 
-      const image: HTMLImageElement | HTMLCanvasElement | HTMLVideoElement | ImageBitmap
+      const image: HTMLImageElement | HTMLCanvasElement | ImageBitmap | T
         = this.drawFrame(currentFrameDescr);
 
-      actualFrame = currentFrameDescr.copyFrameDescriptionWithImage( image );
-      FrameDrawer.framesCache[currentFrameDescr.key] = actualFrame;
+      if (image instanceof FrameDescription) {
+        actualFrame = image;
+      } else {
+        actualFrame = currentFrameDescr.copyFrameDescriptionWithImage( image );
+      }
+      FrameDrawer.framesCache[currentClassName][currentFrameDescr.key] = actualFrame;
+
     }
 
     const ctx = this.gObj.game.ctx;
@@ -90,10 +100,10 @@ export abstract class FrameDrawer extends Drawer {
 
   }
 
-  abstract getCurrentFrameDescription(): FrameDescription;
-  abstract drawFrame(frameDescr: FrameDescription): HTMLImageElement | HTMLCanvasElement | HTMLVideoElement | ImageBitmap;
+  abstract getCurrentFrameDescription(): T;
+  abstract drawFrame(frameDescr: T): HTMLImageElement | HTMLCanvasElement | ImageBitmap | T;
 
-  protected helperCreateIndividualFrameCanvas(currentFrameDescr: FrameDescription): HTMLCanvasElement {
+  protected helperCreateIndividualFrameCanvas(currentFrameDescr: T): HTMLCanvasElement {
     const frameCanvas = <HTMLCanvasElement> document.createElement('canvas');
     frameCanvas.width = currentFrameDescr.size.x;
     frameCanvas.height = currentFrameDescr.size.y;
@@ -103,27 +113,29 @@ export abstract class FrameDrawer extends Drawer {
 
 }
 
-
 export class FrameDescription {
-  private _key: string;              get key(): string { return this._key; }
-  private _size: Vector;             get size(): Vector { return this._size; }
-  private _center: Vector;           get center(): Vector { return this._center; }
-  private _image: HTMLImageElement | HTMLCanvasElement | HTMLVideoElement | ImageBitmap;
-      get image(): HTMLImageElement | HTMLCanvasElement | HTMLVideoElement | ImageBitmap { return this._image; }
+  private   _key: string;                get key(): string { return this._key; }
+  protected _size: Vector;             get size(): Vector { return this._size; }
+  protected _center: Vector;           get center(): Vector { return this._center; }
+  protected _image: HTMLImageElement | HTMLCanvasElement | ImageBitmap;
+      get image(): HTMLImageElement | HTMLCanvasElement | ImageBitmap { return this._image; }
 
-
-  constructor(key: string, size: Vector, center: Vector) {
+  constructor(key: string) {
     this._key = key;
-    this._size = size;
-    this._center = center;
   }
 
-  copyFrameDescriptionWithImage(image: HTMLImageElement | HTMLCanvasElement | HTMLVideoElement | ImageBitmap) {
-    const newFD = new FrameDescription(this.key, this.size, this.center);
+  public copyFrameDescriptionWithImage(image: HTMLImageElement | HTMLCanvasElement | ImageBitmap): FrameDescription {
+    const newFD = new FrameDescription(this.key);
+    this._size = new Vector(image.width, image.height);
+    this._center = new Vector(image.width / 2, image.height / 2);
     newFD._image = image;
     return newFD;
   }
 
+}
+
+interface ClassesFramesCache {
+  [key: string]: FramesCache;
 }
 
 interface FramesCache {
