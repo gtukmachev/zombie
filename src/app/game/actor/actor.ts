@@ -8,11 +8,17 @@ import {AngleType} from '../../../lib/game-core/objects/game-obj';
 import {Game2} from '../../../lib/game-core/game-2';
 import {MouseEventType} from '../../../lib/game-core/events/game-mouse-event';
 import {Subscription} from 'rxjs/Subscription';
+import {Pistol1} from '../guns/pistol-1';
+import {KeyboardEventType} from '../../../lib/game-core/events/game-keyboard-event';
+import {Pistol2} from '../guns/pistol-2';
+import {Pistol3} from '../guns/pistol-3';
 
 export class Actor extends LiveGameObj {
 
 //  static s2 = 1 / Math.sqrt(2);
-  private mouseSubscription: Subscription;
+  public guns: Array<Gun> = [
+    new Pistol1(), new Pistol2(), new Pistol3(), new MachineGun()
+  ];
 
   public gun: Gun;
 
@@ -22,9 +28,8 @@ export class Actor extends LiveGameObj {
 
 //  private speed_diagonal: number;
 
-//  private mouseSubscription: Subscription;
-//  private keyboardSubscription: Subscription;
-
+  private mouseSubscription: Subscription;
+  private keyboardSubscription: Subscription;
 
 
   constructor(x: number, y: number) {
@@ -37,7 +42,8 @@ export class Actor extends LiveGameObj {
     //this.speed_diagonal = this.speed * Actor.s2;
     //this.speedVector = new Vector(0,0);
 
-    this.gun = new MachineGun();
+    //this.gun = new MachineGun();
+    this.gun = new Pistol1();
   }
 
 
@@ -49,12 +55,17 @@ export class Actor extends LiveGameObj {
       else if (e.type === MouseEventType.UP)   { this.gun.onMouseUp(e.event); }
     });
 
-/*
+
     this.keyboardSubscription = this.game.keyboard.subscribe(e => {
-      if (e.type === KeyboardEventType.DOWN) { this.onKeyDown(e.event); }
-      else if (e.type === KeyboardEventType.UP)   { this.onKeyUp(e.event); }
+      if (e.type === KeyboardEventType.DOWN) {
+        if (e.event.code >= 'Digit1' && e.event.code <= 'Digit9') {
+          const i = Number( e.event.code.substr(5,1) ) - 1;
+
+          if (this.guns[i]) { this.gun = this.guns[i]; }
+        }
+      }
     });
-*/
+
 
   }
 
@@ -63,7 +74,7 @@ export class Actor extends LiveGameObj {
     super.onRemovingFromGame();
 
     if (this.mouseSubscription) this.mouseSubscription.unsubscribe();
-    //this.keyboardSubscription.unsubscribe();
+    if (this.keyboardSubscription) this.keyboardSubscription.unsubscribe();
   }
 
   public drawHealth(ctx: CanvasRenderingContext2D): void {

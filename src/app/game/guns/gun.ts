@@ -3,26 +3,33 @@ import {GameObj} from '../../../lib/game-core/objects/game-obj';
 
 export abstract class Gun {
 
-  protected reloadingDuration: TimeCounter;
+  protected reloadingTimer: TimeCounter;
+  protected shotTimer: TimeCounter;
 
-  public capacity: number;
-  public bullets: number;
+  public isAutomatic: boolean; // false - one shot per mouse click
+  public shotSpeed: number;    // shots per second
+  public capacity: number;     // amount of shots per single magazine
+  public bullets: number;      // the current rest of bullets in the current ma
   protected isReloadingInProcess = false;
 
   public isShotModeOn = false;
 
-
-  constructor(capacity: number, reloadingDuration: number) {
+  constructor(isAutomatic: boolean, shotSpeed: number, capacity: number, reloadingDurationMillis: number) {
+    this.isAutomatic = isAutomatic;
+    this.shotSpeed = shotSpeed;
     this.capacity = capacity;
     this.bullets = capacity;
-    this.reloadingDuration = new TimeCounter(reloadingDuration);
+    this.reloadingTimer = new TimeCounter(reloadingDurationMillis);
+    this.shotTimer = new TimeCounter(1000 / shotSpeed);
   }
+
 
   public shot(actor: GameObj): GameObj {
     if (!this.isShotModeOn) { return; }
 
     if (this.bullets > 0) {
         this.bullets -= 1;
+        if (!this.isAutomatic) { this.isShotModeOn = false; }
         return this.makeBullet(actor);
     } else {
         this.startReload();
@@ -58,13 +65,12 @@ export abstract class Gun {
       return;
     }
     this.isReloadingInProcess = true;
-    this.reloadingDuration.isItTime();
-    this.reloadingDuration.fixLastChecking();
+    this.reloadingTimer.startFromNow();
     this.bullets = 0;
   }
 
   public finishReloading(): void {
-    if (this.isReloadingInProcess && this.reloadingDuration.isItTime()) {
+    if (this.isReloadingInProcess && this.reloadingTimer.isItTime()) {
       this.bullets = this.capacity;
       this.isReloadingInProcess = false;
     }

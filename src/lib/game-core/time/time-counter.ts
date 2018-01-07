@@ -27,8 +27,8 @@ export class TimeCounter {
   public startFromNow() {
     this.lastDuration = 0;
     //todo: try to replace 'new Date().getTime()' with a construction without a new object creation
-    //this.lastActionTimeMillis = new Date().getTime();
-    this.lastCheckingMoment = Date.now();
+    this.lastActionTimeMillis = Date.now();
+    //this.lastCheckingMoment = Date.now();
 
   }
 

@@ -4,18 +4,19 @@ import {SimpleGameObj} from '../../../lib/game-core/objects/simple-draw-game-obj
 
 export class PointBullet extends SimpleGameObj{
 
-  attack = 1;
+  private attack: number;
+  private color: string;
 
-  r = 0.5;
 
 
-  constructor(x: number, y: number, direction: Vector) {
+  constructor(x: number, y: number, attack: number, color: string, direction: Vector) {
     super(x, y);
-
+    this.r = 0.5;
     this.sValMax = 20;
     this.sVal = this.sValMax;
+    this.attack = attack;
+    this.color = color;
     this.setDirection( direction );
-
   }
 
   draw(): void {
@@ -24,7 +25,7 @@ export class PointBullet extends SimpleGameObj{
     path.moveTo(this.p.x, this.p.y);
     path.lineTo(this.p.x + 7 * this.sd.x, this.p.y + 7 * this.sd.y);
     ctx.lineWidth = 3;
-    ctx.strokeStyle ='#b97686';
+    ctx.strokeStyle = this.color;
     ctx.stroke(path);
   }
 
