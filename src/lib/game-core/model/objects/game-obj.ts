@@ -84,6 +84,10 @@ export class GameObj {
     const vectorX = targetX - this.p.x;
     const vectorY = targetY - this.p.y;
 
+    if (vectorX === 0 && vectorY === 0 ) {
+      return;
+    }
+
     const vectorLen = Math.sqrt( vectorX*vectorX + vectorY*vectorY );
 
     this.sd.x = ( vectorX / vectorLen );

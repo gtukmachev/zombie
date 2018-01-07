@@ -1,9 +1,9 @@
-import {AbstractPhisicMover} from './abstract-phisic-mover';
+import {AbstractPhysicMover} from './abstract-phisic-mover';
 import {GameObj} from '../objects/game-obj';
 import {Vector} from '../../vector';
 
 
-export class FollowerMover extends AbstractPhisicMover {
+export class FollowerMover extends AbstractPhysicMover {
 
   public targetObject: GameObj;
 

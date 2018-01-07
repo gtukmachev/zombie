@@ -8,7 +8,7 @@ export class Zombie extends LiveGameObj {
 
   constructor(x: number, y: number) {
     super(x, y, new ZombieSuitsDrawer(), new FollowerMover(null),  3, 15);
-    this.r = 12;
+    this.r = 24;
     this.sValMax = 0.7;
     this.sVal = this.sValMax;
   }

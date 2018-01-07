@@ -26,7 +26,7 @@ export class Actor extends LiveGameObj {
   constructor(x: number, y: number) {
     super(x, y, new ActorSuitsDrawer(), new ManagebleMoverAWSD(), 500, 30);
     this.suit = 1;
-    this.r = 16;
+    this.r = 32;
     this.sValMax = 4;
     this.angleType = AngleType.ON_EYE;
 

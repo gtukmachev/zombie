@@ -1,11 +1,11 @@
-import {AbstractPhisicMover} from './abstract-phisic-mover';
+import {AbstractPhysicMover} from './abstract-phisic-mover';
 import {Vector} from '../../vector';
 import {Subscription} from 'rxjs/Subscription';
 import {KeyboardEventType} from '../../events/game-keyboard-event';
 import {Game2} from '../../game-2';
 
 
-export class ManagebleMoverAWSD extends AbstractPhisicMover {
+export class ManagebleMoverAWSD extends AbstractPhysicMover {
 
   private _m_up = false;
   private _m_down = false;
@@ -23,14 +23,14 @@ export class ManagebleMoverAWSD extends AbstractPhisicMover {
     const l = this.gObj.sValMax;
     const o = 0;
 
-    if      (  this._m_up && !this._m_down && !this._m_right && !this._m_left) { this._targetPoint.setAsOffsetOf_xy(this.gObj.p,  o, -l )}
-    else if (  this._m_up && !this._m_down &&  this._m_right && !this._m_left) { this._targetPoint.setAsOffsetOf_xy(this.gObj.p,  l, -l )}
-    else if ( !this._m_up && !this._m_down &&  this._m_right && !this._m_left) { this._targetPoint.setAsOffsetOf_xy(this.gObj.p,  l,  o )}
-    else if ( !this._m_up &&  this._m_down &&  this._m_right && !this._m_left) { this._targetPoint.setAsOffsetOf_xy(this.gObj.p,  l,  l )}
-    else if ( !this._m_up &&  this._m_down && !this._m_right && !this._m_left) { this._targetPoint.setAsOffsetOf_xy(this.gObj.p,  o,  l )}
-    else if ( !this._m_up &&  this._m_down && !this._m_right &&  this._m_left) { this._targetPoint.setAsOffsetOf_xy(this.gObj.p, -l,  l )}
-    else if ( !this._m_up && !this._m_down && !this._m_right &&  this._m_left) { this._targetPoint.setAsOffsetOf_xy(this.gObj.p, -l,  o )}
-    else if (  this._m_up && !this._m_down && !this._m_right &&  this._m_left) { this._targetPoint.setAsOffsetOf_xy(this.gObj.p, -l, -l )}
+    if      (  this._m_up && !this._m_down && !this._m_right && !this._m_left) { this._targetPoint.setAsOffsetOf_xy(this.gObj.pBefore,  o, -l )}
+    else if (  this._m_up && !this._m_down &&  this._m_right && !this._m_left) { this._targetPoint.setAsOffsetOf_xy(this.gObj.pBefore,  l, -l )}
+    else if ( !this._m_up && !this._m_down &&  this._m_right && !this._m_left) { this._targetPoint.setAsOffsetOf_xy(this.gObj.pBefore,  l,  o )}
+    else if ( !this._m_up &&  this._m_down &&  this._m_right && !this._m_left) { this._targetPoint.setAsOffsetOf_xy(this.gObj.pBefore,  l,  l )}
+    else if ( !this._m_up &&  this._m_down && !this._m_right && !this._m_left) { this._targetPoint.setAsOffsetOf_xy(this.gObj.pBefore,  o,  l )}
+    else if ( !this._m_up &&  this._m_down && !this._m_right &&  this._m_left) { this._targetPoint.setAsOffsetOf_xy(this.gObj.pBefore, -l,  l )}
+    else if ( !this._m_up && !this._m_down && !this._m_right &&  this._m_left) { this._targetPoint.setAsOffsetOf_xy(this.gObj.pBefore, -l,  o )}
+    else if (  this._m_up && !this._m_down && !this._m_right &&  this._m_left) { this._targetPoint.setAsOffsetOf_xy(this.gObj.pBefore, -l, -l )}
     else                                                                       { return this.gObj.p;}
 
     return this._targetPoint;
