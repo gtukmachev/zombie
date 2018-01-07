@@ -1,5 +1,4 @@
 import {FrameDescription, FrameDrawer} from './frame-drawer';
-import {Vector} from '../../vector';
 
 export abstract class SuitsDrawer extends FrameDrawer<SuitsFrameDescription> {
 
@@ -29,11 +28,8 @@ export class SuitsFrameDescription extends FrameDescription {
   }
 
   public copyFrameDescriptionWithImage(image: HTMLImageElement | HTMLCanvasElement | ImageBitmap): SuitsFrameDescription {
-    const newFD = new SuitsFrameDescription(this._suitNumber);
-    this._size = new Vector(image.width, image.height);
-    this._center = new Vector(image.width / 2, image.height / 2);
-    newFD._image = image;
-    return newFD;
+    return (new SuitsFrameDescription(this._suitNumber))
+      .applyWithImage(image) as SuitsFrameDescription;
   }
 
 }

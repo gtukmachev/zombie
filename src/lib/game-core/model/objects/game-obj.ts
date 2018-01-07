@@ -20,10 +20,14 @@ export class GameObj {
 
 
   //size
-  public r: number = 2; // default size (radius) of this object in pixels
   public scale: number = 1;
   public outerFrame: ObjectFrame; // outer frame - is a square frame where image of thr current object is placed
-
+  private _r: number; // default size (radius) of this object in pixels
+      get r(): number { return this._r; }
+      set r(val: number) {
+          this._r = val;
+          this.outerFrame = new ObjectFrame(-val, -val, 2*val, 2*val);
+      }
 
   // Speed definitions
   public sValMax: number = 0;        // maximum possible speed (length of speedVector) for this object (pixels/second)
@@ -51,14 +55,15 @@ export class GameObj {
 
   constructor(x: number, y: number, drawer: Drawer, mover: Mover) {
     this.p = new Vector(x, y);
-    this._drawer = drawer;  this._drawer.gObj = this;
-    this._mover = mover;    this._mover.gObj = this;
+    this.pBefore = new Vector(x, y);
+    this._drawer = drawer;  if (this._drawer) this._drawer.gObj = this;
+    this._mover = mover;    if (this._mover) this._mover.gObj = this;
   }
 
 
   // Lifecycle hook: on adding into a game
   public onAddIntoGame(game: Game2): void {
-    this.outerFrame = this.outerFrame || new ObjectFrame(-this.r, -this.r, this.r*2, this.r*2);
+    this.outerFrame = this.outerFrame || new ObjectFrame(-this._r, -this._r, this._r*2, this._r*2);
     if (this._drawer) this._drawer.onAddIntoGame(game);
     if (this._mover) this._mover.onAddIntoGame(game);
   }

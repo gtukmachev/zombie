@@ -27,8 +27,10 @@ export abstract class FrameDrawer<T extends FrameDescription> extends Drawer {
       FrameDrawer.framesCache[currentClassName] = {};
     }
 
-    if (currentFrameDescr.key in FrameDrawer.framesCache ) {
-      actualFrame = FrameDrawer.framesCache[currentClassName][currentFrameDescr.key];
+    const cache = FrameDrawer.framesCache[currentClassName];
+
+    if (currentFrameDescr.key in cache ) {
+      actualFrame = cache[currentFrameDescr.key];
     } else {
 
       const image: HTMLImageElement | HTMLCanvasElement | ImageBitmap | T
@@ -39,7 +41,7 @@ export abstract class FrameDrawer<T extends FrameDescription> extends Drawer {
       } else {
         actualFrame = currentFrameDescr.copyFrameDescriptionWithImage( image );
       }
-      FrameDrawer.framesCache[currentClassName][currentFrameDescr.key] = actualFrame;
+      cache[currentFrameDescr.key] = actualFrame;
 
     }
 
@@ -125,11 +127,15 @@ export class FrameDescription {
   }
 
   public copyFrameDescriptionWithImage(image: HTMLImageElement | HTMLCanvasElement | ImageBitmap): FrameDescription {
-    const newFD = new FrameDescription(this.key);
+    return (new FrameDescription(this.key))
+      .applyWithImage(image);
+  }
+
+  protected applyWithImage(image: HTMLImageElement | HTMLCanvasElement | ImageBitmap): FrameDescription {
     this._size = new Vector(image.width, image.height);
     this._center = new Vector(image.width / 2, image.height / 2);
-    newFD._image = image;
-    return newFD;
+    this._image = image;
+    return this;
   }
 
 }

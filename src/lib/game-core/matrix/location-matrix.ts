@@ -57,6 +57,8 @@ export class LocationMatrix {
   }
 
   public update(o: GameObj): void {
+    if (!(o.outerFrame)) return;
+
     const id = `${o.id}`;
 
     const pTopY  = o.p.y + o.outerFrame.y;
