@@ -1,5 +1,5 @@
 import {TimeCounter} from '../../../lib/game-core/time/time-counter';
-import {GameObj} from '../../../lib/game-core/model/objects/game-obj';
+import {GameObj} from '../../../lib/game-core/objects/game-obj';
 
 export abstract class Gun {
 

@@ -1,6 +1,6 @@
 import {Gun} from './gun';
 import {PointBullet} from '../bullets/point-bullet';
-import {GameObj} from '../../../lib/game-core/model/objects/game-obj';
+import {GameObj} from '../../../lib/game-core/objects/game-obj';
 
 export class MachineGun extends Gun {
 

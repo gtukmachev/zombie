@@ -1,4 +1,4 @@
-import {SimpleGameObj} from '../model/objects/simple-draw-game-obj';
+import {SimpleGameObj} from '../objects/simple-draw-game-obj';
 
 export class MatrixVisualizerGameObject extends SimpleGameObj {
 

@@ -1,6 +1,6 @@
 import {AbstractPhysicMover} from './abstract-phisic-mover';
 import {GameObj} from '../objects/game-obj';
-import {Vector} from '../../vector';
+import {Vector} from '../vector';
 
 
 export class FollowerMover extends AbstractPhysicMover {

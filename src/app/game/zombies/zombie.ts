@@ -1,7 +1,7 @@
 import {Actor} from '../actor/actor';
-import {SuitsDrawer, SuitsFrameDescription} from '../../../lib/game-core/model/drawers/suits-drawer';
-import {LiveGameObj} from '../../../lib/game-core/model/objects/live-game-obj';
-import {FollowerMover} from '../../../lib/game-core/model/movers/follower-mover';
+import {SuitsDrawer, SuitsFrameDescription} from '../../../lib/game-core/drawers/suits-drawer';
+import {LiveGameObj} from '../../../lib/game-core/objects/live-game-obj';
+import {FollowerMover} from '../../../lib/game-core/movers/follower-mover';
 import {Game2} from '../../../lib/game-core/game-2';
 
 export class Zombie extends LiveGameObj {

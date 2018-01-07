@@ -1,9 +1,9 @@
-import {TransparentBackground} from '../../lib/game-core/model/objects/background/transparent-background';
-import {WorldFrameObject} from '../../lib/game-core/model/objects/camera/world-frame-object';
+import {TransparentBackground} from '../../lib/game-core/objects/background/transparent-background';
+import {WorldFrameObject} from '../../lib/game-core/objects/camera/world-frame-object';
 import {TestLine} from './tests/test-line';
 import {TestCircle} from './tests/test-circle';
-import {Level} from '../../lib/game-core/model/objects/level/level';
-import {GameObj} from '../../lib/game-core/model/objects/game-obj';
+import {Level} from '../../lib/game-core/objects/level/level';
+import {GameObj} from '../../lib/game-core/objects/game-obj';
 import {Game2} from '../../lib/game-core/game-2';
 
 export class TestGame extends Game2 {

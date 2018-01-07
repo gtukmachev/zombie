@@ -1,6 +1,6 @@
 import {MouseEventType} from '../../../lib/game-core/events/game-mouse-event';
 import 'rxjs/add/operator/filter';
-import {SimpleGameObj} from '../../../lib/game-core/model/objects/simple-draw-game-obj';
+import {SimpleGameObj} from '../../../lib/game-core/objects/simple-draw-game-obj';
 import {Game2} from '../../../lib/game-core/game-2';
 import {Subscription} from 'rxjs/Subscription';
 

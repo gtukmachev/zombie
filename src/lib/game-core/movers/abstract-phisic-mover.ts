@@ -1,5 +1,5 @@
 import {Mover} from './mover';
-import {Vector} from '../../vector';
+import {Vector} from '../vector';
 
 export abstract class AbstractPhysicMover extends Mover {
 

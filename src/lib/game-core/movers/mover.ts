@@ -1,5 +1,5 @@
 import {GameObj} from '../objects/game-obj';
-import {Game2} from '../../game-2';
+import {Game2} from '../game-2';
 
 export abstract class Mover {
 

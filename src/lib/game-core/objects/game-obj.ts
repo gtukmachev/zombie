@@ -1,8 +1,8 @@
 import {Drawer} from '../drawers/drawer';
 import {Mover} from '../movers/mover';
-import {Vector} from '../../vector';
-import {Game2} from '../../game-2';
-import {ObjectFrame} from '../../object-frame';
+import {Vector} from '../vector';
+import {Game2} from '../game-2';
+import {ObjectFrame} from '../object-frame';
 
 
 export class GameObj {

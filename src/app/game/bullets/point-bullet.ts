@@ -1,6 +1,6 @@
 import {Vector} from '../../../lib/game-core/vector';
 import {Zombie} from '../zombies/zombie';
-import {SimpleGameObj} from '../../../lib/game-core/model/objects/simple-draw-game-obj';
+import {SimpleGameObj} from '../../../lib/game-core/objects/simple-draw-game-obj';
 
 export class PointBullet extends SimpleGameObj{
 

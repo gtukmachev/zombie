@@ -1,10 +1,10 @@
 import 'rxjs/add/operator/filter';
 import {Gun} from '../guns/gun';
 import {MachineGun} from '../guns/machine-gun';
-import {LiveGameObj} from '../../../lib/game-core/model/objects/live-game-obj';
-import {ManagebleMoverAWSD} from '../../../lib/game-core/model/movers/manageble-mover-AWSD';
-import {SuitsDrawer, SuitsFrameDescription} from '../../../lib/game-core/model/drawers/suits-drawer';
-import {AngleType} from '../../../lib/game-core/model/objects/game-obj';
+import {LiveGameObj} from '../../../lib/game-core/objects/live-game-obj';
+import {ManagebleMoverAWSD} from '../../../lib/game-core/movers/manageble-mover-AWSD';
+import {SuitsDrawer, SuitsFrameDescription} from '../../../lib/game-core/drawers/suits-drawer';
+import {AngleType} from '../../../lib/game-core/objects/game-obj';
 import {Game2} from '../../../lib/game-core/game-2';
 import {MouseEventType} from '../../../lib/game-core/events/game-mouse-event';
 import {Subscription} from 'rxjs/Subscription';

@@ -1,13 +1,13 @@
-import {TransparentBackground} from '../../lib/game-core/model/objects/background/transparent-background';
-import {WorldFrameObject} from '../../lib/game-core/model/objects/camera/world-frame-object';
+import {TransparentBackground} from '../../lib/game-core/objects/background/transparent-background';
+import {WorldFrameObject} from '../../lib/game-core/objects/camera/world-frame-object';
 import {Actor} from './actor/actor';
-import {TextGameObject} from '../../lib/game-core/model/objects/text/text-game-object';
+import {TextGameObject} from '../../lib/game-core/objects/text/text-game-object';
 import {Level1} from './levels/level-1';
-import {Level} from '../../lib/game-core/model/objects/level/level';
+import {Level} from '../../lib/game-core/objects/level/level';
 import {Level2} from './levels/level-2';
 import {Level3} from './levels/level-3';
 import {Game2} from '../../lib/game-core/game-2';
-import {GameObj} from '../../lib/game-core/model/objects/game-obj';
+import {GameObj} from '../../lib/game-core/objects/game-obj';
 import {MatrixVisualizerGameObject} from '../../lib/game-core/matrix/matrix-visualizer-game-object';
 
 export class ZombiesGame extends Game2 {

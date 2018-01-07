@@ -1,4 +1,4 @@
-import {Level} from '../../../lib/game-core/model/objects/level/level';
+import {Level} from '../../../lib/game-core/objects/level/level';
 import {TimeCounter} from '../../../lib/game-core/time/time-counter';
 import {Zombie} from '../zombies/zombie';
 

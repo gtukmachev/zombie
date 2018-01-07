@@ -1,5 +1,5 @@
 import {Drawer} from './drawer';
-import {Vector} from '../../vector';
+import {Vector} from '../vector';
 import {AngleType} from '../objects/game-obj';
 
 

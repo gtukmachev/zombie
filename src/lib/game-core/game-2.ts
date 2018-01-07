@@ -5,9 +5,9 @@ import {Subject} from 'rxjs/Subject';
 import {GameMouseEvent, MouseEventType} from './events/game-mouse-event';
 import {GameKeyboardEvent, KeyboardEventType} from './events/game-keyboard-event';
 import {LocationMatrix} from './matrix/location-matrix';
-import {Level} from './model/objects/level/level';
+import {Level} from './objects/level/level';
 import {Vector} from './vector';
-import {GameObj} from './model/objects/game-obj';
+import {GameObj} from './objects/game-obj';
 
 export abstract class Game2 {
 

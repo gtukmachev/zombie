@@ -1,8 +1,8 @@
 import {AbstractPhysicMover} from './abstract-phisic-mover';
-import {Vector} from '../../vector';
+import {Vector} from '../vector';
 import {Subscription} from 'rxjs/Subscription';
-import {KeyboardEventType} from '../../events/game-keyboard-event';
-import {Game2} from '../../game-2';
+import {KeyboardEventType} from '../events/game-keyboard-event';
+import {Game2} from '../game-2';
 
 
 export class ManagebleMoverAWSD extends AbstractPhysicMover {

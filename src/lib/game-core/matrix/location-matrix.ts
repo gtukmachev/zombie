@@ -1,5 +1,5 @@
 import {Vector} from '../vector';
-import {GameObj} from '../model/objects/game-obj';
+import {GameObj} from '../objects/game-obj';
 
 export class LocationMatrix {
 

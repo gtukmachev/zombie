@@ -1,6 +1,6 @@
 import {TextGameObject} from '../text/text-game-object';
 import {GameObj} from '../game-obj';
-import {Game2} from '../../../game-2';
+import {Game2} from '../../game-2';
 
 
 export abstract class Level extends GameObj {

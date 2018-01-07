@@ -1,6 +1,6 @@
 import {Component} from '@angular/core';
 import {ZombiesGame} from './game/zombies-game';
-import {FrameDrawer} from '../lib/game-core/model/drawers/frame-drawer';
+import {FrameDrawer} from '../lib/game-core/drawers/frame-drawer';
 
 @Component({
   selector: 'app-root',
