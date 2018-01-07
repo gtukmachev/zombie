@@ -1,6 +1,6 @@
 import {Component} from '@angular/core';
 import {ZombiesGame} from './game/zombies-game';
-import {CachedFilmGameObject} from '../lib/game-core/cached-film-game-object';
+import {FrameDrawer} from '../lib/game-core/model/drawers/frame-drawer';
 
 @Component({
   selector: 'app-root',
@@ -42,7 +42,7 @@ export class AppComponent {
   }
 
   public CachedFilmGameObjectFCL(): number {
-    return Object.keys(CachedFilmGameObject.framesCache).length;
+    return Object.keys(FrameDrawer.framesCache).length;
   }
 
 

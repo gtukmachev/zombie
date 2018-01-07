@@ -1,6 +1,5 @@
 import {Component, ElementRef, HostListener, Input, OnInit, ViewChild} from '@angular/core';
-import {Game} from '../../game';
-import {CachedFilmGameObject} from '../../cached-film-game-object';
+import {Game2} from '../../game-2';
 
 @Component({
   selector: 'app-game-screen-field',
@@ -9,7 +8,7 @@ import {CachedFilmGameObject} from '../../cached-film-game-object';
 })
 export class GameScreenFieldComponent implements OnInit {
 
-  @Input() game: Game;
+  @Input() game: Game2;
 
   @ViewChild('gameCanvasField') canvasRef: ElementRef;
 
@@ -39,10 +38,6 @@ export class GameScreenFieldComponent implements OnInit {
 
   ngOnDestroy (): void {
     this.game.onDestroy();
-  }
-
-  public CachedFilmGameObjectFCL(): number {
-    return Object.keys(CachedFilmGameObject.framesCache).length;
   }
 
 }

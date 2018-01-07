@@ -27,7 +27,7 @@ export class Level2 extends ZombieGameAbstractLevel {
     }
 
     if (this.XorY) { zx = this.rnd01    * this.game.worldSize.x; zy = this.game.worldSize.y/2 + ( this.zs * 25 )*this.dt; }
-    else           { zx = this.game.worldSize.x/2 + ( this.zs * 30 )*this.dt;; zy = this.rnd01  * this.game.worldSize.y;}
+    else           { zx = this.game.worldSize.x/2 + ( this.zs * 30 )*this.dt; zy = this.rnd01  * this.game.worldSize.y;}
 
     this.game.add( new Zombie( zx, zy ) );
 

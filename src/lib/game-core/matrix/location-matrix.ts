@@ -1,11 +1,11 @@
-import {GameObject} from './game-object';
-import {Vector} from './vector';
+import {Vector} from '../vector';
+import {GameObj} from '../model/objects/game-obj';
 
 export class LocationMatrix {
 
   public size;
 
-  public index: Array<Array<Array<GameObject>>>; // map matrix cel (l,c) -> set of objects inside this ceil
+  public index: Array<Array<Array<GameObj>>>; // map matrix cel (l,c) -> set of objects inside this ceil
   public positions: MatrixPosIndex= {}; // map object -> ceils of the matrix where this project present
 
   public lines: number;
@@ -34,7 +34,7 @@ export class LocationMatrix {
     this.positions = {};
   }
 
-  public remove(o: GameObject): void {
+  public remove(o: GameObj): void {
     const id = `${o.id}`;
     const prevPositions = this.positions[id];
     if (prevPositions) {
@@ -56,7 +56,7 @@ export class LocationMatrix {
     this.positions[id] = undefined;
   }
 
-  public update(o: GameObject): void {
+  public update(o: GameObj): void {
     const id = `${o.id}`;
 
     const pTopY  = o.p.y + o.outerFrame.y;
@@ -80,7 +80,7 @@ export class LocationMatrix {
     this.positions[id] = newPositions;
   }
 
-  public applyForNearestObjects(o: GameObject, callback: (GameObject) => void): void {
+  public applyForNearestObjects(o: GameObj, callback: (GameObj) => void): void {
     this.applyForRegionObjects(this.positions[`${o.id}`], callback);
   }
 
@@ -100,17 +100,20 @@ export class LocationMatrix {
       }
   }
 
-  public applyForRegionObjects(pos: MatrixPos, callback: (GameObject) => void) {
+  public applyForRegionObjects(pos: MatrixPos, callback: (GameObj) => void) {
     this.applyForRegion(pos, index => index.forEach(callback));
   }
 
-  private addIntoSet(set: Array<GameObject>, o: GameObject): void {
+
+  // todo: try to replace the Array<GameObj> to MapObject of <GameObj.id>: interface
+  private addIntoSet(set: Array<GameObj>, o: GameObj): void {
     let i = 0;
     while (i < set.length && set[i] !== o) { i++; }
     if (i == set.length) set.push(o);
   }
 
-  private removeFromSet(set: Array<GameObject>, o: GameObject): void {
+  // todo: try to replace the Array<GameObj> to MapObject of <GameObj.id>
+  private removeFromSet(set: Array<GameObj>, o: GameObj): void {
     let i = 0;
     while (i < set.length && set[i] !== o) { i++; }
     if (i < set.length)  set.splice(i);

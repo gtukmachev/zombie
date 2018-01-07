@@ -1,5 +1,5 @@
-import {GameObj} from '../game-obj';
-import {Game} from '../../game';
+import {GameObj} from '../objects/game-obj';
+import {Game2} from '../../game-2';
 
 export abstract class Mover {
 
@@ -8,7 +8,7 @@ export abstract class Mover {
   abstract move(): void;
 
   // Lifecycle hooks
-  public onAddIntoGame(game: Game): void { }
+  public onAddIntoGame(game: Game2): void { }
   public onRemovingFromGame(): void { }
 
 }

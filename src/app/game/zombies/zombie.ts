@@ -1,18 +1,16 @@
 import {Actor} from '../actor/actor';
-import {CachedFilmGameObject, FilmFrameDescription} from '../../../lib/game-core/cached-film-game-object';
-import {Vector} from '../../../lib/game-core/vector';
+import {SuitsDrawer, SuitsFrameDescription} from '../../../lib/game-core/model/drawers/suits-drawer';
+import {LiveGameObj} from '../../../lib/game-core/model/objects/live-game-obj';
+import {FollowerMover} from '../../../lib/game-core/model/movers/follower-mover';
+import {Game2} from '../../../lib/game-core/game-2';
 
-export class Zombie extends CachedFilmGameObject<ZombieFrameDetails>{
-
-  static PIx2 = Math.PI * 2;
-
-  public r = 12;
+export class Zombie extends LiveGameObj {
 
   constructor(x: number, y: number) {
-    super(x, y);
-    this.speed = 0.7;
-
-    this.withHelth(3, 15);
+    super(x, y, new ZombieSuitsDrawer(), new FollowerMover(null),  3, 15);
+    this.r = 12;
+    this.sValMax = 0.7;
+    this.sVal = this.sValMax;
   }
 
   private checkActorDamage() {
@@ -26,61 +24,19 @@ export class Zombie extends CachedFilmGameObject<ZombieFrameDetails>{
   }
 
 
-  getCurrentFilmFrameDescription(): FilmFrameDescription<ZombieFrameDetails> {
-
-    const state = new ZombieFrameDetails(
-      this.helth
-    );
-
-    const center = Math.floor(this.r * 2.5 );
-    const sz = center * 2;
-
-    return new FilmFrameDescription<ZombieFrameDetails>(state.getKey(),
-      new Vector(sz, sz),
-      new Vector(center, center),
-      state
-    );
-  }
-
-  drawFrame(frameCtx: CanvasRenderingContext2D, frameDescr: FilmFrameDescription<ZombieFrameDetails>) {
-
-    let ctx = frameCtx;
-    let image: HTMLImageElement = document.getElementById("zi1") as HTMLImageElement;
-    ctx.drawImage(image, 0,0, frameDescr.size.x,frameDescr.size.y);
-/*
-    const strokeStyle = '#9cb9b7';
-    const fillStyle = '#aa0600';
-
-    const subr = this.r - 3;
-    let l = frameDescr.center.x;
-
-    let path = new Path2D();
-    path.moveTo(frameDescr.center.x, frameDescr.center.y);
-    path.lineTo(frameDescr.center.x + l, frameDescr.center.y );
-    ctx.lineWidth = 1 + frameDescr.details.helth;
-
-    ctx.strokeStyle = strokeStyle;
-    ctx.stroke(path);
-
-    ctx.beginPath();
-    ctx.fillStyle = fillStyle;
-    ctx.arc(frameDescr.center.x, frameDescr.center.y, subr, 0, Zombie.PIx2);
-    ctx.fill();
-    ctx.stroke();
-
-    ctx.strokeRect(0,0, frameDescr.size.x, frameDescr.size.y)
-*/
+  public onAddIntoGame(game: Game2): void {
+    super.onAddIntoGame(game);
+    (this.mover as FollowerMover).targetObject = game.actor;
   }
 
   beforeTurn(): void {
     this.checkActorDamage();
-
     this.setDirectionOn( this.game.actor.p );
   }
 
-  turn(): void {
-    if (this.helth > 0) { this.moveForward(); }
-  }
+  // move(): void {
+  //   if (this.helth > 0) { this.moveForward(); }
+  // }
 
   afterTurn(): void {
     this.scale = this.getDeathStageK();
@@ -88,14 +44,19 @@ export class Zombie extends CachedFilmGameObject<ZombieFrameDetails>{
 
 }
 
-export class ZombieFrameDetails {
-  helth: number;
+//todo: move into ImagesSuitsDrawer
+class ZombieSuitsDrawer extends SuitsDrawer {
 
-  constructor(helth: number) {
-    this.helth = helth;
-  }
+  drawSuit(suitNumber: number): HTMLImageElement | HTMLCanvasElement | ImageBitmap | SuitsFrameDescription {
+    const sz = this.gObj.r * 2;
+    const canvas = this.createCanvas(sz, sz);
+    const ctx = canvas.getContext('2d');
+    const image: HTMLImageElement = document.getElementById("zi"+this.currentSuitNumber) as HTMLImageElement;
 
-  public getKey(): string {
-    return `z-${this.helth}`;
+    if ( this.currentSuitNumber === 2 || this.currentSuitNumber === 5 ) {
+      ctx.setTransform(-1, 0, 0, 1, sz, 0); // inversion: left <--> right
+    }
+    ctx.drawImage(image, 0,0, sz, sz);
+    return canvas;
   }
 }

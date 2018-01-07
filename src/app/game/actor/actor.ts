@@ -1,66 +1,44 @@
-import {AngleType} from '../../../lib/game-core/game-object';
 import 'rxjs/add/operator/filter';
 import {Gun} from '../guns/gun';
 import {MachineGun} from '../guns/machine-gun';
-import {MouseEventType} from '../../../lib/game-core/events/game-mouse-event';
-import {KeyboardEventType} from '../../../lib/game-core/events/game-keyboard-event';
-import {Game} from '../../../lib/game-core/game';
-import {Subscription} from 'rxjs/Subscription';
-import {Vector} from '../../../lib/game-core/vector';
-import {CachedFilmGameObject, FilmFrameDescription} from '../../../lib/game-core/cached-film-game-object';
+import {LiveGameObj} from '../../../lib/game-core/model/objects/live-game-obj';
+import {ManagebleMoverAWSD} from '../../../lib/game-core/model/movers/manageble-mover-AWSD';
+import {SuitsDrawer, SuitsFrameDescription} from '../../../lib/game-core/model/drawers/suits-drawer';
+import {AngleType} from '../../../lib/game-core/model/objects/game-obj';
 
-export class Actor extends CachedFilmGameObject<ActorFrameDetails> {
-  get m_up(): boolean {
-    return this._m_up;
-  }
+export class Actor extends LiveGameObj {
 
-  get m_down(): boolean {
-    return this._m_down;
-  }
-
-  get m_right(): boolean {
-    return this._m_right;
-  }
-
-  get m_left(): boolean {
-    return this._m_left;
-  }
-
-  static s2 = 1 / Math.sqrt(2);
-
-  r = 16;
-
-  public angleType: AngleType = AngleType.ON_EYE;
+//  static s2 = 1 / Math.sqrt(2);
 
   public gun: Gun;
 
-  public suit = 1;
+  // 'suit' property - delegates directly to SuitsDrawer.currentSuitNumber property.
+  get suit(): number { return (this.drawer as SuitsDrawer).currentSuitNumber; }
+  set suit(value: number) { (this.drawer as SuitsDrawer).currentSuitNumber = value; }
 
-  private _m_up = false;
-  private _m_down = false;
-  private _m_right = false;
-  private _m_left = false;
+//  private speed_diagonal: number;
 
-  private speed_diagonal: number;
-
-  private mouseSubscription: Subscription;
-  private keyboardSubscription: Subscription;
+//  private mouseSubscription: Subscription;
+//  private keyboardSubscription: Subscription;
 
 
 
   constructor(x: number, y: number) {
-    super(x, y);
-    this.speed = 4;
-    this.speed_diagonal = this.speed * Actor.s2;
-    this.speedVector = new Vector(0,0);
+    super(x, y, new ActorSuitsDrawer(), new ManagebleMoverAWSD(), 500, 30);
+    this.suit = 1;
+    this.r = 16;
+    this.sValMax = 4;
+    this.angleType = AngleType.ON_EYE;
+
+    //this.speed_diagonal = this.speed * Actor.s2;
+    //this.speedVector = new Vector(0,0);
 
     this.gun = new MachineGun();
-
-    this.withHelth(500, 30);
   }
 
+/*
 
-  public onAddIntoGame(game: Game): void {
+  public onAddIntoGame(game: Game2): void {
     super.onAddIntoGame(game);
 
     this.mouseSubscription = this.game.mouse.subscribe(e => {
@@ -82,60 +60,9 @@ export class Actor extends CachedFilmGameObject<ActorFrameDetails> {
     this.mouseSubscription.unsubscribe();
     this.keyboardSubscription.unsubscribe();
   }
-
-
-  getCurrentFilmFrameDescription(): FilmFrameDescription<ActorFrameDetails> {
-    const state = new ActorFrameDetails(
-      this.helth, this.maxHelth, this.suit
-    );
-
-    const center = Math.floor(this.r * 2.5 );
-    const sz = center * 2;
-
-    return new FilmFrameDescription<ActorFrameDetails>(state.getKey(),
-      new Vector(sz, sz),
-      new Vector(center, center),
-      state
-    );
-  }
-
-  drawFrame(frameCtx: CanvasRenderingContext2D, frameDescr: FilmFrameDescription<ActorFrameDetails>) {
-    let ctx = frameCtx;
-    let image: HTMLImageElement = document.getElementById("ai"+frameDescr.details.suit) as HTMLImageElement;
-
-    if ( frameDescr.details.suit === 2 || frameDescr.details.suit === 5 ) {
-      // inversion: left <--> right
-      ctx.setTransform(-1, 0, 0, 1, frameDescr.size.x, 0);
-    }
-
-    ctx.drawImage(image, 0,0, frameDescr.size.x,frameDescr.size.y);
-/*
-    let strokeStyle = '#65b9b3';
-    let fillStyle = '#6a8dff';
-
-    const subr = this.r - 3;
-    let l = frameDescr.center.x;
-
-    let ctx = frameCtx;
-    let path = new Path2D();
-    path.moveTo(frameDescr.center.x, frameDescr.center.y);
-    path.lineTo(frameDescr.center.x + l, frameDescr.center.y );
-    ctx.lineWidth = frameDescr.details.healthWidth > 0 ? frameDescr.details.healthWidth : 0.5;
-
-    ctx.strokeStyle = strokeStyle;
-    ctx.stroke(path);
-
-    ctx.beginPath();
-    ctx.fillStyle = fillStyle;
-    ctx.arc(frameDescr.center.x, frameDescr.center.y, subr, 0, GameObject.PIx2);
-    ctx.fill();
-    ctx.stroke();
-
-    //ctx.strokeRect(0,0, frameDescr.size.x, frameDescr.size.y)
 */
-  }
 
-  public drawHelth(ctx: CanvasRenderingContext2D): void {
+  public drawHealth(ctx: CanvasRenderingContext2D): void {
     const hx = 550;
     const hy = 15;
     const h_lineWidth = 7;
@@ -171,10 +98,7 @@ export class Actor extends CachedFilmGameObject<ActorFrameDetails> {
 
   beforeTurn(): void {
     this.gun.finishReloading();
-  }
 
-  turn(): void {
-    this.moveForwardSafe();
     this.setEyeDirectionOn_xy(this.game.mousePos.x, this.game.mousePos.y);
 
     let bullet = this.gun.shot(this);
@@ -187,67 +111,20 @@ export class Actor extends CachedFilmGameObject<ActorFrameDetails> {
     this.scale = this.getDeathStageK();
   }
 
-  private way(xd, yd, xs, ys) {
-    this.directionVector.x = xd; this.directionVector.y = yd;
-    this.speedVector.x     = xs; this.speedVector.y = ys;
-  }
-
-  private calcAngle() {
-    let o = 0;
-
-    let l = 1;
-    let p = Actor.s2;
-
-    let s = this.speed;
-    let d = this.speed_diagonal;
-
-    if      (  this._m_up && !this._m_down && !this._m_right && !this._m_left) { this.way(  o, -l,  o, -s); }
-    else if (  this._m_up && !this._m_down &&  this._m_right && !this._m_left) { this.way(  p, -p,  d, -d); }
-    else if ( !this._m_up && !this._m_down &&  this._m_right && !this._m_left) { this.way(  l,  o,  s,  o); }
-    else if ( !this._m_up &&  this._m_down &&  this._m_right && !this._m_left) { this.way(  p,  p,  d,  d); }
-    else if ( !this._m_up &&  this._m_down && !this._m_right && !this._m_left) { this.way(  o,  l,  o,  s); }
-    else if ( !this._m_up &&  this._m_down && !this._m_right &&  this._m_left) { this.way( -p,  p, -d,  d); }
-    else if ( !this._m_up && !this._m_down && !this._m_right &&  this._m_left) { this.way( -l,  o, -s,  o); }
-    else if (  this._m_up && !this._m_down && !this._m_right &&  this._m_left) { this.way( -p, -p, -d, -d); }
-    else                                                                       { this.way(  o,  o,  o,  o); }
-
-  }
-
-  set m_up(value: boolean)    { this._m_up = value; this.calcAngle();    }
-  set m_down(value: boolean)  { this._m_down = value; this.calcAngle();  }
-  set m_right(value: boolean) { this._m_right = value; this.calcAngle(); }
-  set m_left(value: boolean)  { this._m_left = value; this.calcAngle();  }
-
-  public onMouseDown(event: MouseEvent): void { this.gun.onMouseDown(event); }
-  public onMouseUp(event: MouseEvent): void { this.gun.onMouseUp(event); }
-
-  public onKeyDown(event: KeyboardEvent) {
-    if      (event.code === 'KeyW') {this.m_up    = true; }
-    else if (event.code === 'KeyS') {this.m_down  = true; }
-    else if (event.code === 'KeyA') {this.m_left  = true; }
-    else if (event.code === 'KeyD') {this.m_right = true; }
-  }
-
-  public onKeyUp(event: KeyboardEvent) {
-    if      (event.code === 'KeyW') {this.m_up    = false; }
-    else if (event.code === 'KeyS') {this.m_down  = false; }
-    else if (event.code === 'KeyA') {this.m_left  = false; }
-    else if (event.code === 'KeyD') {this.m_right = false; }
-  }
-
 }
 
-export class ActorFrameDetails {
-  //healthWidth: number;
-  suit: number;
+//todo: move into ImagesSuitsDrawer
+class ActorSuitsDrawer extends SuitsDrawer {
 
-  constructor(helth: number, maxHealth: number, suit: number) {
-    //this.healthWidth = Math.floor( 7*(helth / maxHealth) );
-    this.suit = suit;
-  }
-
-  public getKey(): string {
-    //return `a-${this.suit}-${this.healthWidth}`;
-    return `a-${this.suit}`;
+  drawSuit(suitNumber: number): HTMLImageElement | HTMLCanvasElement | ImageBitmap | SuitsFrameDescription {
+    const sz = this.gObj.r * 2;
+    const canvas = this.createCanvas(sz, sz);
+    const ctx = canvas.getContext('2d');
+    const image: HTMLImageElement = document.getElementById("ai"+this.currentSuitNumber) as HTMLImageElement;
+    if ( this.currentSuitNumber === 2 || this.currentSuitNumber === 5 ) {
+      ctx.setTransform(-1, 0, 0, 1, sz, 0); // inversion: left <--> right
+    }
+    ctx.drawImage(image, 0,0, sz, sz);
+    return canvas;
   }
 }

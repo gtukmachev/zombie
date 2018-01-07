@@ -1,14 +1,14 @@
-import {Game} from '../../lib/game-core/game';
-import {TransparentBackground} from '../../lib/game-core/transparent-background';
-import {GameObject} from '../../lib/game-core/game-object';
-import {WorldFrameObject} from '../../lib/game-core/world-frame-object';
+import {TransparentBackground} from '../../lib/game-core/model/objects/background/transparent-background';
+import {WorldFrameObject} from '../../lib/game-core/model/objects/camera/world-frame-object';
 import {TestLine} from './tests/test-line';
 import {TestCircle} from './tests/test-circle';
-import {Level} from '../../lib/game-core/level';
+import {Level} from '../../lib/game-core/model/objects/level/level';
+import {GameObj} from '../../lib/game-core/model/objects/game-obj';
+import {Game2} from '../../lib/game-core/game-2';
 
-export class TestGame extends Game {
+export class TestGame extends Game2 {
 
-  backGround: GameObject;
+  backGround: GameObj;
 
   line: TestLine;
   circle: TestCircle;
@@ -25,8 +25,8 @@ export class TestGame extends Game {
 
     this.add( this.backGround  );
 
-    this.line =  new TestLine( this, xSize / 3 * 2, ySize / 4 );
-    this.circle =  new TestCircle( this, this.line, xSize / 3, ySize / 4 * 2 );
+    this.line =  new TestLine(xSize / 3 * 2, ySize / 4 );
+    this.circle =  new TestCircle(this.line, xSize / 3, ySize / 4 * 2 );
     this.add( this.line );
     this.add( this.circle );
 

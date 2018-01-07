@@ -1,22 +1,20 @@
-import {GameObject} from './game-object';
+import {SimpleGameObj} from '../model/objects/simple-draw-game-obj';
 
-export class MatrixVisualizerGameObject extends GameObject {
+export class MatrixVisualizerGameObject extends SimpleGameObj {
 
   public colorPassive: string | CanvasGradient | CanvasPattern;
   public colorActive: string | CanvasGradient | CanvasPattern;
   public font: string;
 
   constructor (font:string, colorPassive: string | CanvasGradient | CanvasPattern, colorActive: string | CanvasGradient | CanvasPattern) {
-    super(0, 0);
+    super(0,0);
     this.colorPassive = colorPassive;
     this.colorActive = colorActive;
     this.font = font;
   }
 
 
-  draw (): void {
-    let ctx = this.game.ctx;
-
+  public draw(ctx: CanvasRenderingContext2D): void {
     ctx.lineWidth = 1;
     ctx.strokeStyle = this.colorPassive;
     ctx.textAlign = 'left';
@@ -51,14 +49,5 @@ export class MatrixVisualizerGameObject extends GameObject {
       }
     }
 
-  }
-
-  beforeTurn (): void {
-  }
-
-  turn (): void {
-  }
-
-  afterTurn (): void {
   }
 }

@@ -1,5 +1,5 @@
-import {Level} from '../../../lib/game-core/level';
-import {TimeCounter} from '../../../lib/game-core/time-counter';
+import {Level} from '../../../lib/game-core/model/objects/level/level';
+import {TimeCounter} from '../../../lib/game-core/time/time-counter';
 import {Zombie} from '../zombies/zombie';
 
 export abstract class ZombieGameAbstractLevel extends Level {

@@ -1,8 +1,6 @@
-
-
 import {Gun} from './gun';
-import {GameObject} from '../../../lib/game-core/game-object';
 import {PointBullet} from '../bullets/point-bullet';
+import {GameObj} from '../../../lib/game-core/model/objects/game-obj';
 
 export class MachineGun extends Gun {
 
@@ -10,12 +8,11 @@ export class MachineGun extends Gun {
     super(300, 1200);
   }
 
-  public makeBullet(actor: GameObject): GameObject {
+  public makeBullet(actor: GameObj): GameObj {
       return new PointBullet(
-        actor.game,
-        actor.p.x + 40 * actor.eyeDirectionVector.x,
-        actor.p.y + 40 * actor.eyeDirectionVector.y,
-        actor.eyeDirectionVector
+        actor.p.x + 40 * actor.eye.x,
+        actor.p.y + 40 * actor.eye.y,
+        actor.eye
       );
   }
 

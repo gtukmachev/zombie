@@ -1,19 +1,19 @@
-import {Game} from '../../lib/game-core/game';
-import {TransparentBackground} from '../../lib/game-core/transparent-background';
-import {GameObject} from '../../lib/game-core/game-object';
-import {WorldFrameObject} from '../../lib/game-core/world-frame-object';
+import {TransparentBackground} from '../../lib/game-core/model/objects/background/transparent-background';
+import {WorldFrameObject} from '../../lib/game-core/model/objects/camera/world-frame-object';
 import {Actor} from './actor/actor';
-import {TextGameObject} from '../../lib/game-core/text-game-object';
+import {TextGameObject} from '../../lib/game-core/model/objects/text/text-game-object';
 import {Level1} from './levels/level-1';
-import {Level} from '../../lib/game-core/level';
+import {Level} from '../../lib/game-core/model/objects/level/level';
 import {Level2} from './levels/level-2';
 import {Level3} from './levels/level-3';
+import {Game2} from '../../lib/game-core/game-2';
+import {GameObj} from '../../lib/game-core/model/objects/game-obj';
 
-export class ZombiesGame extends Game {
+export class ZombiesGame extends Game2 {
 
   //showOuterFrames = true;
 
-  backGround: GameObject;
+  backGround: GameObj;
   actor: Actor;
 
 
@@ -38,17 +38,17 @@ export class ZombiesGame extends Game {
     //this.add( new MatrixVisualizerGameObject('15px Arial', '#6b6e70', '#f68200' ) );
     //this.actor.suit
     this.isLoose = false;
-    this.actor.withHelth(500, 30);
+    this.actor.refreshLife();
 
     this.add( this.backGround  );
     this.add( this.actor       );
     this.add( new WorldFrameObject('#f3ffa2') );
 
-    this.actor.moveTo(this.worldSize.x/2, this.worldSize.y/2);
+    this.actor.moveOn_xy(this.worldSize.x/2, this.worldSize.y/2);
     this.actor.setDirectionOn_xy(1,0);
     this.actor.suit = Math.floor(Math.random()*11) + 1;
-    this.actor.speedVector.x = 0;
-    this.actor.speedVector.y = 0;
+    this.actor.s.x = 0;
+    this.actor.s.y = 0;
 
   }
 
@@ -72,7 +72,7 @@ export class ZombiesGame extends Game {
       0, 0
     );
     this.actor.gun.drawBullets(this.ctx);
-    this.actor.drawHelth(this.ctx);
+    this.actor.drawHealth(this.ctx);
 
 
   }

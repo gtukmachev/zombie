@@ -1,31 +1,30 @@
-import {GameObject} from '../../../lib/game-core/game-object';
-import {Game} from '../../../lib/game-core/game';
 import {MouseEventType} from '../../../lib/game-core/events/game-mouse-event';
 import 'rxjs/add/operator/filter';
+import {SimpleGameObj} from '../../../lib/game-core/model/objects/simple-draw-game-obj';
+import {Game2} from '../../../lib/game-core/game-2';
+import {Subscription} from 'rxjs/Subscription';
 
-export class TestLine extends GameObject {
+export class TestLine extends SimpleGameObj {
 
-  isDrawable = true;
+  needSetDirection = false;
   rotationOn = false;
+  mouseSubscription: Subscription;
 
 
-  constructor(game: Game, x: number, y: number) {
+  constructor(x: number, y: number) {
     super(x, y);
-    this.directionVector.setAngle(Math.PI / 6 * 5);
-    game.mouse.filter(e => e.type === MouseEventType.DOWN).subscribe(e => this.onMouseDown(e.event));
+    this.sd.setAngle(Math.PI / 6 * 5);
   }
 
-  draw(): void {
+  public draw(ctx: CanvasRenderingContext2D): void {
 
 
     let xBegin = 0;
-    let yBegin = this.p.fLine(this.directionVector, xBegin);
+    let yBegin = this.p.fLine(this.sd, xBegin);
 
     let xEnd = this.game.worldSize.x;
-    let yEnd = this.p.fLine(this.directionVector, xEnd);
+    let yEnd = this.p.fLine(this.sd, xEnd);
 
-
-    let ctx = this.game.ctx;
 
     ctx.lineWidth = 1;
     ctx.lineCap = 'round';
@@ -46,14 +45,14 @@ export class TestLine extends GameObject {
     ctx.strokeStyle = '#fff9f6';
     ctx.lineWidth = 5;
     ctx.beginPath();
-    let m = this.p.getOffsetVector(this.directionVector, 150);
+    let m = this.p.getOffsetVector(this.sd, 150);
     ctx.moveTo(m.x, m.y);
     ctx.lineTo(m.x, m.y);
     ctx.stroke();
 
     ctx.beginPath();
 
-    let a = this.directionVector.angle();
+    let a = this.sd.angle();
     if (a > 0) { ctx.arc(this.p.x, this.p.y, 150, 0, a );}
     else       { ctx.arc(this.p.x, this.p.y, 150, a, 0 );}
 
@@ -64,23 +63,31 @@ export class TestLine extends GameObject {
 
   }
 
-  beforeTurn(): void {
+
+  public onAddIntoGame(game: Game2): void {
+    super.onAddIntoGame(game);
+    this.mouseSubscription = game.mouse
+      .filter(e => e.type === MouseEventType.DOWN)
+      .subscribe(e => this.onMouseDown(e.event));
   }
 
-  turn(): void {
 
-    if (this.rotationOn) {this.directionVector.rotateOn(Math.PI / 900);}
-
-
+  public onRemovingFromGame(): void {
+    if (this.mouseSubscription) this.mouseSubscription.unsubscribe();
+    super.onRemovingFromGame();
   }
 
+  public move(): void {
+    if (this.needSetDirection) this.setDirectionOn_xy(this.game.mousePos.x, this.game.mousePos.y);
+    if (this.rotationOn) this.sd.rotateOn(Math.PI / 900);
+  }
 
 
   afterTurn(): void {
   }
 
   public onMouseDown(event: MouseEvent) {
-    if (event.which === 1) { this.setDirectionOn_xy(this.game.mousePos.x, this.game.mousePos.y); }
+    if (event.which === 1) this.needSetDirection = true;
     if (event.which === 2) { this.rotationOn = !this.rotationOn; }
   }
 

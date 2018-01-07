@@ -1,8 +1,8 @@
 import {AbstractPhisicMover} from './abstract-phisic-mover';
 import {Vector} from '../../vector';
 import {Subscription} from 'rxjs/Subscription';
-import {Game} from '../../game';
 import {KeyboardEventType} from '../../events/game-keyboard-event';
+import {Game2} from '../../game-2';
 
 
 export class ManagebleMoverAWSD extends AbstractPhisicMover {
@@ -36,7 +36,7 @@ export class ManagebleMoverAWSD extends AbstractPhisicMover {
     return this._targetPoint;
   }
 
-  public onAddIntoGame(game: Game): void {
+  public onAddIntoGame(game: Game2): void {
     super.onAddIntoGame(game);
 
     this.keyboardSubscription = game.keyboard.subscribe(e => {

@@ -1,19 +1,19 @@
-import {GameObject} from '../../../lib/game-core/game-object';
-import {Game} from '../../../lib/game-core/game';
 import {Vector} from '../../../lib/game-core/vector';
 import {Zombie} from '../zombies/zombie';
+import {SimpleGameObj} from '../../../lib/game-core/model/objects/simple-draw-game-obj';
 
-export class PointBullet extends GameObject{
+export class PointBullet extends SimpleGameObj{
 
   atack = 1;
 
   r = 0.5;
 
 
-  constructor(game: Game, x: number, y: number, direction: Vector) {
+  constructor(x: number, y: number, direction: Vector) {
     super(x, y);
 
-    this.speed = 20;
+    this.sValMax = 20;
+    this.sVal = this.sValMax;
     this.setDirection( direction );
 
   }
@@ -22,23 +22,20 @@ export class PointBullet extends GameObject{
     let ctx = this.game.ctx;
     let path = new Path2D();
     path.moveTo(this.p.x, this.p.y);
-    path.lineTo(this.p.x + 7 * this.directionVector.x, this.p.y + 7 * this.directionVector.y);
+    path.lineTo(this.p.x + 7 * this.sd.x, this.p.y + 7 * this.sd.y);
     ctx.lineWidth = 3;
     ctx.strokeStyle ='#b97686';
     ctx.stroke(path);
   }
 
   beforeTurn(): void {
-    this.checkForZombie()
+    this.checkForZombie(); // todo - move to crossing
   }
 
-  turn(): void {
+
+  public move(): void {
     this.moveForward();
     if (this.isOutOfField()) { this.game.markForDelete(this) }
-
-  }
-
-  afterTurn(): void {
   }
 
   checkForZombie(): void {

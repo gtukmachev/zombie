@@ -1,18 +1,19 @@
-import {GameObject} from './game-object';
-import {TimeCounter} from './time-counter';
+import {TimeCounter} from './time/time-counter';
 import {Subscription} from 'rxjs/Subscription';
 import {Observable} from 'rxjs';
 import {Subject} from 'rxjs/Subject';
 import {GameMouseEvent, MouseEventType} from './events/game-mouse-event';
 import {GameKeyboardEvent, KeyboardEventType} from './events/game-keyboard-event';
-import {LocationMatrix} from './location-matrix';
-import {Level} from './level';
+import {LocationMatrix} from './matrix/location-matrix';
+import {Level} from './model/objects/level/level';
 import {Vector} from './vector';
+import {GameObj} from './model/objects/game-obj';
 
-export abstract class Game {
+export abstract class Game2 {
 
-  running: boolean = false;
-  isLoose: boolean = false;
+  running:        boolean = false;
+  isLoose:        boolean = false;
+  followingActor: boolean  = false;
 
   showOuterFrames = false;
   outerFramesColor = '#596193';
@@ -22,37 +23,36 @@ export abstract class Game {
   turnsCounter = 0;
   framesPerSecond = 0;
   turnsPerSecond = 0;
-  lastFrameDuration = 0;
+  lastSecondFrameDuration = 0;
   framesCounterSubscription: Subscription;
 
   gameTimeFrame = 1;
   gameTimer: Subscription;
 
-  public mouse = new Subject<GameMouseEvent>();
-  public keyboard = new  Subject<GameKeyboardEvent>();
+  mouse = new Subject<GameMouseEvent>();
+  keyboard = new  Subject<GameKeyboardEvent>();
 
-  public followingActor = false;
 
-  public canvas: HTMLCanvasElement;
-  public ctx: CanvasRenderingContext2D;
-  public gameObjects: GameObject[] = [];
-  public gameObjectsForDelete: GameObject[] = [];
-  public mousePos: Vector = new Vector(0, 0);
+  canvas: HTMLCanvasElement;
+  ctx: CanvasRenderingContext2D;
+  gameObjects: GameObj[] = [];
+  gameObjectsForDelete: GameObj[] = [];
+  mousePos: Vector = new Vector(0, 0);
 
-  public worldSize: Vector = new Vector(0, 0);
-  public matrix: LocationMatrix;
+  worldSize: Vector = new Vector(0, 0);
+  matrix: LocationMatrix;
 
-  public cameraInitialPos: Vector; // center of rendered canvas
-  public cameraPos: Vector; // in the beggining - this pos will be in center of rendered canvas
-  public cameraShift = new Vector(0,0); //
-  public cameraActorFrame: Vector; // frame size around camera where actor can getOffsetVector without camera movement
+  cameraInitialPos: Vector; // center of rendered canvas
+  cameraPos: Vector; // in the beggining - this pos will be in center of rendered canvas
+  cameraShift = new Vector(0,0); //
+  cameraActorFrame: Vector; // frame size around camera where actor can getOffsetVector without camera movement
 
-  public actor: GameObject; // main game object - camera will follow this object
+  actor: GameObj; // main game object - camera will follow this object
 
-  public level_n: number = 0;
-  public level: Level;
+  level_n: number = 0;
+  level: Level;
 
-  constructor (xWorldSize: number, yWorldSize: number, matrixStepSize) {
+  constructor (xWorldSize: number, yWorldSize: number, matrixStepSize: number) {
     this.worldSize.x = xWorldSize;
     this.worldSize.y = yWorldSize;
 
@@ -103,21 +103,46 @@ export abstract class Game {
   }
 
   public gameActionTurn(): void {
-    if (this.followingActor && this.actor) { this.followActor() }
-    this.gameObjects.forEach( (go: GameObject) => { go.checkHealth(); go.beforeTurn(); } ); this.deleteMarkedElements();
-    this.gameObjects.forEach( (go: GameObject) => go.turn() );                             this.deleteMarkedElements();
-    this.gameObjects.forEach( (go: GameObject) => go.afterTurn() );                        this.deleteMarkedElements();
+    // step 01 - calling before-turn hooks
+    this.gameObjects.forEach( (go: GameObj) => go.beforeTurn() ); this.deleteMarkedElements();
 
+    // step 02 - moving
+    this.gameTurn_moving(); // on this step - objects cannot be removed
+
+    // step 03 - handle objects crossing (applying actions on objects touching)
+    this.gameTurn_crossing(); this.deleteMarkedElements();
+
+    // step 04 - calling before-turn hooks
+    this.gameObjects.forEach( (go: GameObj) => go.afterTurn()  ); this.deleteMarkedElements();
+
+    // step 05 - checking the current level on completion. todo: move this login inside "Level" class
     if (this.level) {
-
       if (this.level.isCompleted && !this.level.isFinishingAnimation) {
         this.goToNextLevel();
       }
-
     }
 
+    // step 06 - moving 'camera' to meet a new position of the actor
+    if (this.followingActor && this.actor) { this.followActor() }
   }
 
+  private gameTurn_moving(): void {
+    const len = this.gameObjects.length;
+    for (let i = 0; i < len; i++) {
+      let go = this.gameObjects[i];
+      if (go.mover) {
+        go.pBefore.setAs( go.p );
+        go.mover.move();
+        if (!(go.p.equals(go.pBefore))) {
+          this.matrix.update(go);
+        }
+      }
+    }
+  }
+
+  private gameTurn_crossing(): void {
+    // todo: implement
+  }
 
   private paint(): void {
     if (!this.running) { return; }
@@ -140,12 +165,12 @@ export abstract class Game {
     this.framesCounterSubscription = Observable.timer(1000, 1000).subscribe(() => {
       if (this.secondsTimerCounter.isItTime()) {
         this.secondsTimerCounter.fixLastChecking();
-        this.lastFrameDuration = this.secondsTimerCounter.lastDuration;
+        this.lastSecondFrameDuration = this.secondsTimerCounter.lastDuration;
 
-        this.framesPerSecond = Math.floor(this.framesCounter / this.lastFrameDuration * 1000);
+        this.framesPerSecond = Math.floor(this.framesCounter / this.lastSecondFrameDuration * 1000);
         this.framesCounter = 0;
 
-        this.turnsPerSecond = Math.floor(this.turnsCounter / this.lastFrameDuration * 1000);
+        this.turnsPerSecond = Math.floor(this.turnsCounter / this.lastSecondFrameDuration * 1000);
         this.turnsCounter = 0;
       }
     });
@@ -221,28 +246,31 @@ export abstract class Game {
   }
 
   public gameFrameDraw(): void {
-    this.gameObjects.forEach( (it: GameObject) => { if (it.isDrawable) {
-        this.resetCanvasTransform();
-        it.draw();
-        if (this.showOuterFrames) {
-          this.ctx.beginPath();
-          this.ctx.rect(it.p.x + it.outerFrame.x, it.p.y + it.outerFrame.y, it.outerFrame.w, it.outerFrame.h );
-          this.ctx.strokeStyle = this.outerFramesColor;
-          this.ctx.stroke();
-        }
+    this.gameObjects.forEach( (gameObj: GameObj) => { if (gameObj.drawer) {
+      this.resetCanvasTransform();
+      gameObj.drawer.draw();
+      if (this.showOuterFrames) {
+        this.ctx.beginPath();
+        this.ctx.rect(gameObj.p.x + gameObj.outerFrame.x, gameObj.p.y + gameObj.outerFrame.y, gameObj.outerFrame.w, gameObj.outerFrame.h );
+        this.ctx.strokeStyle = this.outerFramesColor;
+        this.ctx.stroke();
+      }
     }});
   }
 
-  public add(gameObject: GameObject): void {
-    this.gameObjects.push( gameObject );
-    gameObject.onAddIntoGame(this);
-
+  public add(gameObj: GameObj): void {
+    gameObj.id = this.getNextId();
+    gameObj.game = this;
+    this.gameObjects.push( gameObj );
+    this.matrix.update(gameObj); // todo: check, maybe not all objects should be registered in crossing matrix
+    gameObj.onAddIntoGame(this);
   }
 
-  protected del(gameObject: GameObject): void {
-    this.rmFromArr(this.gameObjects, gameObject);
-    if (gameObject === this.actor) { this.pauseGame(); }
-    this.matrix.remove(gameObject);
+  protected del(gameObj: GameObj): void {
+    this.rmFromArr(this.gameObjects, gameObj);
+    this.matrix.remove(gameObj);
+    gameObj.game = null;
+    if (gameObj === this.actor) { this.pauseGame(); }
   }
 
   protected rmFromArr(arr: any[], obj: any) {
@@ -250,8 +278,8 @@ export abstract class Game {
     if (i !== -1) { arr.splice(i, 1); }
   }
 
-  public markForDelete(gameObject: GameObject): void {
-    this.gameObjectsForDelete.push( gameObject );
+  public markForDelete(gameObj: GameObj): void {
+    this.gameObjectsForDelete.push( gameObj );
   };
 
   private deleteMarkedElements(): void {
@@ -284,7 +312,6 @@ export abstract class Game {
     this.gameTimer.unsubscribe();
     this.framesCounterSubscription.unsubscribe();
   }
-
 
   private _idCounter = 0;
   public getNextId(): number { return ++this._idCounter; }

@@ -33,6 +33,8 @@ export class Vector {
 
   public setVector(x: number, y: number) { this.x = x; this.y = y; }
 
+  public setAs(v: Vector) { this.x = v.x; this.y = v.y; }
+
   public setAsOffsetOf(originalPosition: Vector, offsetVector: Vector) {
     this.x = originalPosition.x + offsetVector.x;
     this.y = originalPosition.y + offsetVector.y;

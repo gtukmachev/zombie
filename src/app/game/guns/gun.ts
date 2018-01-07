@@ -1,7 +1,5 @@
-
-
-import {GameObject} from '../../../lib/game-core/game-object';
-import {TimeCounter} from '../../../lib/game-core/time-counter';
+import {TimeCounter} from '../../../lib/game-core/time/time-counter';
+import {GameObj} from '../../../lib/game-core/model/objects/game-obj';
 
 export abstract class Gun {
 
@@ -20,20 +18,20 @@ export abstract class Gun {
     this.reloadingDuration = new TimeCounter(reloadingDuration);
   }
 
-  public shot(actor: GameObject): GameObject {
+  public shot(actor: GameObj): GameObj {
     if (!this.isShotModeOn) { return; }
 
     if (this.bullets > 0) {
         this.bullets -= 1;
         return this.makeBullet(actor);
     } else {
-        this.startReaload();
+        this.startReload();
     }
 
     return null;
   }
 
-  public abstract makeBullet(actor: GameObject): GameObject;
+  public abstract makeBullet(actor: GameObj): GameObj;
 
 
   public drawBullets(ctx: CanvasRenderingContext2D) {
@@ -55,7 +53,7 @@ export abstract class Gun {
     ctx.stroke(path);
   }
 
-  public startReaload(): void {
+  public startReload(): void {
     if (this.isRelodingInProcess) {
       return;
     }

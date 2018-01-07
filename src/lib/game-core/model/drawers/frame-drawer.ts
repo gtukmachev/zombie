@@ -1,6 +1,6 @@
 import {Drawer} from './drawer';
 import {Vector} from '../../vector';
-import {AngleType} from '../../game-object';
+import {AngleType} from '../objects/game-obj';
 
 
 /**
@@ -92,6 +92,7 @@ export abstract class FrameDrawer<T extends FrameDescription> extends Drawer {
       );
     }
 
+    //todo: implement the checking: "if the frame in bounds of visible part of the game field"
 
     ctx.drawImage( actualFrame.image,
       -actualFrame.center.x,
@@ -103,12 +104,11 @@ export abstract class FrameDrawer<T extends FrameDescription> extends Drawer {
   abstract getCurrentFrameDescription(): T;
   abstract drawFrame(frameDescr: T): HTMLImageElement | HTMLCanvasElement | ImageBitmap | T;
 
-  protected helperCreateIndividualFrameCanvas(currentFrameDescr: T): HTMLCanvasElement {
+  protected createCanvas(width: number, height: number): HTMLCanvasElement {
     const frameCanvas = <HTMLCanvasElement> document.createElement('canvas');
-    frameCanvas.width = currentFrameDescr.size.x;
-    frameCanvas.height = currentFrameDescr.size.y;
-    //const frameCtx: CanvasRenderingContext2D = frameCanvas.getContext('2d');
-    return frameCanvas;
+    frameCanvas.width = width;
+    frameCanvas.height = height;
+    return frameCanvas; //const ctx: CanvasRenderingContext2D = frameCanvas.getContext('2d');
   }
 
 }
@@ -141,3 +141,4 @@ interface ClassesFramesCache {
 interface FramesCache {
   [key: string]: FrameDescription;
 }
+

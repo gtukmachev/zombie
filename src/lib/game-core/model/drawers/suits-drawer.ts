@@ -3,7 +3,7 @@ import {Vector} from '../../vector';
 
 export abstract class SuitsDrawer extends FrameDrawer<SuitsFrameDescription> {
 
-  public currentSuitNumber: number = 0;
+  public currentSuitNumber: number = 1;
 
   getCurrentFrameDescription(): SuitsFrameDescription {
     return new SuitsFrameDescription(this.currentSuitNumber);

@@ -1,44 +1,48 @@
-import {GameObject} from '../../../lib/game-core/game-object';
-import {Game} from '../../../lib/game-core/game';
 import {TestLine} from './test-line';
 import 'rxjs/add/operator/filter';
 import {MouseEventType} from '../../../lib/game-core/events/game-mouse-event';
 import {Subscription} from 'rxjs/Subscription';
+import {SimpleGameObj} from '../../../lib/game-core/model/objects/simple-draw-game-obj';
+import {Game2} from '../../../lib/game-core/game-2';
 
-export class TestCircle extends GameObject {
+export class TestCircle extends SimpleGameObj {
 
-  line: TestLine;
-  r = 200;
+  private line: TestLine;
 
   private mouseSubscription: Subscription;
+  private needMove = false;
 
-  constructor(game: Game, line: TestLine, x: number, y: number) {
+  constructor(line: TestLine, x: number, y: number) {
     super(x, y);
+    this.r = 200;
     this.line = line;
-
   }
 
-
-  public onAddIntoGame(game: Game): void {
+  public onAddIntoGame(game: Game2): void {
     super.onAddIntoGame(game);
-    this.mouseSubscription = game.mouse.filter(e => e.type === MouseEventType.DOWN).subscribe(e => this.onMouseDown(e.event));
+    this.mouseSubscription = game
+      .mouse
+      .filter(e => e.type === MouseEventType.DOWN && e.event.which === 3)
+      .subscribe(e => this.needMove = true);
   }
-
 
   public onRemovingFromGame(): void {
     super.onRemovingFromGame();
     this.mouseSubscription.unsubscribe();
   }
 
-  draw(): void {
 
-    let res = this.p.thisCircleWirhLineCrossing(this.line.p, this.line.directionVector, this.r)
+  public move(): void {
+    if (this.needMove) this.p.setAs(this.game.mousePos);
+  }
 
-    const ctx = this.game.ctx;
+  public draw(ctx: CanvasRenderingContext2D): void {
+
+    let res = this.p.thisCircleWirhLineCrossing(this.line.p, this.line.sd, this.r);
 
     ctx.lineWidth = 1;
     ctx.lineCap = 'round';
-    this.strokeCircle(this.p.x, this.p.y, this.r, '#569bff')
+    this.strokeCircle(ctx, this.p.x, this.p.y, this.r, '#569bff');
 
     const color = '#ff4400';
     ctx.strokeStyle = color;
@@ -48,27 +52,9 @@ export class TestCircle extends GameObject {
       ctx.moveTo(res[i].x, res[i].y);
       ctx.lineTo(res[i].x, res[i].y);
       ctx.stroke();
-      this.strokeCircle(res[i].x, res[i].y, 10, color)
+      this.strokeCircle(ctx, res[i].x, res[i].y, 10, color)
     }
 
-  }
-
-
-  beforeTurn(): void {
-  }
-
-  turn(): void {
-  }
-
-
-
-  afterTurn(): void {
-  }
-
-  public onMouseDown(event: MouseEvent) {
-    if (event.which === 3) {
-      this.moveOn(this.game.mousePos)
-    }
   }
 
 }

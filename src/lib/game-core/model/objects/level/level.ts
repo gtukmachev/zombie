@@ -1,9 +1,9 @@
-import {ManagerGameObject} from './manager-game-object';
-import {Game} from './game';
-import {TextGameObject} from './text-game-object';
+import {TextGameObject} from '../text/text-game-object';
+import {GameObj} from '../game-obj';
+import {Game2} from '../../../game-2';
 
 
-export abstract class Level extends ManagerGameObject {
+export abstract class Level extends GameObj {
 
   public n: number;
   protected textFillColor = '#3c3f41';
@@ -15,12 +15,12 @@ export abstract class Level extends ManagerGameObject {
 
 
   constructor(n: number) {
-    super();
+    super(0, 0, null, null);
     this.n = n;
   }
 
 
-  public onAddIntoGame(game: Game): void {
+  public onAddIntoGame(game: Game2): void {
     super.onAddIntoGame(game);
     this.caption = this.createStartCaption();
     if (this.caption) {
