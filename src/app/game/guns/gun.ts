@@ -7,7 +7,7 @@ export abstract class Gun {
 
   public capacity: number;
   public bullets: number;
-  protected isRelodingInProcess = false;
+  protected isReloadingInProcess = false;
 
   public isShotModeOn = false;
 
@@ -54,19 +54,19 @@ export abstract class Gun {
   }
 
   public startReload(): void {
-    if (this.isRelodingInProcess) {
+    if (this.isReloadingInProcess) {
       return;
     }
-    this.isRelodingInProcess = true;
+    this.isReloadingInProcess = true;
     this.reloadingDuration.isItTime();
     this.reloadingDuration.fixLastChecking();
     this.bullets = 0;
   }
 
   public finishReloading(): void {
-    if (this.isRelodingInProcess && this.reloadingDuration.isItTime()) {
+    if (this.isReloadingInProcess && this.reloadingDuration.isItTime()) {
       this.bullets = this.capacity;
-      this.isRelodingInProcess = false;
+      this.isReloadingInProcess = false;
     }
   }
 
