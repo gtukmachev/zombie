@@ -13,6 +13,7 @@ export class MachineGun extends Gun {
         actor.p.x + 40 * actor.eye.x,
         actor.p.y + 40 * actor.eye.y,
         1,
+        1,
         '#888888',
         actor.eye
       );

@@ -13,6 +13,7 @@ export class Pistol2 extends Gun {
         actor.p.x + 20 * actor.eye.x,
         actor.p.y + 20 * actor.eye.y,
         2,
+        2,
         '#7f87e2',
         actor.eye
       );
