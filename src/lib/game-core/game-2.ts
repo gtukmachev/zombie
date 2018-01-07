@@ -250,6 +250,7 @@ export abstract class Game2 {
       this.resetCanvasTransform();
       gameObj.drawer.draw();
       if (this.showOuterFrames) {
+        this.resetCanvasTransform();
         this.ctx.beginPath();
         this.ctx.rect(gameObj.p.x + gameObj.outerFrame.x, gameObj.p.y + gameObj.outerFrame.y, gameObj.outerFrame.w, gameObj.outerFrame.h );
         this.ctx.strokeStyle = this.outerFramesColor;

@@ -30,6 +30,7 @@ export class Zombie extends LiveGameObj {
   }
 
   beforeTurn(): void {
+    super.beforeTurn();
     this.checkActorDamage();
     this.setDirectionOn( this.game.actor.p );
   }

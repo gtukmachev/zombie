@@ -4,7 +4,7 @@ import {SimpleGameObj} from '../../../lib/game-core/model/objects/simple-draw-ga
 
 export class PointBullet extends SimpleGameObj{
 
-  atack = 1;
+  attack = 1;
 
   r = 0.5;
 
@@ -39,12 +39,15 @@ export class PointBullet extends SimpleGameObj{
   }
 
   checkForZombie(): void {
-    this.game.matrix.applyForNearestObjects(this, (z) => { if (z instanceof Zombie) {
-      if (z.helth > 0 && this.p.distanceTo( z.p ) <= (this.r + (z.r + z.helth)*2 ) ) {
-        z.damage(this.atack);
-        this.game.markForDelete(this);
+    this.game.matrix.applyForNearestObjects(this, (z) => {
+      if (z instanceof Zombie) {
+        if (z.helth > 0 && this.p.distanceTo( z.p ) <= (this.r + (z.r + z.helth)*2 ) ) {
+          z.damage(this.attack);
+          this.game.markForDelete(this);
+
+        }
       }
-    }});
+    });
   }
 
 

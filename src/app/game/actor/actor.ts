@@ -5,10 +5,14 @@ import {LiveGameObj} from '../../../lib/game-core/model/objects/live-game-obj';
 import {ManagebleMoverAWSD} from '../../../lib/game-core/model/movers/manageble-mover-AWSD';
 import {SuitsDrawer, SuitsFrameDescription} from '../../../lib/game-core/model/drawers/suits-drawer';
 import {AngleType} from '../../../lib/game-core/model/objects/game-obj';
+import {Game2} from '../../../lib/game-core/game-2';
+import {MouseEventType} from '../../../lib/game-core/events/game-mouse-event';
+import {Subscription} from 'rxjs/Subscription';
 
 export class Actor extends LiveGameObj {
 
 //  static s2 = 1 / Math.sqrt(2);
+  private mouseSubscription: Subscription;
 
   public gun: Gun;
 
@@ -36,20 +40,21 @@ export class Actor extends LiveGameObj {
     this.gun = new MachineGun();
   }
 
-/*
 
   public onAddIntoGame(game: Game2): void {
     super.onAddIntoGame(game);
 
     this.mouseSubscription = this.game.mouse.subscribe(e => {
-      if (e.type === MouseEventType.DOWN) { this.onMouseDown(e.event); }
-      else if (e.type === MouseEventType.UP)   { this.onMouseUp(e.event); }
+           if (e.type === MouseEventType.DOWN) { this.gun.onMouseDown(e.event); }
+      else if (e.type === MouseEventType.UP)   { this.gun.onMouseUp(e.event); }
     });
 
+/*
     this.keyboardSubscription = this.game.keyboard.subscribe(e => {
       if (e.type === KeyboardEventType.DOWN) { this.onKeyDown(e.event); }
       else if (e.type === KeyboardEventType.UP)   { this.onKeyUp(e.event); }
     });
+*/
 
   }
 
@@ -57,10 +62,9 @@ export class Actor extends LiveGameObj {
   public onRemovingFromGame(): void {
     super.onRemovingFromGame();
 
-    this.mouseSubscription.unsubscribe();
-    this.keyboardSubscription.unsubscribe();
+    if (this.mouseSubscription) this.mouseSubscription.unsubscribe();
+    //this.keyboardSubscription.unsubscribe();
   }
-*/
 
   public drawHealth(ctx: CanvasRenderingContext2D): void {
     const hx = 550;
@@ -97,6 +101,7 @@ export class Actor extends LiveGameObj {
   }
 
   beforeTurn(): void {
+    super.beforeTurn();
     this.gun.finishReloading();
 
     this.setEyeDirectionOn_xy(this.game.mousePos.x, this.game.mousePos.y);
