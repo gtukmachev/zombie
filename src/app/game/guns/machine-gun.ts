@@ -5,7 +5,7 @@ import {GameObj} from '../../../lib/game-core/objects/game-obj';
 export class MachineGun extends Gun {
 
   constructor() {
-    super(true, 10, 300, 1200);
+    super('Machine gun', true, 10, 300, 1200);
   }
 
   public makeBullet(actor: GameObj): GameObj {

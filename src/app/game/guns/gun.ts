@@ -11,16 +11,18 @@ export abstract class Gun {
   public capacity: number;     // amount of shots per single magazine
   public bullets: number;      // the current rest of bullets in the current ma
   protected isReloadingInProcess = false;
+  protected name: string = 'gun';
 
   public isShotModeOn = false;
 
-  constructor(isAutomatic: boolean, shotSpeed: number, capacity: number, reloadingDurationMillis: number) {
+  constructor(name: string, isAutomatic: boolean, shotSpeed: number, capacity: number, reloadingDurationMillis: number) {
     this.isAutomatic = isAutomatic;
     this.shotSpeed = shotSpeed;
     this.capacity = capacity;
     this.bullets = capacity;
     this.reloadingTimer = new TimeCounter(reloadingDurationMillis);
     this.shotTimer = new TimeCounter(1000 / shotSpeed);
+    this.name = name;
   }
 
 
@@ -46,18 +48,24 @@ export abstract class Gun {
     ctx.lineWidth = 3;
     ctx.strokeStyle ='#b97686';
 
-    for (let i = 0; i < this.bullets; i++) {
-      this.drawBullet(ctx, i);
-    }
-  }
-
-  public drawBullet(ctx: CanvasRenderingContext2D, i: number) {
     let path = new Path2D();
+    for (let i = 0; i < this.bullets; i++) {
 
-    path.moveTo(10 + (i % 100)*5, 10 + (Math.floor(i / 100))* 10 );
-    path.lineTo(10 + (i % 100)*5, 10 + (Math.floor(i / 100))* 10 + 7);
+      path.moveTo(10 + (i % 100)*5, 30 + (Math.floor(i / 100))* 10 );
+      path.lineTo(10 + (i % 100)*5, 30 + (Math.floor(i / 100))* 10 + 7);
 
+    }
     ctx.stroke(path);
+
+    ctx.lineWidth = 1;
+    //ctx.strokeStyle = 'white';
+    ctx.textAlign = 'left';
+    ctx.textBaseline = 'middle';
+    ctx.font = `12px Arial`;
+    ctx.fillStyle = 'white';
+
+      ctx.fillText(this.name, 10, 15);
+
   }
 
   public startReload(): void {
