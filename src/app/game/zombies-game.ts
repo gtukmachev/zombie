@@ -8,6 +8,8 @@ import {Level2} from './levels/level-2';
 import {Level3} from './levels/level-3';
 import {Game2} from '../../lib/game-core/game-2';
 import {GameObj} from '../../lib/game-core/objects/game-obj';
+import {Vector} from '../../lib/game-core/vector';
+import {CameraFrameObject} from '../../lib/game-core/objects/camera/camera-frame-object';
 
 export class ZombiesGame extends Game2 {
 
@@ -18,14 +20,23 @@ export class ZombiesGame extends Game2 {
 
 
   constructor () {
-    super(1280, 720, 60);
+    super(1280*1.5, 720*1.5, 80);
     //this.gameTimeFrame = 20;
     //this.showOuterFrames = true;
-    this.followingActor = false;
+    this.followingActor = true;
     this.backGround  = new TransparentBackground();
     this.actor       = new Actor(Math.floor(this.worldSize.x / 2), Math.floor(this.worldSize.y / 2) );
+
+    this.cameraPos = this.actor.p.copy();
+    this.cameraInitialPos = this.cameraPos.copy();
+
   }
 
+
+  public initCanvas(bgCanvas: HTMLCanvasElement, canvas: HTMLCanvasElement): void {
+    super.initCanvas(bgCanvas, canvas);
+    this.cameraActorFrame = new Vector( Math.floor(this.canvas.width / 4), Math.floor(this.canvas.height / 4) );
+  }
 
   public initLevel(levelNumber: number): Level {
     this.init_standard_objects();
@@ -45,6 +56,7 @@ export class ZombiesGame extends Game2 {
     this.add( this.actor       );
     this.add( new WorldFrameObject('#f3ffa2') );
     //this.add( new MatrixVisualizerGameObject('Arial', '#727b4c', '#f3ffa2') );
+    this.add( new CameraFrameObject('#727b4c') );
 
 
     this.actor.moveOn_xy(this.worldSize.x/2, this.worldSize.y/2);

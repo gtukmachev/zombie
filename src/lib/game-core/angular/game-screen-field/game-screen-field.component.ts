@@ -10,16 +10,19 @@ export class GameScreenFieldComponent implements OnInit {
 
   @Input() game: Game2;
 
+  @ViewChild('gameCanvasBg') canvasBgRef: ElementRef;
   @ViewChild('gameCanvasField') canvasRef: ElementRef;
 
   constructor () { }
 
   ngOnInit () {
     const canvas: HTMLCanvasElement = this.canvasRef.nativeElement;
-    canvas.width = 1280;
-    canvas.height = 720;
+    canvas.width = 1280; canvas.height = 720;
 
-    this.game.initCanvas(canvas);
+    const bgCanvas: HTMLCanvasElement = this.canvasBgRef.nativeElement;
+    canvas.width = 1280; canvas.height = 720;
+
+    this.game.initCanvas(bgCanvas, canvas);
 
   }
 

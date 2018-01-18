@@ -61,7 +61,7 @@ export abstract class Game2 {
 
   }
 
-  public initCanvas(canvas: HTMLCanvasElement): void {
+  public initCanvas(bgCanvas: HTMLCanvasElement, canvas: HTMLCanvasElement): void {
     this.canvas = canvas;
     this.ctx = canvas.getContext('2d');
 

@@ -21,7 +21,7 @@ export class AppComponent {
   imgLoad(): void {
     this.imgCounter++;
     console.log(this.imgCounter);
-    if (this.imgCounter >= 12) {
+    if (this.imgCounter >= 13) {
       this.isContentLoading = false;
       this.game.add(this.game.initLevel(1));
       //this.game.startGame();
