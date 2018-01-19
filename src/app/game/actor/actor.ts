@@ -3,7 +3,7 @@ import {Gun} from '../guns/gun';
 import {MachineGun} from '../guns/machine-gun';
 import {LiveGameObj} from '../../../lib/game-core/objects/live-game-obj';
 import {ManagebleMoverAWSD} from '../../../lib/game-core/movers/manageble-mover-AWSD';
-import {SuitsDrawer, SuitsFrameDescription} from '../../../lib/game-core/drawers/suits-drawer';
+import {SuitsDrawer} from '../../../lib/game-core/drawers/suits-drawer';
 import {AngleType} from '../../../lib/game-core/objects/game-obj';
 import {Game2} from '../../../lib/game-core/game-2';
 import {MouseEventType} from '../../../lib/game-core/events/game-mouse-event';
@@ -12,6 +12,7 @@ import {Pistol1} from '../guns/pistol-1';
 import {KeyboardEventType} from '../../../lib/game-core/events/game-keyboard-event';
 import {Pistol2} from '../guns/pistol-2';
 import {Pistol3} from '../guns/pistol-3';
+import {ImagesSuitsDrawer} from '../../../lib/game-core/drawers/images-suits-drawer';
 
 export class Actor extends LiveGameObj {
 
@@ -39,11 +40,7 @@ export class Actor extends LiveGameObj {
     this.sValMax = 4;
     this.angleType = AngleType.ON_EYE;
 
-    //this.speed_diagonal = this.speed * Actor.s2;
-    //this.speedVector = new Vector(0,0);
-
-    //this.gun = new MachineGun();
-    this.gun = new Pistol1();
+    this.gun = this.guns[0];
   }
 
 
@@ -130,17 +127,20 @@ export class Actor extends LiveGameObj {
 }
 
 //todo: move into ImagesSuitsDrawer
-class ActorSuitsDrawer extends SuitsDrawer {
-
-  drawSuit(suitNumber: number): HTMLImageElement | HTMLCanvasElement | ImageBitmap | SuitsFrameDescription {
-    const sz = this.gObj.r * 2;
-    const canvas = this.createCanvas(sz, sz);
-    const ctx = canvas.getContext('2d');
-    const image: HTMLImageElement = document.getElementById("ai"+this.currentSuitNumber) as HTMLImageElement;
-    if ( this.currentSuitNumber === 2 || this.currentSuitNumber === 5 ) {
-      ctx.setTransform(-1, 0, 0, 1, sz, 0); // inversion: left <--> right
-    }
-    ctx.drawImage(image, 0,0, sz, sz);
-    return canvas;
+class ActorSuitsDrawer extends ImagesSuitsDrawer {
+  constructor() {
+    super([
+      "assets/actor1.png",
+      "assets/actor2.png",
+      "assets/actor3.png",
+      "assets/actor4.png",
+      "assets/actor5.png",
+      "assets/actor6.png",
+      "assets/actor7.png",
+      "assets/actor8.png",
+      "assets/actor9.png",
+      "assets/actor10.png",
+      "assets/actor11.png"
+    ], true);
   }
 }
