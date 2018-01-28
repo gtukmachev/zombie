@@ -12,10 +12,6 @@ export abstract class AbstractPhysicMover extends Mover {
       //}
     }
 
-    if (isNaN(target.x)) {
-      alert('nan');
-    }
-
     //todo: remove this temp implementation and replace with a real one
     this.gObj.sVal = this.gObj.sValMax;
     this.gObj.setDirectionOn(target);
