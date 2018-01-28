@@ -5,7 +5,7 @@ import {KeyboardEventType} from '../events/game-keyboard-event';
 import {Game2} from '../game-2';
 
 
-export class ManagebleMoverAWSD extends AbstractPhysicMover {
+export class ManageableMoverAWED extends AbstractPhysicMover {
 
   private _m_up = false;
   private _m_down = false;

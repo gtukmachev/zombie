@@ -2,7 +2,7 @@ import 'rxjs/add/operator/filter';
 import {Gun} from '../guns/gun';
 import {MachineGun} from '../guns/machine-gun';
 import {LiveGameObj} from '../../../lib/game-core/objects/live-game-obj';
-import {ManagebleMoverAWSD} from '../../../lib/game-core/movers/manageble-mover-AWSD';
+import {ManageableMoverAWED} from '../../../lib/game-core/movers/manageble-mover-AWSD';
 import {SuitsDrawer} from '../../../lib/game-core/drawers/suits-drawer';
 import {AngleType} from '../../../lib/game-core/objects/game-obj';
 import {Game2} from '../../../lib/game-core/game-2';
@@ -34,7 +34,7 @@ export class Actor extends LiveGameObj {
 
 
   constructor(x: number, y: number) {
-    super(x, y, new ActorSuitsDrawer(), new ManagebleMoverAWSD(), 500, 30);
+    super(x, y, new ActorSuitsDrawer(), new ManageableMoverAWED(), 500, 30);
     this.suit = 1;
     this.r = 32;
     this.sValMax = 4;
