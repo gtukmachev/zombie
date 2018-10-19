@@ -8,7 +8,7 @@ import {Level3} from './levels/level-3';
 import {Game2} from '../../lib/game-core/game-2';
 import {GameObj} from '../../lib/game-core/objects/game-obj';
 import {Vector} from '../../lib/game-core/vector';
-import {TowerGun1} from './towers/tower-gun-1';
+import {MatrixVisualizerGameObject} from '../../lib/game-core/matrix/matrix-visualizer-game-object';
 
 export class ZombiesGame extends Game2 {
 
@@ -21,7 +21,7 @@ export class ZombiesGame extends Game2 {
   constructor () {
     super(1280, 720, 80);
     //this.gameTimeFrame = 20;
-    //this.showOuterFrames = true;
+    this.showOuterFrames = true;
     //this.followingActor = true;
     this.backGround  = new TransparentBackground();
     this.actor       = new Actor(Math.floor(this.worldSize.x / 2), Math.floor(this.worldSize.y / 2) );
@@ -54,10 +54,10 @@ export class ZombiesGame extends Game2 {
     this.add( this.backGround  );
     this.add( this.actor       );
     //this.add( new WorldFrameObject('#f3ffa2') );
-    //this.add( new MatrixVisualizerGameObject('Arial', '#727b4c', '#f3ffa2') );
+    this.add( new MatrixVisualizerGameObject('Arial', '#727b4c', '#f3ffa2') );
     //this.add( new CameraFrameObject('#727b4c') );
 
-    this.add( new TowerGun1( this.worldSize.x/2 + 30, this.worldSize.y/2 + 30 ) );
+    //this.add( new TowerGun1( this.worldSize.x/2 + 30, this.worldSize.y/2 + 30 ) );
 
     this.actor.moveOn_xy(this.worldSize.x/2, this.worldSize.y/2);
     this.actor.setDirectionOn_xy(1,0);
