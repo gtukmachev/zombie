@@ -110,6 +110,10 @@ export class GameObj {
     this.s.y = this.sd.y * this.sVal;
   }
 
+  turnEye(onAngle: Number) {
+
+  }
+
   setEyeDirectionOn(p: Vector): void {
     this.setEyeDirectionOn_xy(p.x, p.y)
   }

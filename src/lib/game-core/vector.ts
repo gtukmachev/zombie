@@ -47,6 +47,18 @@ export class Vector {
 
 
   /**
+   * normalization of the current vector (to len = 1)
+   */
+  public norm(): Vector {
+    if (this.x === 0 && this.y === 0) { return; }
+    const len = Math.sqrt(this.x * this.x + this.y * this.y);
+    this.x /= len;
+    this.y /= len;
+    return this;
+  }
+
+
+  /**
    * restore angle by vector v, only for len(v) = 1
    */
   public angle() {
