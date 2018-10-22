@@ -13,8 +13,6 @@ export class TimeCounter {
 
 
   public isItTime(): boolean {
-    //todo: try to replace 'new Date().getTime()' with a construction without a new object creation
-    //this.lastCheckingMoment = new Date().getTime();
     this.lastCheckingMoment = Date.now();
     return (this.lastActionTimeMillis + this.actionPeriodMillis) < this.lastCheckingMoment;
   }
@@ -26,10 +24,7 @@ export class TimeCounter {
 
   public startFromNow() {
     this.lastDuration = 0;
-    //todo: try to replace 'new Date().getTime()' with a construction without a new object creation
     this.lastActionTimeMillis = Date.now();
-    //this.lastCheckingMoment = Date.now();
-
   }
 
 }

@@ -15,7 +15,7 @@ export abstract class Gun {
 
   public isShotModeOn = false;
 
-  constructor(name: string, isAutomatic: boolean, shotSpeed: number, capacity: number, reloadingDurationMillis: number) {
+  protected constructor(name: string, isAutomatic: boolean, shotSpeed: number, capacity: number, reloadingDurationMillis: number) {
     this.isAutomatic = isAutomatic;
     this.shotSpeed = shotSpeed;
     this.capacity = capacity;
@@ -28,6 +28,9 @@ export abstract class Gun {
 
   public shot(actor: GameObj): GameObj {
     if (!this.isShotModeOn) { return; }
+    
+    if (this.isReloadingInProcess) { this.finishReloading(); }
+    if (this.isReloadingInProcess) { return; }
 
     if (this.bullets > 0) {
         this.bullets -= 1;
@@ -77,7 +80,7 @@ export abstract class Gun {
     this.bullets = 0;
   }
 
-  public finishReloading(): void {
+  protected finishReloading(): void {
     if (this.isReloadingInProcess && this.reloadingTimer.isItTime()) {
       this.bullets = this.capacity;
       this.isReloadingInProcess = false;

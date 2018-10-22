@@ -8,7 +8,7 @@ export abstract class ZombieGameAbstractLevel extends Level {
   protected waveCounter: number;
   protected wavesAmount: number;
 
-  constructor(levelNumber: number, wavesAmount: number, waveTimerMs: number, textFillColor: string, textStrokeColor: string) {
+  protected constructor(levelNumber: number, wavesAmount: number, waveTimerMs: number, textFillColor: string, textStrokeColor: string) {
     super(levelNumber);
     this.textFillColor = textFillColor;
     this.textColor = textStrokeColor;

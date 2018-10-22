@@ -2,8 +2,8 @@ import {AngleType, GameObj} from '../../../lib/game-core/objects/game-obj';
 import {Zombie} from '../zombies/zombie';
 import {SuitsDrawer} from '../../../lib/game-core/drawers/suits-drawer';
 import {TowerMover} from './tower-mover';
-import {Pistol3} from '../guns/pistol-3';
 import {TowerDrawer} from './tower-drawer';
+import {Pistol2} from '../guns/pistol-2';
 
 
 export class TowerGun1 extends GameObj {
@@ -12,7 +12,7 @@ export class TowerGun1 extends GameObj {
   locked = false;
   minAngle = Math.PI / 16;
   angleSpeed = Math.PI / 90;
-  gun = new Pistol3();
+  gun = new Pistol2();
   
   
   constructor(x: number, y: number) {
@@ -21,6 +21,7 @@ export class TowerGun1 extends GameObj {
           new TowerMover()
       );
       (<SuitsDrawer>this.drawer).currentSuitNumber = 0;
+      
       this.angleType = AngleType.ON_EYE;
       this.r = 500;
       this.scale = 0.2;

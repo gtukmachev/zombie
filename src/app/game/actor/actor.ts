@@ -110,8 +110,7 @@ export class Actor extends LiveGameObj {
 
   beforeTurn(): void {
     super.beforeTurn();
-    this.gun.finishReloading();
-
+    
     this.setEyeDirectionOn_xy(this.game.mousePos.x, this.game.mousePos.y);
 
     let bullet = this.gun.shot(this);
