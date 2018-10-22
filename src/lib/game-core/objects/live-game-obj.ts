@@ -32,20 +32,17 @@ export class LiveGameObj extends GameObj {
     if (this.isAlife && this.helth > 0) {
       this.helth -= damageVal;
       this.helth = this.helth < 0 ? 0 : this.helth;
+      this.isAlife = this.helth > 0;
     }
   }
 
   public checkHealth() {
-    if (!this.isAlife) { return; }
+      if (this.isAlife) { return; }
 
-    if (this.helth <= 0) {
-      this.deadStage -= 1;
-      this.deadStage = this.deadStage < 0 ? 0 : this.deadStage;
-    }
+      // todo - this animation should be timered
+      this.deadStage = this.deadStage <= 0 ? 0 : (this.deadStage - 1);
 
-    if (this.helth <= 0 && this.deadStage <= 0) {
-      this.game.markForDelete(this)
-    }
+      if (this.deadStage <= 0) { this.game.markForDelete(this); }
 
   }
 
