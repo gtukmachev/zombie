@@ -33,9 +33,13 @@ export abstract class Gun {
     if (this.isReloadingInProcess) { return; }
 
     if (this.bullets > 0) {
-        this.bullets -= 1;
-        if (!this.isAutomatic) { this.isShotModeOn = false; }
-        return this.makeBullet(actor);
+        if (this.shotTimer.isItTime()) {
+          this.shotTimer.fixLastChecking();
+          this.bullets -= 1;
+          if (!this.isAutomatic) { this.isShotModeOn = false; }
+  
+          return this.makeBullet(actor);
+        }
     } else {
         this.startReload();
     }

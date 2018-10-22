@@ -11,7 +11,6 @@ export class TimeCounter {
     this.actionPeriodMillis = actionPeriodMillis;
   }
 
-
   public isItTime(): boolean {
     this.lastCheckingMoment = Date.now();
     return (this.lastActionTimeMillis + this.actionPeriodMillis) < this.lastCheckingMoment;

@@ -3,7 +3,7 @@ import {Zombie} from '../zombies/zombie';
 import {SuitsDrawer} from '../../../lib/game-core/drawers/suits-drawer';
 import {TowerMover} from './tower-mover';
 import {TowerDrawer} from './tower-drawer';
-import {Pistol2} from '../guns/pistol-2';
+import {TwoBlusterGun} from '../guns/two-bluster-gun';
 
 
 export class TowerGun1 extends GameObj {
@@ -12,7 +12,7 @@ export class TowerGun1 extends GameObj {
   locked = false;
   minAngle = Math.PI / 16;
   angleSpeed = Math.PI / 90;
-  gun = new Pistol2();
+  gun = new TwoBlusterGun();
   
   
   constructor(x: number, y: number) {

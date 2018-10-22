@@ -13,12 +13,13 @@ import {KeyboardEventType} from '../../../lib/game-core/events/game-keyboard-eve
 import {Pistol2} from '../guns/pistol-2';
 import {Pistol3} from '../guns/pistol-3';
 import {ImagesSuitsDrawer} from '../../../lib/game-core/drawers/images-suits-drawer';
+import {TwoBlusterGun} from '../guns/two-bluster-gun';
 
 export class Actor extends LiveGameObj {
 
 //  static s2 = 1 / Math.sqrt(2);
   public guns: Array<Gun> = [
-    new Pistol1(), new Pistol2(), new Pistol3(), new MachineGun()
+    new Pistol1(), new Pistol2(), new Pistol3(), new MachineGun(), new TwoBlusterGun()
   ];
 
   public gun: Gun;
