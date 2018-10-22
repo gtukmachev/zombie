@@ -24,6 +24,7 @@ export class TowerGun1 extends GameObj {
       this.angleType = AngleType.ON_EYE;
       this.r = 500;
       this.scale = 0.2;
+      this.feetInBottom = false;
   }
 
 
@@ -50,9 +51,9 @@ export class TowerGun1 extends GameObj {
           if ((<Zombie>this.target).isAlife) {
             
               if (this.locked) {
-                  //this.gun.isShotModeOn = true;
-                  //const bullet = this.gun.shot(this);
-                  //if (bullet) { this.game.add(bullet); }
+                  this.gun.isShotModeOn = true;
+                  const bullet = this.gun.shot(this);
+                  if (bullet) { this.game.add(bullet); }
               }
             
           } else {
