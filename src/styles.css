@@ -1,5 +1,8 @@
 body {
-  background: #3c3f41;
+  background: #181e14;
   color: #84b4ce;
 }
 
+.gameField {
+  background: url("assets/bg1.jpg") repeat;
+}
