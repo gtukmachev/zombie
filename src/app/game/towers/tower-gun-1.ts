@@ -4,16 +4,32 @@ import {TwoBlusterGun} from '../guns/two-bluster-gun';
 import {Mover} from '../../../lib/game-core/movers/mover';
 import {Vector} from '../../../lib/game-core/vector';
 import {ImagesSuitsDrawer} from '../../../lib/game-core/drawers/images-suits-drawer';
+import {TargetMarker} from '../target-markers/target-marker';
+import {Game2} from '../../../lib/game-core/game-2';
 
 
 export class TowerGun1 extends GameObj {
 
-  target: GameObj;
-  locked = false;
+  _target: GameObj;
+        set target(t: GameObj) {
+          this._target = t;
+          this.targetMarker.target = t;
+        }
+        get target(): GameObj { return this._target; }
+  
+  _locked = false;
+        set locked(l: boolean) {
+            this._locked = l;
+            if (this.targetMarker) {
+              this.targetMarker.locked = l;
+            }
+        }
+        get locked(): boolean { return this._locked; }
+        
   minAngle = Math.PI / 16;
   angleSpeed = Math.PI / 90;
   gun = new TwoBlusterGun();
-  
+  targetMarker = new TargetMarker();
   
   constructor(x: number, y: number) {
       super(x, y,
@@ -21,13 +37,12 @@ export class TowerGun1 extends GameObj {
           new TowerMover()
       );
       (<TowerDrawer>this.drawer).currentSuitNumber = 0;
-      
+  
       this.angleType = AngleType.ON_EYE;
       this.r = 500;
       this.scale = 0.2;
       this.feetInBottom = false;
   }
-
 
   public beforeTurn(): void {
       super.beforeTurn();
@@ -64,7 +79,19 @@ export class TowerGun1 extends GameObj {
       }
      
   }
-
+  
+  
+  onAddIntoGame(game: Game2): void {
+    super.onAddIntoGame(game);
+    game.add(this.targetMarker);
+  }
+  
+  
+  onRemovingFromGame(): void {
+    this.game.markForDelete( this.targetMarker );
+    super.onRemovingFromGame();
+  }
+  
 }
 
 export class TowerDrawer extends ImagesSuitsDrawer<TowerGun1> {
