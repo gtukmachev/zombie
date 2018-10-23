@@ -7,7 +7,7 @@ import {Game2} from '../../../lib/game-core/game-2';
 export class Zombie extends LiveGameObj {
 
   constructor(x: number, y: number) {
-    super(x, y, new ZombieSuitsDrawer(), new FollowerMover(null),  3, 15);
+    super(x, y, new ZombieSuitsDrawer(), new FollowerMover<Zombie>(null),  3, 15);
     this.r = 24;
     this.sValMax = 0.7;
     this.sVal = this.sValMax;
@@ -26,7 +26,7 @@ export class Zombie extends LiveGameObj {
 
   public onAddIntoGame(game: Game2): void {
     super.onAddIntoGame(game);
-    (this.mover as FollowerMover).targetObject = game.actor;
+    (this.mover as FollowerMover<Zombie>).targetObject = game.actor;
   }
 
   beforeTurn(): void {
@@ -35,10 +35,6 @@ export class Zombie extends LiveGameObj {
     this.setDirectionOn( this.game.actor.p );
   }
 
-  // move(): void {
-  //   if (this.helth > 0) { this.moveForward(); }
-  // }
-
   afterTurn(): void {
     this.scale = this.getDeathStageK();
   }
@@ -46,7 +42,7 @@ export class Zombie extends LiveGameObj {
 }
 
 //todo: move into ImagesSuitsDrawer
-class ZombieSuitsDrawer extends SuitsDrawer {
+class ZombieSuitsDrawer extends SuitsDrawer<Zombie> {
 
   drawSuit(suitNumber: number): HTMLImageElement | HTMLCanvasElement | ImageBitmap | SuitsFrameDescription {
     const sz = this.gObj.r * 2;

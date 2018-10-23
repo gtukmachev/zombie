@@ -1,6 +1,6 @@
 import {Drawer} from './drawer';
 import {Vector} from '../vector';
-import {AngleType} from '../objects/game-obj';
+import {AngleType, GameObj} from '../objects/game-obj';
 
 
 /**
@@ -14,7 +14,7 @@ import {AngleType} from '../objects/game-obj';
  *  <li>opacity - doesn't implemented yet</li>
  * </ul>
  */
-export abstract class FrameDrawer<T extends FrameDescription> extends Drawer {
+export abstract class FrameDrawer<T extends FrameDescription, ParentGameObjectType extends GameObj> extends Drawer<ParentGameObjectType> {
 
   static framesCache: ClassesFramesCache = { };
 

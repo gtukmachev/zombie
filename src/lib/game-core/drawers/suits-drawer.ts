@@ -1,6 +1,7 @@
 import {FrameDescription, FrameDrawer} from './frame-drawer';
+import {GameObj} from '../objects/game-obj';
 
-export abstract class SuitsDrawer extends FrameDrawer<SuitsFrameDescription> {
+export abstract class SuitsDrawer<ParentGameObjectType extends GameObj> extends FrameDrawer<SuitsFrameDescription, ParentGameObjectType> {
 
   public currentSuitNumber: number = 1;
 

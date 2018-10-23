@@ -9,7 +9,7 @@ export class TransparentBackground extends GameObj {
 
 }
 
-class TransparentBackgroundDrawer extends Drawer {
+class TransparentBackgroundDrawer extends Drawer<any> {
 
   draw(): void {
     // Draw background: optimized 'magic' hack-version

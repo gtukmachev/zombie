@@ -11,8 +11,8 @@ export class GameObj {
 
   public game: Game2;
 
-  private _drawer: Drawer; get drawer(): Drawer { return this._drawer; }
-  private _mover: Mover;   get mover(): Mover { return this._mover; }
+  private _drawer: Drawer<any>; get drawer(): Drawer<any> { return this._drawer; }
+  private _mover: Mover<any>;   get mover(): Mover<any> { return this._mover; }
 
   // position
   public p:       Vector;     // the current position of this object
@@ -53,7 +53,7 @@ export class GameObj {
   public feetInBottom = true;
 
 
-  constructor(x: number, y: number, drawer: Drawer, mover: Mover) {
+  constructor(x: number, y: number, drawer: Drawer<any>, mover: Mover<any>) {
     this.p = new Vector(x, y);
     this.pBefore = new Vector(x, y);
     this._drawer = drawer;  if (this._drawer) this._drawer.gObj = this;

@@ -3,7 +3,7 @@ import {GameObj} from '../objects/game-obj';
 import {Vector} from '../vector';
 
 
-export class FollowerMover extends AbstractPhysicMover {
+export class FollowerMover<ParentGameObjectType extends GameObj> extends AbstractPhysicMover<ParentGameObjectType> {
 
   public targetObject: GameObj;
 

@@ -3,9 +3,10 @@ import {Vector} from '../vector';
 import {Subscription} from 'rxjs/Subscription';
 import {KeyboardEventType} from '../events/game-keyboard-event';
 import {Game2} from '../game-2';
+import {GameObj} from '../objects/game-obj';
 
 
-export class ManageableMoverAWED extends AbstractPhysicMover {
+export class ManageableMoverAWED<ParentGameObjectType extends GameObj> extends AbstractPhysicMover<ParentGameObjectType> {
 
   private _m_up = false;
   private _m_down = false;

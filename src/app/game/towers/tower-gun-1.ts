@@ -1,9 +1,9 @@
 import {AngleType, GameObj} from '../../../lib/game-core/objects/game-obj';
 import {Zombie} from '../zombies/zombie';
-import {SuitsDrawer} from '../../../lib/game-core/drawers/suits-drawer';
-import {TowerMover} from './tower-mover';
-import {TowerDrawer} from './tower-drawer';
 import {TwoBlusterGun} from '../guns/two-bluster-gun';
+import {Mover} from '../../../lib/game-core/movers/mover';
+import {Vector} from '../../../lib/game-core/vector';
+import {ImagesSuitsDrawer} from '../../../lib/game-core/drawers/images-suits-drawer';
 
 
 export class TowerGun1 extends GameObj {
@@ -20,7 +20,7 @@ export class TowerGun1 extends GameObj {
           new TowerDrawer(),
           new TowerMover()
       );
-      (<SuitsDrawer>this.drawer).currentSuitNumber = 0;
+      (<TowerDrawer>this.drawer).currentSuitNumber = 0;
       
       this.angleType = AngleType.ON_EYE;
       this.r = 500;
@@ -64,8 +64,44 @@ export class TowerGun1 extends GameObj {
       }
      
   }
-  
-  
 
 }
 
+export class TowerDrawer extends ImagesSuitsDrawer<TowerGun1> {
+  
+  constructor() {
+    super(["assets/tower1.png"], false);
+  }
+  
+}
+
+
+export class TowerMover extends Mover<TowerGun1> {
+  move(): void {
+    
+    const tower = <TowerGun1>this.gObj;
+    const eyeAngle = tower.eye.angle();
+    
+    if (tower.target == null) { // search a target
+      tower.eye.setAngle(eyeAngle + tower.angleSpeed);
+      
+    } else { // track the target
+      
+      const t = tower.target.p; // target position
+      const targetAngle = new Vector( t.x - tower.p.x, t.y - tower.p.y ).norm().angle();
+      const angleDelta = Math.abs(eyeAngle - targetAngle);
+      
+      if ( angleDelta < tower.minAngle ) {
+        tower.locked = true;
+        tower.setEyeDirectionOn( t ); // rotate TO the target
+      } else {
+        tower.locked = false;
+        tower.eye.setAngle(eyeAngle + tower.angleSpeed); // continue rotation
+      }
+      
+    }
+    
+    
+  }
+  
+}

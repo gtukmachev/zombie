@@ -4,11 +4,9 @@ import {SimpleGameObj} from '../../../lib/game-core/objects/simple-draw-game-obj
 
 export class PointBullet extends SimpleGameObj{
 
-  private attack: number;
-  private color: string;
-  private len: number;
-
-
+  private readonly attack: number;
+  private readonly color: string;
+  private readonly len: number;
 
   constructor(x: number, y: number, attack: number, calibr: number, color: string, direction: Vector) {
     super(x, y);

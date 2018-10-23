@@ -40,12 +40,10 @@ export class SimpleGameObj extends GameObj {
 
 }
 
-class SimpleGameObjDrawer extends Drawer { draw(): void {
-    const go = this.gObj as SimpleGameObj;
-    go.draw(go.game.ctx);
+class SimpleGameObjDrawer extends Drawer<SimpleGameObj> { draw(): void {
+    this.gObj.draw(this.gObj.game.ctx);
 }}
 
-class SimpleGameObjMover extends Mover {  move(): void {
-    const go = this.gObj as SimpleGameObj;
-    go.move();
+class SimpleGameObjMover extends Mover<SimpleGameObj> {  move(): void {
+    this.gObj.move();
 }}

@@ -25,8 +25,8 @@ export class Actor extends LiveGameObj {
   public gun: Gun;
 
   // 'suit' property - delegates directly to SuitsDrawer.currentSuitNumber property.
-  get suit(): number { return (this.drawer as SuitsDrawer).currentSuitNumber; }
-  set suit(value: number) { (this.drawer as SuitsDrawer).currentSuitNumber = value; }
+  get suit(): number { return (this.drawer as SuitsDrawer<Actor>).currentSuitNumber; }
+  set suit(value: number) { (this.drawer as SuitsDrawer<Actor>).currentSuitNumber = value; }
 
 //  private speed_diagonal: number;
 
@@ -127,7 +127,7 @@ export class Actor extends LiveGameObj {
 }
 
 //todo: move into ImagesSuitsDrawer
-class ActorSuitsDrawer extends ImagesSuitsDrawer {
+class ActorSuitsDrawer extends ImagesSuitsDrawer<Actor> {
   constructor() {
     super([
       "assets/actor1.png",

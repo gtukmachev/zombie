@@ -1,9 +1,9 @@
 import {GameObj} from '../objects/game-obj';
 import {Game2} from '../game-2';
 
-export abstract class Mover {
+export abstract class Mover<ParentGameObjectType extends GameObj> {
 
-  public gObj: GameObj;
+  public gObj: ParentGameObjectType;
 
   abstract move(): void;
 

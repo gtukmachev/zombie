@@ -1,7 +1,8 @@
 import {SuitsDrawer, SuitsFrameDescription} from './suits-drawer';
+import {GameObj} from '../objects/game-obj';
 
 
-export class ImagesSuitsDrawer extends SuitsDrawer {
+export class ImagesSuitsDrawer<ParentGameObjectType extends GameObj> extends SuitsDrawer<ParentGameObjectType> {
 
   private suits: Array<HTMLImageElement>;
   private _isImagesLoaded: boolean = false;

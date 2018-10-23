@@ -1,6 +1,6 @@
 import {Drawer} from './drawer';
 
-export class SimpleTextDrawer extends Drawer {
+export class SimpleTextDrawer extends Drawer<any> {
 
   public color: string | CanvasGradient | CanvasPattern;
   public fill: string | CanvasGradient | CanvasPattern;

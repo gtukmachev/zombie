@@ -1,7 +1,8 @@
 import {Mover} from './mover';
 import {Vector} from '../vector';
+import {GameObj} from '../objects/game-obj';
 
-export abstract class AbstractPhysicMover extends Mover {
+export abstract class AbstractPhysicMover<ParentGameObjectType extends GameObj> extends Mover<ParentGameObjectType> {
 
   public move(): void {
     const target = this.targetPoint() || this.gObj.p;

@@ -11,7 +11,7 @@ export class LiveGameObj extends GameObj {
   public deadStage: number;
   public deadStages: number;
 
-  constructor(x: number, y: number, drawer: Drawer, mover: Mover, helth: number, deadStages: number) {
+  constructor(x: number, y: number, drawer: Drawer<any>, mover: Mover<any>, helth: number, deadStages: number) {
     super(x, y, drawer, mover);
     this.maxHelth = helth;
     this.deadStages = deadStages;
