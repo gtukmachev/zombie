@@ -8,12 +8,25 @@ export class TargetMarker extends GameObj {
     target: GameObj;
     locked = false;
   
+    private static initSize = 17;
+    
     constructor() {
         super(0, 0, new TargetMarkerDrawer(), new TargetMarkerMover());
         
-        this.r = 37;
+        this.r = TargetMarker.initSize;
     }
   
+  
+    beforeTurn(): void {
+        if (this.target != null) {
+            if (! this.locked) {
+                this.scale = 1 + (1 + Math.sin( new Date().getTime()/100 )) / 2;
+            } else {
+                this.scale = 2;
+            }
+        }
+        super.beforeTurn();
+    }
 }
 
 class TargetMarkerMover extends Mover<TargetMarker> {
@@ -41,7 +54,7 @@ class TargetMarkerDrawer extends  ImagesSuitsDrawer<TargetMarker> {
         , "assets/target-marker2.png"
         , "assets/target-marker3.png"
       ],
-      false
+      true
     );
   
     this.resizeToObjectSize = true;
