@@ -1,7 +1,5 @@
 import {TimeCounter} from './time/time-counter';
-import {Subscription} from 'rxjs/Subscription';
-import {Observable} from 'rxjs';
-import {Subject} from 'rxjs/Subject';
+import {Subject, Subscription, timer} from 'rxjs';
 import {GameMouseEvent, MouseEventType} from './events/game-mouse-event';
 import {GameKeyboardEvent, KeyboardEventType} from './events/game-keyboard-event';
 import {LocationMatrix} from './matrix/location-matrix';
@@ -154,7 +152,7 @@ export abstract class Game2 {
   public startGame(): void {
     if (this.running) { return; }
 
-    this.gameTimer = Observable.timer(500, this.gameTimeFrame)
+    this.gameTimer = timer(500, this.gameTimeFrame)
       .subscribe(
         () => this.gameStep()
       );
@@ -162,7 +160,7 @@ export abstract class Game2 {
     this.secondsTimerCounter.isItTime();
     this.secondsTimerCounter.fixLastChecking();
 
-    this.framesCounterSubscription = Observable.timer(1000, 1000).subscribe(() => {
+    this.framesCounterSubscription = timer(1000, 1000).subscribe(() => {
       if (this.secondsTimerCounter.isItTime()) {
         this.secondsTimerCounter.fixLastChecking();
         this.lastSecondFrameDuration = this.secondsTimerCounter.lastDuration;

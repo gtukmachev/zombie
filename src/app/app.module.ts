@@ -1,6 +1,8 @@
-import { BrowserModule } from '@angular/platform-browser';
-import { NgModule } from '@angular/core';
-import { AppComponent } from './app.component';
+import {BrowserModule} from '@angular/platform-browser';
+import {NgModule} from '@angular/core';
+
+import {AppRoutingModule} from './app-routing.module';
+import {AppComponent} from './app.component';
 import {GameModule} from '../lib/game-core/angular/game.module';
 
 @NgModule({
@@ -9,6 +11,7 @@ import {GameModule} from '../lib/game-core/angular/game.module';
   ],
   imports: [
     BrowserModule,
+    AppRoutingModule,
     GameModule
   ],
   providers: [],

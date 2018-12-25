@@ -1,8 +1,8 @@
 import {MouseEventType} from '../../../lib/game-core/events/game-mouse-event';
-import 'rxjs/add/operator/filter';
+import {filter} from 'rxjs/operators';
 import {SimpleGameObj} from '../../../lib/game-core/objects/simple-draw-game-obj';
 import {Game2} from '../../../lib/game-core/game-2';
-import {Subscription} from 'rxjs/Subscription';
+import {Subscription} from 'rxjs';
 
 export class TestLine extends SimpleGameObj {
 
@@ -66,9 +66,9 @@ export class TestLine extends SimpleGameObj {
 
   public onAddIntoGame(game: Game2): void {
     super.onAddIntoGame(game);
-    this.mouseSubscription = game.mouse
-      .filter(e => e.type === MouseEventType.DOWN)
-      .subscribe(e => this.onMouseDown(e.event));
+    this.mouseSubscription = game.mouse.pipe(
+      filter(e => e.type === MouseEventType.DOWN)
+    ).subscribe(e => this.onMouseDown(e.event));
   }
 
 

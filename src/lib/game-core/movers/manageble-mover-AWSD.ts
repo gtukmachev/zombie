@@ -1,6 +1,6 @@
 import {AbstractPhysicMover} from './abstract-phisic-mover';
 import {Vector} from '../vector';
-import {Subscription} from 'rxjs/Subscription';
+import {Subscription} from 'rxjs';
 import {KeyboardEventType} from '../events/game-keyboard-event';
 import {Game2} from '../game-2';
 import {GameObj} from '../objects/game-obj';

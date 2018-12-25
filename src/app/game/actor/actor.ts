@@ -1,4 +1,3 @@
-import 'rxjs/add/operator/filter';
 import {Gun} from '../guns/gun';
 import {MachineGun} from '../guns/machine-gun';
 import {LiveGameObj} from '../../../lib/game-core/objects/live-game-obj';
@@ -7,7 +6,7 @@ import {SuitsDrawer} from '../../../lib/game-core/drawers/suits-drawer';
 import {AngleType} from '../../../lib/game-core/objects/game-obj';
 import {Game2} from '../../../lib/game-core/game-2';
 import {MouseEventType} from '../../../lib/game-core/events/game-mouse-event';
-import {Subscription} from 'rxjs/Subscription';
+import {Subscription} from 'rxjs';
 import {Pistol1} from '../guns/pistol-1';
 import {KeyboardEventType} from '../../../lib/game-core/events/game-keyboard-event';
 import {Pistol2} from '../guns/pistol-2';

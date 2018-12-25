@@ -8,6 +8,8 @@ import {FrameDrawer} from '../lib/game-core/drawers/frame-drawer';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent {
+  title = 'zombie';
+  
   game: ZombiesGame;
   isContentLoading = true;
   imgCounter = 0;

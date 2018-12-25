@@ -1,7 +1,7 @@
 import {TestLine} from './test-line';
-import 'rxjs/add/operator/filter';
+import {filter} from 'rxjs/operators';
 import {MouseEventType} from '../../../lib/game-core/events/game-mouse-event';
-import {Subscription} from 'rxjs/Subscription';
+import {Subscription} from 'rxjs';
 import {SimpleGameObj} from '../../../lib/game-core/objects/simple-draw-game-obj';
 import {Game2} from '../../../lib/game-core/game-2';
 
@@ -21,8 +21,9 @@ export class TestCircle extends SimpleGameObj {
   public onAddIntoGame(game: Game2): void {
     super.onAddIntoGame(game);
     this.mouseSubscription = game
-      .mouse
-      .filter(e => e.type === MouseEventType.DOWN && e.event.which === 3)
+      .mouse.pipe(
+        filter(e => e.type === MouseEventType.DOWN && e.event.which === 3)
+      )
       .subscribe(e => this.needMove = true);
   }
 
