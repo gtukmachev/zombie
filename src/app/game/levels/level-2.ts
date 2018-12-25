@@ -1,5 +1,6 @@
 import {Zombie} from '../zombies/zombie';
 import {ZombieGameAbstractLevel} from './zombie-game-level';
+import {TowerGun1} from '../towers/tower-gun-1';
 
 export class Level2 extends ZombieGameAbstractLevel {
   private rnd01: number;
@@ -11,6 +12,15 @@ export class Level2 extends ZombieGameAbstractLevel {
     super(2, 80, 500, '#ff2236', '#f8fbff');
   }
 
+  initLevelScenario(): void {
+    const sx = this.game.worldSize.x;
+    const sy = this.game.worldSize.y;
+    const step = 200;
+    this.game.add( new TowerGun1(     step,      step) );
+    this.game.add( new TowerGun1(sx - step,      step) );
+    this.game.add( new TowerGun1(     step, sy - step) );
+    this.game.add( new TowerGun1(sx - step, sy - step) );
+  }
 
   public nextWave(): void {
     let zx, zy :number;

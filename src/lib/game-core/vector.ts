@@ -154,9 +154,43 @@ export class Vector {
     this.y = Math.sin(angle);
   }
 
+  setAsAngleOf(angle: number): Vector {
+    this.setAngle(angle);
+    return this;
+  }
+  
   rotateOn(angleDelta: number) {
     this.setAngle(this.angle() + angleDelta)
   }
+  
+  devide(k: number): Vector {
+    return new Vector(this.x / k, this.y / k);
+  }
 
+  devideThis(k: number): Vector {
+    this.x /= k;
+    this.y /= k;
+    return this;
+  }
+  
+  multiply(k: number): Vector {
+    return new Vector(this.x * k, this.y * k);
+  }
+
+  multiplyThis(k: number): Vector {
+    this.x *= k;
+    this.y *= k;
+    return this;
+  }
+  
+  plus(v: Vector): Vector {
+    return new Vector(this.x + v.x, this.y + v.y);
+  }
+  
+  floorThis(): Vector {
+    this.x = Math.floor(this.x);
+    this.y = Math.floor(this.y);
+    return this;
+  }
 
 }
