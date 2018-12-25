@@ -8,6 +8,7 @@ import {Level3} from './levels/level-3';
 import {Game2} from '../../lib/game-core/game-2';
 import {GameObj} from '../../lib/game-core/objects/game-obj';
 import {Vector} from '../../lib/game-core/vector';
+import {Level4} from './levels/level-4';
 
 export class ZombiesGame extends Game2 {
 
@@ -41,6 +42,7 @@ export class ZombiesGame extends Game2 {
          if (levelNumber === 1) { return new Level1(); }
     else if (levelNumber === 2) { return new Level2(); }
     else if (levelNumber === 3) { return new Level3(); }
+    else if (levelNumber === 4) { return new Level4(); }
     return null;
   }
 
