@@ -5,8 +5,8 @@ export class LocationMatrix {
   
   public size;
   
-  public index: Array<Array<HashSetOfGameObjects>>; // map matrix cel (l,c) -> set of objects inside this ceil
-  public positions: MatrixPosIndex = {}; // map object -> ceils of the matrix where this project present
+  public index: Array<Array<HashSetOfGameObjects>>; // map "matrix cell (l,c)" -> "set of objects inside this cell"
+  public positions: MatrixPosIndex = {}; // map object -> cells of the matrix where this object present
   
   public lines: number;
   public columns: number;
@@ -66,8 +66,11 @@ export class LocationMatrix {
     
     const prevPositions: MatrixPos = this.positions[id];
     const newPositions: MatrixPos = {
-      lb: Math.floor(pTopY / this.size), cb: Math.floor(pLeftX / this.size),
-      le: Math.floor((pTopY + o.outerFrame.h) / this.size), ce: Math.floor((pLeftX + o.outerFrame.w) / this.size)
+      lb: Math.floor(pTopY / this.size),
+      cb: Math.floor(pLeftX / this.size),
+      
+      le: Math.floor((pTopY + o.outerFrame.h) / this.size),
+      ce: Math.floor((pLeftX + o.outerFrame.w) / this.size)
     };
     
     if (prevPositions && newPositions.lb === prevPositions.lb && newPositions.cb === prevPositions.cb
@@ -77,8 +80,13 @@ export class LocationMatrix {
     }
     
     // todo: replace "REMOVE-at-all and ADD again" algorithm to INCREMENTAL matrix updating
-    this.applyForSetsOfRegion(prevPositions, cellObjectsSet => this.removeFromSet(cellObjectsSet, o));
-    this.applyForSetsOfRegion(newPositions, cellObjectsSet => this.addIntoSet(cellObjectsSet, o));
+    this.applyForSetsOfRegion(prevPositions, cellObjectsSet => {
+      this.removeFromSet(cellObjectsSet, o);
+    });
+    
+    this.applyForSetsOfRegion(newPositions, cellObjectsSet => {
+      this.addIntoSet(cellObjectsSet, o);
+    });
     
     this.positions[id] = newPositions;
   }
@@ -87,7 +95,7 @@ export class LocationMatrix {
     this.applyForRegionObjects(this.positions[`${o.id}`], callbackForGameObj);
   }
   
-  public applyForSetsOfRegion(pos: MatrixPos, callbackForGameObjSet: (HashSetOfGameObjects) => void) {
+  private applyForSetsOfRegion(pos: MatrixPos, callbackForGameObjSet: (HashSetOfGameObjects) => void) {
     if (pos) {
       for (let l = pos.lb; l <= pos.le; l++) {
         let line = this.index[l];
@@ -103,7 +111,7 @@ export class LocationMatrix {
     }
   }
   
-  public applyForRegionObjects(pos: MatrixPos, callbackForGameObj: (GameObj) => void) {
+  private applyForRegionObjects(pos: MatrixPos, callbackForGameObj: (GameObj) => void) {
     this.applyForSetsOfRegion(pos, (gameObjectsInCell: HashSetOfGameObjects) => {
       for (let objId in gameObjectsInCell) {
         callbackForGameObj(gameObjectsInCell[objId]);
@@ -112,7 +120,6 @@ export class LocationMatrix {
   }
   
   
-  // todo: try to replace the Array<GameObj> to MapObject of <GameObj.id>: interface
   private addIntoSet(set: HashSetOfGameObjects, o: GameObj): void {
     set[`${o.id}`] = o;
   }
@@ -120,7 +127,6 @@ export class LocationMatrix {
   private removeFromSet(set: HashSetOfGameObjects, o: GameObj): void {
     delete set[`${o.id}`];
   }
-  
   
 }
 

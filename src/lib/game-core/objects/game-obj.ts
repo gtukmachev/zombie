@@ -21,7 +21,7 @@ export class GameObj {
 
   //size
   public scale: number = 1;
-  public outerFrame: ObjectFrame; // outer frame - is a square frame where image of thr current object is placed
+  public outerFrame: ObjectFrame; // outer frame - is a rectangular box where image of the current object is placed
   private _r: number; // default size (radius) of this object in pixels
       get r(): number { return this._r; }
       set r(val: number) {
